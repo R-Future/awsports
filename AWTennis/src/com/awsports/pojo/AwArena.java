@@ -9,7 +9,7 @@ public class AwArena {
 
     private String address;
 
-    private byte[] type;
+    private Integer type;
 
     private Integer indoornumber;
 
@@ -47,11 +47,11 @@ public class AwArena {
         this.address = address == null ? null : address.trim();
     }
 
-    public byte[] getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(byte[] type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

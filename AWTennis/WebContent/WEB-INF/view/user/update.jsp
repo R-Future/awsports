@@ -7,13 +7,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>爱网体育</title>
 <!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="../resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="../resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+<link href="/WEB-INF/resources/css/bootstrap.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="/WEB-INF/resources/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/WEB-INF/resources/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
+	<div class="" style="color:red">
+		<c:if test="${errors!=null}">
+			<c:forEach items="${errors.allErrors}" var="error">
+				${error.defaultMessage}<br/>
+			</c:forEach>
+		</c:if>
+	</div>
 	<form class="form" action="<%=request.getContextPath()%>/user/save" method="post">
+		<input type="hidden" name="id" id="id" value="${user.id}" class="form-control"/>
 		<div class="form-group">
 			<label for="name">用户名</label>
 			<input type="text" name="name" id="name" value="${user.name}" class="form-control"/>
@@ -78,10 +86,10 @@
 			<label for="doubletitles">双打冠军数</label>
 			<input type="text" name="doubletitles" id="doubletitles" value="${user.doubletitles}" class="form-control"/>
 		</div>
-		<div class="form-group">
-			<label for="updatedAt">更新时间</label>
-			<input type="text" name="updatedAt" id="updatedAt" value="${user.updatedAt}" class="form-control"/>
-		</div>
+<!-- 		<div class="form-group"> -->
+<!-- 			<label for="updatedAt">更新时间</label> -->
+<%-- 			<input type="text" name="updatedAt" id="updatedAt" value="${user.updatedAt}" class="form-control"/> --%>
+<!-- 		</div> -->
 		<button type="submit" class="btn btn-default">提交</button>
 	</form>
 </div>

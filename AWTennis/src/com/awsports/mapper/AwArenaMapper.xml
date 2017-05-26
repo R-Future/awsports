@@ -5,7 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="address" jdbcType="CHAR" property="address" />
-    <result column="type" jdbcType="BIT" property="type" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="indoorNumber" jdbcType="INTEGER" property="indoornumber" />
     <result column="outdoorNumber" jdbcType="INTEGER" property="outdoornumber" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -133,7 +133,7 @@
       created_at, updated_at, invalid, 
       note)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{address,jdbcType=CHAR}, 
-      #{type,jdbcType=BIT}, #{indoornumber,jdbcType=INTEGER}, #{outdoornumber,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{indoornumber,jdbcType=INTEGER}, #{outdoornumber,jdbcType=INTEGER}, 
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
       #{note,jdbcType=LONGVARCHAR})
   </insert>
@@ -182,7 +182,7 @@
         #{address,jdbcType=CHAR},
       </if>
       <if test="type != null">
-        #{type,jdbcType=BIT},
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="indoornumber != null">
         #{indoornumber,jdbcType=INTEGER},
@@ -223,7 +223,7 @@
         address = #{record.address,jdbcType=CHAR},
       </if>
       <if test="record.type != null">
-        type = #{record.type,jdbcType=BIT},
+        type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.indoornumber != null">
         indoorNumber = #{record.indoornumber,jdbcType=INTEGER},
@@ -253,7 +253,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=CHAR},
       address = #{record.address,jdbcType=CHAR},
-      type = #{record.type,jdbcType=BIT},
+      type = #{record.type,jdbcType=INTEGER},
       indoorNumber = #{record.indoornumber,jdbcType=INTEGER},
       outdoorNumber = #{record.outdoornumber,jdbcType=INTEGER},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
@@ -269,7 +269,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=CHAR},
       address = #{record.address,jdbcType=CHAR},
-      type = #{record.type,jdbcType=BIT},
+      type = #{record.type,jdbcType=INTEGER},
       indoorNumber = #{record.indoornumber,jdbcType=INTEGER},
       outdoorNumber = #{record.outdoornumber,jdbcType=INTEGER},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
@@ -289,7 +289,7 @@
         address = #{address,jdbcType=CHAR},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=BIT},
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="indoornumber != null">
         indoorNumber = #{indoornumber,jdbcType=INTEGER},
@@ -316,7 +316,7 @@
     update aw_arena
     set name = #{name,jdbcType=CHAR},
       address = #{address,jdbcType=CHAR},
-      type = #{type,jdbcType=BIT},
+      type = #{type,jdbcType=INTEGER},
       indoorNumber = #{indoornumber,jdbcType=INTEGER},
       outdoorNumber = #{outdoornumber,jdbcType=INTEGER},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
@@ -329,7 +329,7 @@
     update aw_arena
     set name = #{name,jdbcType=CHAR},
       address = #{address,jdbcType=CHAR},
-      type = #{type,jdbcType=BIT},
+      type = #{type,jdbcType=INTEGER},
       indoorNumber = #{indoornumber,jdbcType=INTEGER},
       outdoorNumber = #{outdoornumber,jdbcType=INTEGER},
       created_at = #{createdAt,jdbcType=TIMESTAMP},

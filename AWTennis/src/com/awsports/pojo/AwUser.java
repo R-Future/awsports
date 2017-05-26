@@ -2,11 +2,15 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.*;
+
 public class AwUser {
     private Integer id;
 
+    @NotEmpty(message="{user.name.null}")
     private String name;
-
+    
+    @NotEmpty(message="{user.password.null}")
     private String password;
 
     private String nickname;
@@ -15,6 +19,7 @@ public class AwUser {
 
     private String realname;
 
+//    @Length(min=18,max=18,message="{user.idcard.length.error}")
     private String idcard;
 
     private String phone;

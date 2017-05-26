@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace为mapper.java借口的类名 -->
+<mapper namespace="com.awsports.mapper.UserMapper">
+	
+	<!-- sql片段，用户信息查询条件 -->
+	<sql id="query_user_where">
+		<if test="user!=null">
+			<if test="user.name!=null and user.name!=''">
+				and aw_user.name like '%${user.name}%'
+			</if>
+			<if test="user.address!=null and user.address!=''">
+				and aw_user.address like '%${user.address}%'
+			</if>
+			<if test="user.level!=null and user.level!=''">
+				and aw_user.level=#{user.level}
+			</if>
+		</if>
+	</sql>
+	<!-- id对应mapper.java接口中的方法名 -->
+	<select id="findAll" parameterType="com.awsports.pojo.UserQuery" resultType="com.awsports.pojo.User">
+		select * from aw_user
+		<where>
+			<include refid="query_user_where"></include>
+		</where>
+	</select>
+	
+	<select id="findById" parameterType="Integer" resultType="com.awsports.pojo.User">
+		select * from aw_user where id=#{id}
+	</select>
+	
+	<!-- 更新用户信息 -->
+	<update id="update" parameterType="com.awsports.pojo.User">
+		update aw_user
+		<set>
+			<if test="name!=null and name!=''">name = #{name,jdbcType=CHAR},</if>
+			<if test="password!=null and password!=''">password = #{password,jdbcType=CHAR},</if>
+			<if test="nickname!=null and nickname!=''">nickname = #{nickname,jdbcType=CHAR},</if>
+			<if test="portrait!=null and portrait!=''">portrait = #{portrait,jdbcType=CHAR},</if>
+			<if test="realname!=null and realname!=''">realName = #{realname,jdbcType=CHAR},</if>
+			<if test="idcard!=null and idcard!=''">idcard = #{idcard,jdbcType=CHAR},</if>
+			<if test="phone!=null and phone!=''">phone = #{phone,jdbcType=CHAR},</if>
+			<if test="email!=null and email!=''">email = #{email,jdbcType=CHAR},</if>
+			<if test="sex!=null and sex!=''">sex = #{sex,jdbcType=BIT},</if>
+			<if test="height!=null and height!=''">height = #{height,jdbcType=DOUBLE},</if>
+			<if test="weight!=null and weight!=''">weight = #{weight,jdbcType=DOUBLE},</if>
+			<if test="level!=null and level!=''">level = #{level,jdbcType=DOUBLE},</if>
+			<if test="playedyears!=null and playedyears!=''">playedYears = #{playedyears,jdbcType=DOUBLE},</if>
+			<if test="forehand!=null and forehand!=''">forehand = #{forehand,jdbcType=INTEGER},</if>
+			<if test="backhand!=null and backhand!=''">backhand = #{backhand,jdbcType=BIT},</if>
+			<if test="address!=null and address!=''">address = #{address,jdbcType=CHAR},</if>
+			<if test="singletitles!=null and singletitles!=''">singleTitles = #{singletitles,jdbcType=INTEGER},</if>
+			<if test="doubletitles!=null and doubletitles!=''">doubleTitles = #{doubletitles,jdbcType=INTEGER},</if>
+			<if test="createdAt!=null">created_at = #{createdAt,jdbcType=TIMESTAMP},</if>
+			<if test="updatedAt!=null">updated_at = #{updatedAt,jdbcType=TIMESTAMP},</if>
+			<if test="invalid!=null and invalid!=''">invalid = #{invalid,jdbcType=BIT}</if>
+		</set>
+	    where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 添加用户 -->
+	<insert id="add" parameterType="com.awsports.pojo.User">
+		    insert into aw_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+<!-- 	    <if test="id != null"> -->
+<!-- 	      id, -->
+<!-- 	    </if> -->
+	    <if test="name != null and name != '' ">
+	      name,
+	    </if>
+	    <if test="password != null and password != '' ">
+	      password,
+	    </if>
+	    <if test="nickname != null and nickname != '' ">
+	      nickname,
+	    </if>
+	    <if test="portrait != null and portrait != '' ">
+	      portrait,
+	    </if>
+	    <if test="realname != null and realname != '' ">
+	      realName,
+	    </if>
+	    <if test="idcard != null and idcard != '' ">
+	      idcard,
+	    </if>
+	    <if test="phone != null and phone != '' ">
+	      phone,
+	    </if>
+	    <if test="email != null and email != '' ">
+	      email,
+	    </if>
+	    <if test="sex != null and sex != '' ">
+	      sex,
+	    </if>
+	    <if test="height != null and height != '' ">
+	      height,
+	    </if>
+	    <if test="weight != null and weight != '' ">
+	      weight,
+	    </if>
+	    <if test="level != null and level != '' ">
+	      level,
+	    </if>
+	    <if test="playedyears != null and playedyears != '' ">
+	      playedYears,
+	    </if>
+	    <if test="forehand != null and forehand != '' ">
+	      forehand,
+	    </if>
+	    <if test="backhand != null and backhand != '' ">
+	      backhand,
+	    </if>
+	    <if test="address != null and address != '' ">
+	      address,
+	    </if>
+	    <if test="singletitles != null and singletitles != '' ">
+	      singleTitles,
+	    </if>
+	    <if test="doubletitles != null and doubletitles != '' ">
+	      doubleTitles,
+	    </if>
+<!-- 	    <if test="createdAt != null"> -->
+<!-- 	      created_at, -->
+<!-- 	    </if> -->
+<!-- 	    <if test="updatedAt != null"> -->
+<!-- 	      updated_at, -->
+<!-- 	    </if> -->
+<!-- 	    <if test="invalid != null"> -->
+<!-- 	      invalid, -->
+<!-- 	    </if> -->
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides=",">
+<!-- 	    <if test="id != null"> -->
+<!-- 	      #{id,jdbcType=INTEGER}, -->
+<!-- 	    </if> -->
+	    <if test="name != null and name != '' ">
+	      #{name,jdbcType=CHAR},
+	    </if>
+	    <if test="password != null and password != '' ">
+	      #{password,jdbcType=CHAR},
+	    </if>
+	    <if test="nickname != null and nickname != '' ">
+	      #{nickname,jdbcType=CHAR},
+	    </if>
+	    <if test="portrait != null and portrait != '' ">
+	      #{portrait,jdbcType=CHAR},
+	    </if>
+	    <if test="realname != null and realname != '' ">
+	      #{realname,jdbcType=CHAR},
+	    </if>
+	    <if test="idcard != null and idcard != '' ">
+	      #{idcard,jdbcType=CHAR},
+	    </if>
+	    <if test="phone != null and phone != '' ">
+	      #{phone,jdbcType=CHAR},
+	    </if>
+	    <if test="email != null and email != '' ">
+	      #{email,jdbcType=CHAR},
+	    </if>
+	    <if test="sex != null and sex != '' ">
+	      #{sex,jdbcType=BIT},
+	    </if>
+	    <if test="height != null and height != '' ">
+	      #{height,jdbcType=DOUBLE},
+	    </if>
+	    <if test="weight != null and weight != '' ">
+	      #{weight,jdbcType=DOUBLE},
+	    </if>
+	    <if test="level != null and level != '' ">
+	      #{level,jdbcType=DOUBLE},
+	    </if>
+	    <if test="playedyears != null and playedyears != '' ">
+	      #{playedyears,jdbcType=DOUBLE},
+	    </if>
+	    <if test="forehand != null and forehand != '' ">
+	      #{forehand,jdbcType=INTEGER},
+	    </if>
+	    <if test="backhand != null and backhand != '' ">
+	      #{backhand,jdbcType=BIT},
+	    </if>
+	    <if test="address != null and address != '' ">
+	      #{address,jdbcType=CHAR},
+	    </if>
+	    <if test="singletitles != null and singletitles != '' ">
+	      #{singletitles,jdbcType=INTEGER},
+	    </if>
+	    <if test="doubletitles != null and doubletitles != '' ">
+	      #{doubletitles,jdbcType=INTEGER},
+	    </if>
+<!-- 	    <if test="createdAt != null"> -->
+<!-- 	      #{createdAt,jdbcType=TIMESTAMP}, -->
+<!-- 	    </if> -->
+<!-- 	    <if test="updatedAt != null"> -->
+<!-- 	      #{updatedAt,jdbcType=TIMESTAMP}, -->
+<!-- 	    </if> -->
+<!-- 	    <if test="invalid != null"> -->
+<!-- 	      #{invalid,jdbcType=BIT}, -->
+<!-- 	    </if> -->
+	  </trim>
+	</insert>
+	
+	<!-- 根据id删除用户 -->
+	<delete id="deleteById" parameterType="Integer">
+		 delete from aw_user where id = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>

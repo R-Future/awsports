@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.ArenaMapper">
+	<select id="findAll" parameterType="com.awsports.pojo.Arena" resultType="com.awsports.pojo.Arena">
+		select * from aw_arena
+		<where>
+			<if test="name!=null and name!=''">
+				and name like "%${name}%"
+			</if>
+			<if test="address!=null and address!=''">
+				and address like "%${address}%"			
+			</if>
+			<if test="type!=null and type!=''">
+				and type=#{type}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findById" parameterType="integer" resultType="com.awsports.pojo.Arena">
+		select * from aw_arena where id=#{id}
+	</select>
+	
+	<update id="updateById" parameterType="com.awsports.pojo.Arena">
+		update aw_arena
+		<set>
+	      <if test="name != null and name != ''">
+	        name = #{name,jdbcType=CHAR},
+	      </if>
+	      <if test="address != null and address != ''">
+	        address = #{address,jdbcType=CHAR},
+	      </if>
+	      <if test="type != null and type != ''">
+	        type = #{type,jdbcType=INTEGER},
+	      </if>
+	      <if test="indoornumber != null and indoornumber != ''">
+	        indoorNumber = #{indoornumber,jdbcType=INTEGER},
+	      </if>
+	      <if test="outdoornumber != null and outdoornumber != ''">
+	        outdoorNumber = #{outdoornumber,jdbcType=INTEGER},
+	      </if>
+<!-- 	      <if test="createdAt != null"> -->
+<!-- 	        created_at = #{createdAt,jdbcType=TIMESTAMP}, -->
+<!-- 	      </if> -->
+	      <if test="updatedAt != null">
+	        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="invalid != null and invalid != ''">
+	        invalid = #{invalid,jdbcType=BIT},
+	      </if>
+	      <if test="note != null and note != ''">
+	        note = #{note,jdbcType=LONGVARCHAR},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteById" parameterType="Integer">
+		delete from aw_arena where id=#{id} 
+	</delete>
+</mapper>

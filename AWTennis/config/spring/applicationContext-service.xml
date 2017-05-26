@@ -18,5 +18,8 @@
 	
 	<!-- 配置service管理!!!service一定要配置注入到spring中，不然注解找不到 -->
 	<bean id="userService" class="com.awsports.service.impl.UserServiceImpl"/>
+	<bean id="activityService" class="com.awsports.service.impl.ActivityServiceImpl"/>
+	<bean id="arenaService" class="com.awsports.service.impl.ArenaServiceImpl"/>
+<!-- 	<context:component-scan base-package="com.awsports.service.impl"/> -->
 	
 </beans>

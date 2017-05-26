@@ -11,5 +11,7 @@ import com.awsports.pojo.UserQuery;
 public interface UserService {
 	public List<User> findAll(UserQuery userQuery) throws Exception;
 	public User findById(Integer id) throws Exception;
-	public void save(User user) throws Exception;
+	public void update(User user) throws Exception;
+	public void add(User user) throws Exception;
+	public void deleteById(Integer id) throws Exception;
 }

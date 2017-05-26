@@ -2,17 +2,23 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 public class AwActivity {
     private Integer id;
 
     private String name;
 
-    private Date startedat;
+    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private String startedat;
 
-    private Date endedat;
+    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private String endedat;
 
-    private Integer arena;
+    private Integer arenaId;
 
+    @NumberFormat(style=Style.CURRENCY)
     private Double cost;
 
     private Date createdAt;
@@ -37,28 +43,28 @@ public class AwActivity {
         this.name = name == null ? null : name.trim();
     }
 
-    public Date getStartedat() {
+    public String getStartedat() {
         return startedat;
     }
 
-    public void setStartedat(Date startedat) {
+    public void setStartedat(String startedat) {
         this.startedat = startedat;
     }
 
-    public Date getEndedat() {
+    public String getEndedat() {
         return endedat;
     }
 
-    public void setEndedat(Date endedat) {
+    public void setEndedat(String endedat) {
         this.endedat = endedat;
     }
 
-    public Integer getArena() {
-        return arena;
+    public Integer getArenaId() {
+        return arenaId;
     }
 
-    public void setArena(Integer arena) {
-        this.arena = arena;
+    public void setArenaId(Integer arenaId) {
+        this.arenaId = arenaId;
     }
 
     public Double getCost() {

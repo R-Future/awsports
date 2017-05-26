@@ -6,7 +6,7 @@
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="startedAt" jdbcType="TIMESTAMP" property="startedat" />
     <result column="endedAt" jdbcType="TIMESTAMP" property="endedat" />
-    <result column="arena" jdbcType="INTEGER" property="arena" />
+    <result column="arena_id" jdbcType="INTEGER" property="arenaId" />
     <result column="cost" jdbcType="DOUBLE" property="cost" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, startedAt, endedAt, arena, cost, created_at, updated_at, invalid
+    id, name, startedAt, endedAt, arena_id, cost, created_at, updated_at, invalid
   </sql>
   <sql id="Blob_Column_List">
     detail, note
@@ -130,11 +130,11 @@
   </delete>
   <insert id="insert" parameterType="com.awsports.pojo.AwActivityWithBLOBs">
     insert into aw_activity (id, name, startedAt, 
-      endedAt, arena, cost, 
+      endedAt, arena_id, cost, 
       created_at, updated_at, invalid, 
       detail, note)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{startedat,jdbcType=TIMESTAMP}, 
-      #{endedat,jdbcType=TIMESTAMP}, #{arena,jdbcType=INTEGER}, #{cost,jdbcType=DOUBLE}, 
+      #{endedat,jdbcType=TIMESTAMP}, #{arenaId,jdbcType=INTEGER}, #{cost,jdbcType=DOUBLE}, 
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
       #{detail,jdbcType=LONGVARCHAR}, #{note,jdbcType=LONGVARCHAR})
   </insert>
@@ -153,8 +153,8 @@
       <if test="endedat != null">
         endedAt,
       </if>
-      <if test="arena != null">
-        arena,
+      <if test="arenaId != null">
+        arena_id,
       </if>
       <if test="cost != null">
         cost,
@@ -188,8 +188,8 @@
       <if test="endedat != null">
         #{endedat,jdbcType=TIMESTAMP},
       </if>
-      <if test="arena != null">
-        #{arena,jdbcType=INTEGER},
+      <if test="arenaId != null">
+        #{arenaId,jdbcType=INTEGER},
       </if>
       <if test="cost != null">
         #{cost,jdbcType=DOUBLE},
@@ -232,8 +232,8 @@
       <if test="record.endedat != null">
         endedAt = #{record.endedat,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.arena != null">
-        arena = #{record.arena,jdbcType=INTEGER},
+      <if test="record.arenaId != null">
+        arena_id = #{record.arenaId,jdbcType=INTEGER},
       </if>
       <if test="record.cost != null">
         cost = #{record.cost,jdbcType=DOUBLE},
@@ -264,7 +264,7 @@
       name = #{record.name,jdbcType=CHAR},
       startedAt = #{record.startedat,jdbcType=TIMESTAMP},
       endedAt = #{record.endedat,jdbcType=TIMESTAMP},
-      arena = #{record.arena,jdbcType=INTEGER},
+      arena_id = #{record.arenaId,jdbcType=INTEGER},
       cost = #{record.cost,jdbcType=DOUBLE},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
@@ -281,7 +281,7 @@
       name = #{record.name,jdbcType=CHAR},
       startedAt = #{record.startedat,jdbcType=TIMESTAMP},
       endedAt = #{record.endedat,jdbcType=TIMESTAMP},
-      arena = #{record.arena,jdbcType=INTEGER},
+      arena_id = #{record.arenaId,jdbcType=INTEGER},
       cost = #{record.cost,jdbcType=DOUBLE},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
@@ -302,8 +302,8 @@
       <if test="endedat != null">
         endedAt = #{endedat,jdbcType=TIMESTAMP},
       </if>
-      <if test="arena != null">
-        arena = #{arena,jdbcType=INTEGER},
+      <if test="arenaId != null">
+        arena_id = #{arenaId,jdbcType=INTEGER},
       </if>
       <if test="cost != null">
         cost = #{cost,jdbcType=DOUBLE},
@@ -331,7 +331,7 @@
     set name = #{name,jdbcType=CHAR},
       startedAt = #{startedat,jdbcType=TIMESTAMP},
       endedAt = #{endedat,jdbcType=TIMESTAMP},
-      arena = #{arena,jdbcType=INTEGER},
+      arena_id = #{arenaId,jdbcType=INTEGER},
       cost = #{cost,jdbcType=DOUBLE},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP},
@@ -345,7 +345,7 @@
     set name = #{name,jdbcType=CHAR},
       startedAt = #{startedat,jdbcType=TIMESTAMP},
       endedAt = #{endedat,jdbcType=TIMESTAMP},
-      arena = #{arena,jdbcType=INTEGER},
+      arena_id = #{arenaId,jdbcType=INTEGER},
       cost = #{cost,jdbcType=DOUBLE},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP},

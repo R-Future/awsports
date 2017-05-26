@@ -7,9 +7,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>爱网体育</title>
 <!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="../resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="../resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+<link href="/WEB-INF/resources/css/bootstrap.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="/WEB-INF/resources/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/WEB-INF/resources/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -28,7 +28,7 @@
 		</div>
 		<button type="submit" class="btn btn-default">查询</button>
 	</form>
-	
+	<a href="<%=request.getContextPath()%>/user/update">添加用户</a>
  	<table class="table table-striped table-responsive">
 		<tr>
 		<td>用户名</td>
@@ -73,7 +73,10 @@
 			</td>
 			<td>${ user.singletitles }</td>
 			<td>${ user.doubletitles }</td>
-			<td><a href="<%=request.getContextPath()%>/user/update?id=${user.id}">修改</a></td>
+			<td>
+				<a href="<%=request.getContextPath()%>/user/update?id=${user.id}">修改</a>
+				<a href="<%=request.getContextPath()%>/user/delete?id=${user.id}">删除</a>
+			</td>
 			</tr>
 		</c:forEach>
 	</table>

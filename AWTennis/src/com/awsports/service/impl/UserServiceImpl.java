@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.awsports.mapper.UserMapperCustom;
+import com.awsports.mapper.UserMapper;
 import com.awsports.pojo.User;
 import com.awsports.pojo.UserQuery;
 import com.awsports.service.UserService;
@@ -12,7 +12,7 @@ import com.awsports.service.UserService;
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	private UserMapperCustom userMapper;
+	private UserMapper userMapper;
 
 	@Override
 	public List<User> findAll(UserQuery userQuery) throws Exception {
@@ -21,15 +21,27 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void save(User user) throws Exception {
+	public void update(User user) throws Exception {
 		// TODO Auto-generated method stub
-		userMapper.save(user);
+		userMapper.update(user);
 	}
 
 	@Override
 	public User findById(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return userMapper.findById(id);
+	}
+
+	@Override
+	public void add(User user) throws Exception {
+		// TODO Auto-generated method stub
+		userMapper.add(user);
+	}
+
+	@Override
+	public void deleteById(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		userMapper.deleteById(id);
 	}
 	
 	

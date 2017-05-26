@@ -12,4 +12,5 @@ public interface ArenaService {
 	public Arena findById(Integer id) throws Exception;
 	public void updateById(Arena arena) throws Exception;
 	public void deleteById(Integer id) throws Exception;
+	public void insertOne(Arena arena) throws Exception;
 }

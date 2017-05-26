@@ -13,5 +13,5 @@ public interface ActivityService {
 	public Activity findById(Integer id) throws Exception;
 	public void updateById(Activity activity) throws Exception;
 	public void deleteById(Integer id) throws Exception;
-	public void add(Activity activity) throws Exception;
+	public void insertOne(Activity activity) throws Exception;
 }

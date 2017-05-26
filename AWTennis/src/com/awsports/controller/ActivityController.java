@@ -71,7 +71,7 @@ public class ActivityController {
 				activity.setUpdatedAt(updatedAt);
 				activityService.updateById(activity);
 			}else{//新增
-				activityService.add(activity);
+				activityService.insertOne(activity);
 			}
 			return "redirect:list";
 		}

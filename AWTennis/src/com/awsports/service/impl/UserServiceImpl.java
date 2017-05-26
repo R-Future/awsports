@@ -21,9 +21,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void update(User user) throws Exception {
+	public void updateById(User user) throws Exception {
 		// TODO Auto-generated method stub
-		userMapper.update(user);
+		userMapper.updateById(user);
 	}
 
 	@Override
@@ -33,9 +33,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void add(User user) throws Exception {
+	public void insertOne(User user) throws Exception {
 		// TODO Auto-generated method stub
-		userMapper.add(user);
+		userMapper.insertOne(user);
 	}
 
 	@Override

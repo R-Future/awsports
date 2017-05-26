@@ -34,14 +34,14 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value="/show",method={RequestMethod.GET,RequestMethod.POST})
-	public String show(Model model,User user) throws Exception{
+	@RequestMapping(value="/list",method={RequestMethod.GET,RequestMethod.POST})
+	public String list(Model model,User user) throws Exception{
 		UserQuery userQuery=new UserQuery();
 		if(user!=null)//传入用户查询条件
 			userQuery.setUser(user);
 		List<User> users=userService.findAll(userQuery);
 		model.addAttribute("users", users);
-		return "user/show";
+		return "user/list";
 	}
 	
 	@RequestMapping(value="/update",method={RequestMethod.GET,RequestMethod.POST})
@@ -66,13 +66,13 @@ public class UserController {
 			Date date=new Date();
 			user.setUpdatedAt(date);
 			user.setId(id);
-			userService.update(user);
+			userService.updateById(user);
 		}else{//添加用户
-			userService.add(user);
+			userService.insertOne(user);
 		}
 //		return "user/save";
 		//用户信息修改或添加成功后跳转到用户列表页面
-		return "redirect:show";
+		return "redirect:list";
 	}
 
 	@RequestMapping("/delete")
@@ -82,6 +82,6 @@ public class UserController {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "redirect:show";
+		return "redirect:list";
 	}
 }

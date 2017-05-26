@@ -39,9 +39,9 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public void add(Activity activity) throws Exception {
+	public void insertOne(Activity activity) throws Exception {
 		// TODO Auto-generated method stub
-		activityMapper.add(activity);
+		activityMapper.insertOne(activity);
 	}
 
 }

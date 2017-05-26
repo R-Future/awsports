@@ -87,12 +87,12 @@
 	 	delete from aw_activity where id=#{id} 
 	</delete>
 	
-	<insert id="add" parameterType="com.awsports.pojo.Activity">
+	<insert id="insertOne" parameterType="com.awsports.pojo.Activity">
 		insert into aw_activity
 	    <trim prefix="(" suffix=")" suffixOverrides=",">
-	      <if test="id != null and id != ''">
-	        id,
-	      </if>
+<!-- 	      <if test="id != null and id != ''"> -->
+<!-- 	        id, -->
+<!-- 	      </if> -->
 	      <if test="name != null and name != ''">
 	        name,
 	      </if>
@@ -125,9 +125,9 @@
 	      </if>
 	    </trim>
 	    <trim prefix="values (" suffix=")" suffixOverrides=",">
-	      <if test="id != null and id != ''">
-	        #{id,jdbcType=INTEGER},
-	      </if>
+<!-- 	      <if test="id != null and id != ''"> -->
+<!-- 	        #{id,jdbcType=INTEGER}, -->
+<!-- 	      </if> -->
 	      <if test="name != null and name != ''">
 	        #{name,jdbcType=CHAR},
 	      </if>

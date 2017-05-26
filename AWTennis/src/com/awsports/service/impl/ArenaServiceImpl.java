@@ -37,4 +37,10 @@ public class ArenaServiceImpl implements ArenaService {
 		arenaMapper.deleteById(id);
 	}
 
+	@Override
+	public void insertOne(Arena arena) throws Exception {
+		// TODO Auto-generated method stub
+		arenaMapper.insertOne(arena);
+	}
+
 }

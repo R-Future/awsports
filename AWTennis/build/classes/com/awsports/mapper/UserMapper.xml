@@ -30,7 +30,7 @@
 	</select>
 	
 	<!-- 更新用户信息 -->
-	<update id="update" parameterType="com.awsports.pojo.User">
+	<update id="updateById" parameterType="com.awsports.pojo.User">
 		update aw_user
 		<set>
 			<if test="name!=null and name!=''">name = #{name,jdbcType=CHAR},</if>
@@ -59,7 +59,7 @@
 	</update>
 	
 	<!-- 添加用户 -->
-	<insert id="add" parameterType="com.awsports.pojo.User">
+	<insert id="insertOne" parameterType="com.awsports.pojo.User">
 		    insert into aw_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
 <!-- 	    <if test="id != null"> -->

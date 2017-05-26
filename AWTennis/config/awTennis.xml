@@ -78,4 +78,7 @@
 		<!-- 资源文件缓存时间(s) -->
 		<property name="cacheSeconds" value="120"/>
 	</bean>
+	
+	<!-- 配置自定义异常处理器 -->
+	<bean id="handlerExceptionResolver" class="com.awsports.controller.exceptionResolver.CustomExceptionResolver"/>
 </beans>

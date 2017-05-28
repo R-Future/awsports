@@ -2,15 +2,22 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
-import org.hibernate.validator.constraints.*;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 public class AwUser {
     private Integer id;
 
-    @NotEmpty(message="{user.name.null}")
+    /**
+     * @NotEmpty 用在集合类上面
+     * @NotBlank 用在String上面
+     * @NotNull  用在基本类型上
+     */
+    @NotBlank(message="{user.name.null}")
     private String name;
-    
-    @NotEmpty(message="{user.password.null}")
+
+    @NotBlank(message="{user.password.null}")
     private String password;
 
     private String nickname;
@@ -19,13 +26,13 @@ public class AwUser {
 
     private String realname;
 
-//    @Length(min=18,max=18,message="{user.idcard.length.error}")
     private String idcard;
 
     private String phone;
 
     private String email;
 
+    @NotNull(message="{user.sex.null}")
     private Boolean sex;
 
     private Double height;
@@ -36,8 +43,10 @@ public class AwUser {
 
     private Double playedyears;
 
+    @NotNull(message="{user.forehand.null}")
     private Integer forehand;
 
+    @NotNull(message="{user.backhand.null}")
     private Boolean backhand;
 
     private String address;
@@ -46,9 +55,9 @@ public class AwUser {
 
     private Integer doubletitles;
 
-    private Date createdAt;
+    private Date createdat;
 
-    private Date updatedAt;
+    private Date updatedat;
 
     private Boolean invalid;
 
@@ -204,20 +213,20 @@ public class AwUser {
         this.doubletitles = doubletitles;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedat() {
+        return createdat;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedat(Date createdat) {
+        this.createdat = createdat;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdatedat() {
+        return updatedat;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedat(Date updatedat) {
+        this.updatedat = updatedat;
     }
 
     public Boolean getInvalid() {

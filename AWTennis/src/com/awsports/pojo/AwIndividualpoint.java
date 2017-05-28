@@ -7,7 +7,7 @@ public class AwIndividualpoint {
 
     private Integer userid;
 
-    private byte[] entry;
+    private Integer entry;
 
     private Integer year;
 
@@ -21,9 +21,9 @@ public class AwIndividualpoint {
 
     private Integer points;
 
-    private Date createdAt;
+    private Date createdat;
 
-    private Date updatedAt;
+    private Date updatedat;
 
     private Boolean invalid;
 
@@ -45,11 +45,11 @@ public class AwIndividualpoint {
         this.userid = userid;
     }
 
-    public byte[] getEntry() {
+    public Integer getEntry() {
         return entry;
     }
 
-    public void setEntry(byte[] entry) {
+    public void setEntry(Integer entry) {
         this.entry = entry;
     }
 
@@ -101,20 +101,20 @@ public class AwIndividualpoint {
         this.points = points;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedat() {
+        return createdat;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedat(Date createdat) {
+        this.createdat = createdat;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdatedat() {
+        return updatedat;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedat(Date updatedat) {
+        this.updatedat = updatedat;
     }
 
     public Boolean getInvalid() {

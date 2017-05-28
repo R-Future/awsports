@@ -3,7 +3,7 @@
 <mapper namespace="com.awsports.mapper.AwIndividualrankMapper">
   <resultMap id="BaseResultMap" type="com.awsports.pojo.AwIndividualrank">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="userID" jdbcType="INTEGER" property="userid" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
     <result column="entry" jdbcType="INTEGER" property="entry" />
     <result column="totalPoint" jdbcType="DOUBLE" property="totalpoint" />
     <result column="currentRank" jdbcType="INTEGER" property="currentrank" />
@@ -13,8 +13,8 @@
     <result column="totalMarginBureau" jdbcType="INTEGER" property="totalmarginbureau" />
     <result column="year" jdbcType="INTEGER" property="year" />
     <result column="week" jdbcType="INTEGER" property="week" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
     <result column="invalid" jdbcType="BIT" property="invalid" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwIndividualrank">
@@ -79,8 +79,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, userID, entry, totalPoint, currentRank, rankingChange, wins, totalMatchs, totalMarginBureau, 
-    year, week, created_at, updated_at, invalid
+    id, userId, entry, totalPoint, currentRank, rankingChange, wins, totalMatchs, totalMarginBureau, 
+    year, week, createdAt, updatedAt, invalid
   </sql>
   <sql id="Blob_Column_List">
     note
@@ -134,17 +134,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.awsports.pojo.AwIndividualrank">
-    insert into aw_individualrank (id, userID, entry, 
+    insert into aw_individualrank (id, userId, entry, 
       totalPoint, currentRank, rankingChange, 
       wins, totalMatchs, totalMarginBureau, 
-      year, week, created_at, 
-      updated_at, invalid, note
+      year, week, createdAt, 
+      updatedAt, invalid, note
       )
     values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{entry,jdbcType=INTEGER}, 
       #{totalpoint,jdbcType=DOUBLE}, #{currentrank,jdbcType=INTEGER}, #{rankingchange,jdbcType=INTEGER}, 
       #{wins,jdbcType=INTEGER}, #{totalmatchs,jdbcType=INTEGER}, #{totalmarginbureau,jdbcType=INTEGER}, 
-      #{year,jdbcType=INTEGER}, #{week,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, 
-      #{updatedAt,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, #{note,jdbcType=LONGVARCHAR}
+      #{year,jdbcType=INTEGER}, #{week,jdbcType=INTEGER}, #{createdat,jdbcType=TIMESTAMP}, 
+      #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, #{note,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwIndividualrank">
@@ -154,7 +154,7 @@
         id,
       </if>
       <if test="userid != null">
-        userID,
+        userId,
       </if>
       <if test="entry != null">
         entry,
@@ -183,11 +183,11 @@
       <if test="week != null">
         week,
       </if>
-      <if test="createdAt != null">
-        created_at,
+      <if test="createdat != null">
+        createdAt,
       </if>
-      <if test="updatedAt != null">
-        updated_at,
+      <if test="updatedat != null">
+        updatedAt,
       </if>
       <if test="invalid != null">
         invalid,
@@ -230,11 +230,11 @@
       <if test="week != null">
         #{week,jdbcType=INTEGER},
       </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedAt != null">
-        #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="invalid != null">
         #{invalid,jdbcType=BIT},
@@ -257,7 +257,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.userid != null">
-        userID = #{record.userid,jdbcType=INTEGER},
+        userId = #{record.userid,jdbcType=INTEGER},
       </if>
       <if test="record.entry != null">
         entry = #{record.entry,jdbcType=INTEGER},
@@ -286,11 +286,11 @@
       <if test="record.week != null">
         week = #{record.week,jdbcType=INTEGER},
       </if>
-      <if test="record.createdAt != null">
-        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      <if test="record.createdat != null">
+        createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updatedAt != null">
-        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      <if test="record.updatedat != null">
+        updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="record.invalid != null">
         invalid = #{record.invalid,jdbcType=BIT},
@@ -306,7 +306,7 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update aw_individualrank
     set id = #{record.id,jdbcType=INTEGER},
-      userID = #{record.userid,jdbcType=INTEGER},
+      userId = #{record.userid,jdbcType=INTEGER},
       entry = #{record.entry,jdbcType=INTEGER},
       totalPoint = #{record.totalpoint,jdbcType=DOUBLE},
       currentRank = #{record.currentrank,jdbcType=INTEGER},
@@ -316,8 +316,8 @@
       totalMarginBureau = #{record.totalmarginbureau,jdbcType=INTEGER},
       year = #{record.year,jdbcType=INTEGER},
       week = #{record.week,jdbcType=INTEGER},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT},
       note = #{record.note,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
@@ -327,7 +327,7 @@
   <update id="updateByExample" parameterType="map">
     update aw_individualrank
     set id = #{record.id,jdbcType=INTEGER},
-      userID = #{record.userid,jdbcType=INTEGER},
+      userId = #{record.userid,jdbcType=INTEGER},
       entry = #{record.entry,jdbcType=INTEGER},
       totalPoint = #{record.totalpoint,jdbcType=DOUBLE},
       currentRank = #{record.currentrank,jdbcType=INTEGER},
@@ -337,8 +337,8 @@
       totalMarginBureau = #{record.totalmarginbureau,jdbcType=INTEGER},
       year = #{record.year,jdbcType=INTEGER},
       week = #{record.week,jdbcType=INTEGER},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -348,7 +348,7 @@
     update aw_individualrank
     <set>
       <if test="userid != null">
-        userID = #{userid,jdbcType=INTEGER},
+        userId = #{userid,jdbcType=INTEGER},
       </if>
       <if test="entry != null">
         entry = #{entry,jdbcType=INTEGER},
@@ -377,11 +377,11 @@
       <if test="week != null">
         week = #{week,jdbcType=INTEGER},
       </if>
-      <if test="createdAt != null">
-        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedAt != null">
-        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="invalid != null">
         invalid = #{invalid,jdbcType=BIT},
@@ -394,7 +394,7 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.awsports.pojo.AwIndividualrank">
     update aw_individualrank
-    set userID = #{userid,jdbcType=INTEGER},
+    set userId = #{userid,jdbcType=INTEGER},
       entry = #{entry,jdbcType=INTEGER},
       totalPoint = #{totalpoint,jdbcType=DOUBLE},
       currentRank = #{currentrank,jdbcType=INTEGER},
@@ -404,15 +404,15 @@
       totalMarginBureau = #{totalmarginbureau,jdbcType=INTEGER},
       year = #{year,jdbcType=INTEGER},
       week = #{week,jdbcType=INTEGER},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT},
       note = #{note,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.awsports.pojo.AwIndividualrank">
     update aw_individualrank
-    set userID = #{userid,jdbcType=INTEGER},
+    set userId = #{userid,jdbcType=INTEGER},
       entry = #{entry,jdbcType=INTEGER},
       totalPoint = #{totalpoint,jdbcType=DOUBLE},
       currentRank = #{currentrank,jdbcType=INTEGER},
@@ -422,8 +422,8 @@
       totalMarginBureau = #{totalmarginbureau,jdbcType=INTEGER},
       year = #{year,jdbcType=INTEGER},
       week = #{week,jdbcType=INTEGER},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>

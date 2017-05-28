@@ -1,6 +1,5 @@
 package com.awsports.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,15 +44,13 @@ public class ArenaController {
 	}
 	
 	@RequestMapping("/save")
-	public String save(@Validated Arena arena, BindingResult br, Integer id, Model model) throws Exception{
+	public String save(@Validated Arena arena, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
 			return "arena/update";
 		}else{
 			try{
-				if(id!=null){//更新数据
-					Date updatedAt =new Date();
-					arena.setUpdatedAt(updatedAt);
+				if(arena.getId()!=null){//更新数据
 					arenaService.updateById(arena);
 				}else{//添加数据
 					arenaService.insertOne(arena);
@@ -63,7 +60,7 @@ public class ArenaController {
 			}catch(CustomException e){
 				//添加一个自定义的异常类，将错误信息返回到错误页面
 				e=new CustomException("数据保存失败");
-				model.addAttribute("error",e);
+				model.addAttribute("errorMessage",e.getMessage());
 				return "error";
 			}
 		}

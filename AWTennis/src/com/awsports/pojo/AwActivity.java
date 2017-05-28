@@ -10,20 +10,18 @@ public class AwActivity {
 
     private String name;
 
-    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private String startedat;
 
-    //@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private String endedat;
 
-    private Integer arenaId;
+    private Integer arenaid;
 
     @NumberFormat(style=Style.CURRENCY)
     private Double cost;
 
-    private Date createdAt;
+    private Date createdat;
 
-    private Date updatedAt;
+    private Date updatedat;
 
     private Boolean invalid;
 
@@ -59,12 +57,12 @@ public class AwActivity {
         this.endedat = endedat;
     }
 
-    public Integer getArenaId() {
-        return arenaId;
+    public Integer getArenaid() {
+        return arenaid;
     }
 
-    public void setArenaId(Integer arenaId) {
-        this.arenaId = arenaId;
+    public void setArenaid(Integer arenaid) {
+        this.arenaid = arenaid;
     }
 
     public Double getCost() {
@@ -75,20 +73,20 @@ public class AwActivity {
         this.cost = cost;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedat() {
+        return createdat;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedat(Date createdat) {
+        this.createdat = createdat;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdatedat() {
+        return updatedat;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedat(Date updatedat) {
+        this.updatedat = updatedat;
     }
 
     public Boolean getInvalid() {

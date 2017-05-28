@@ -14,8 +14,8 @@ public class TypeMap {
 	
 	private static Map<Integer,String> arenaTypes;
 	private static Map<Integer,String> forehandTypes;
-	private static Map<Integer,String> backhandTypes;
-	private static Map<Integer,String> sexTypes;
+	private static Map<Boolean,String> backhandTypes;
+	private static Map<Boolean,String> sexTypes;
 	private static Map<Integer,String> entryTypes;
 	
 	/**
@@ -57,11 +57,11 @@ public class TypeMap {
 	 * @description: 反手击打方式与存入数据库中数字的对应关系
 	 *
 	 */
-	public static Map<Integer,String> backhandType() throws Exception{
-		backhandTypes=new HashMap<Integer,String>();
+	public static Map<Boolean,String> backhandType() throws Exception{
+		backhandTypes=new HashMap<Boolean,String>();
 		//Integer会为空对象默认复制0，这样会导致数据查询时，若传入0，则被判定为null
-		backhandTypes.put(0, "双反");
-		backhandTypes.put(1, "单反");
+		backhandTypes.put(false, "双反");
+		backhandTypes.put(true, "单反");
 		return backhandTypes;
 	}
 	
@@ -72,11 +72,11 @@ public class TypeMap {
 	 * @description: 性别与数据库中数字的对应关系
 	 *
 	 */
-	public static Map<Integer,String> sexType() throws Exception{
-		sexTypes=new HashMap<Integer,String>();
+	public static Map<Boolean,String> sexType() throws Exception{
+		sexTypes=new HashMap<Boolean,String>();
 		//Integer会为空对象默认复制0，这样会导致数据查询时，若传入0，则被判定为null
-		sexTypes.put(0, "男");
-		sexTypes.put(1, "女");
+		sexTypes.put(false, "男");
+		sexTypes.put(true, "女");
 		return sexTypes;
 	}
 	
@@ -100,5 +100,6 @@ public class TypeMap {
 		entryTypes.put(8, "混双");
 		return entryTypes;
 	}
+	
 	
 }

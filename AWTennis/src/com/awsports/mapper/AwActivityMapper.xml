@@ -6,10 +6,10 @@
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="startedAt" jdbcType="TIMESTAMP" property="startedat" />
     <result column="endedAt" jdbcType="TIMESTAMP" property="endedat" />
-    <result column="arena_id" jdbcType="INTEGER" property="arenaId" />
+    <result column="arenaId" jdbcType="INTEGER" property="arenaid" />
     <result column="cost" jdbcType="DOUBLE" property="cost" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
     <result column="invalid" jdbcType="BIT" property="invalid" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwActivityWithBLOBs">
@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, startedAt, endedAt, arena_id, cost, created_at, updated_at, invalid
+    id, name, startedAt, endedAt, arenaId, cost, createdAt, updatedAt, invalid
   </sql>
   <sql id="Blob_Column_List">
     detail, note
@@ -130,12 +130,12 @@
   </delete>
   <insert id="insert" parameterType="com.awsports.pojo.AwActivityWithBLOBs">
     insert into aw_activity (id, name, startedAt, 
-      endedAt, arena_id, cost, 
-      created_at, updated_at, invalid, 
+      endedAt, arenaId, cost, 
+      createdAt, updatedAt, invalid, 
       detail, note)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{startedat,jdbcType=TIMESTAMP}, 
-      #{endedat,jdbcType=TIMESTAMP}, #{arenaId,jdbcType=INTEGER}, #{cost,jdbcType=DOUBLE}, 
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
+      #{endedat,jdbcType=TIMESTAMP}, #{arenaid,jdbcType=INTEGER}, #{cost,jdbcType=DOUBLE}, 
+      #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
       #{detail,jdbcType=LONGVARCHAR}, #{note,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwActivityWithBLOBs">
@@ -153,17 +153,17 @@
       <if test="endedat != null">
         endedAt,
       </if>
-      <if test="arenaId != null">
-        arena_id,
+      <if test="arenaid != null">
+        arenaId,
       </if>
       <if test="cost != null">
         cost,
       </if>
-      <if test="createdAt != null">
-        created_at,
+      <if test="createdat != null">
+        createdAt,
       </if>
-      <if test="updatedAt != null">
-        updated_at,
+      <if test="updatedat != null">
+        updatedAt,
       </if>
       <if test="invalid != null">
         invalid,
@@ -188,17 +188,17 @@
       <if test="endedat != null">
         #{endedat,jdbcType=TIMESTAMP},
       </if>
-      <if test="arenaId != null">
-        #{arenaId,jdbcType=INTEGER},
+      <if test="arenaid != null">
+        #{arenaid,jdbcType=INTEGER},
       </if>
       <if test="cost != null">
         #{cost,jdbcType=DOUBLE},
       </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedAt != null">
-        #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="invalid != null">
         #{invalid,jdbcType=BIT},
@@ -232,17 +232,17 @@
       <if test="record.endedat != null">
         endedAt = #{record.endedat,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.arenaId != null">
-        arena_id = #{record.arenaId,jdbcType=INTEGER},
+      <if test="record.arenaid != null">
+        arenaId = #{record.arenaid,jdbcType=INTEGER},
       </if>
       <if test="record.cost != null">
         cost = #{record.cost,jdbcType=DOUBLE},
       </if>
-      <if test="record.createdAt != null">
-        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      <if test="record.createdat != null">
+        createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updatedAt != null">
-        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      <if test="record.updatedat != null">
+        updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="record.invalid != null">
         invalid = #{record.invalid,jdbcType=BIT},
@@ -264,10 +264,10 @@
       name = #{record.name,jdbcType=CHAR},
       startedAt = #{record.startedat,jdbcType=TIMESTAMP},
       endedAt = #{record.endedat,jdbcType=TIMESTAMP},
-      arena_id = #{record.arenaId,jdbcType=INTEGER},
+      arenaId = #{record.arenaid,jdbcType=INTEGER},
       cost = #{record.cost,jdbcType=DOUBLE},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT},
       detail = #{record.detail,jdbcType=LONGVARCHAR},
       note = #{record.note,jdbcType=LONGVARCHAR}
@@ -281,10 +281,10 @@
       name = #{record.name,jdbcType=CHAR},
       startedAt = #{record.startedat,jdbcType=TIMESTAMP},
       endedAt = #{record.endedat,jdbcType=TIMESTAMP},
-      arena_id = #{record.arenaId,jdbcType=INTEGER},
+      arenaId = #{record.arenaid,jdbcType=INTEGER},
       cost = #{record.cost,jdbcType=DOUBLE},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -302,17 +302,17 @@
       <if test="endedat != null">
         endedAt = #{endedat,jdbcType=TIMESTAMP},
       </if>
-      <if test="arenaId != null">
-        arena_id = #{arenaId,jdbcType=INTEGER},
+      <if test="arenaid != null">
+        arenaId = #{arenaid,jdbcType=INTEGER},
       </if>
       <if test="cost != null">
         cost = #{cost,jdbcType=DOUBLE},
       </if>
-      <if test="createdAt != null">
-        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedAt != null">
-        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="invalid != null">
         invalid = #{invalid,jdbcType=BIT},
@@ -331,10 +331,10 @@
     set name = #{name,jdbcType=CHAR},
       startedAt = #{startedat,jdbcType=TIMESTAMP},
       endedAt = #{endedat,jdbcType=TIMESTAMP},
-      arena_id = #{arenaId,jdbcType=INTEGER},
+      arenaId = #{arenaid,jdbcType=INTEGER},
       cost = #{cost,jdbcType=DOUBLE},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT},
       detail = #{detail,jdbcType=LONGVARCHAR},
       note = #{note,jdbcType=LONGVARCHAR}
@@ -345,10 +345,10 @@
     set name = #{name,jdbcType=CHAR},
       startedAt = #{startedat,jdbcType=TIMESTAMP},
       endedAt = #{endedat,jdbcType=TIMESTAMP},
-      arena_id = #{arenaId,jdbcType=INTEGER},
+      arenaId = #{arenaid,jdbcType=INTEGER},
       cost = #{cost,jdbcType=DOUBLE},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>

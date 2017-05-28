@@ -2,26 +2,31 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 public class AwTournament {
     private Integer id;
 
     private String name;
 
-    private Date startedat;
+    private String startedat;
 
-    private Date endedat;
+    private String endedat;
 
-    private Integer arena;
+    private Integer arenaid;
 
     private String level;
 
-    private Double praize;
+    @NumberFormat(style=Style.CURRENCY)
+    private Integer praize;
 
+    @NumberFormat(style=Style.CURRENCY)
     private Double cost;
 
-    private Date createdAt;
+    private Date createdat;
 
-    private Date updatedAt;
+    private Date updatedat;
 
     private Boolean invalid;
 
@@ -43,28 +48,28 @@ public class AwTournament {
         this.name = name == null ? null : name.trim();
     }
 
-    public Date getStartedat() {
+    public String getStartedat() {
         return startedat;
     }
 
-    public void setStartedat(Date startedat) {
+    public void setStartedat(String startedat) {
         this.startedat = startedat;
     }
 
-    public Date getEndedat() {
+    public String getEndedat() {
         return endedat;
     }
 
-    public void setEndedat(Date endedat) {
+    public void setEndedat(String endedat) {
         this.endedat = endedat;
     }
 
-    public Integer getArena() {
-        return arena;
+    public Integer getArenaid() {
+        return arenaid;
     }
 
-    public void setArena(Integer arena) {
-        this.arena = arena;
+    public void setArenaid(Integer arenaid) {
+        this.arenaid = arenaid;
     }
 
     public String getLevel() {
@@ -75,11 +80,11 @@ public class AwTournament {
         this.level = level == null ? null : level.trim();
     }
 
-    public Double getPraize() {
+    public Integer getPraize() {
         return praize;
     }
 
-    public void setPraize(Double praize) {
+    public void setPraize(Integer praize) {
         this.praize = praize;
     }
 
@@ -91,20 +96,20 @@ public class AwTournament {
         this.cost = cost;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedat() {
+        return createdat;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedat(Date createdat) {
+        this.createdat = createdat;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdatedat() {
+        return updatedat;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedat(Date updatedat) {
+        this.updatedat = updatedat;
     }
 
     public Boolean getInvalid() {

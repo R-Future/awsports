@@ -1,6 +1,5 @@
 package com.awsports.controller;
 
-import java.util.Date;
 import java.util.List;
 
 //import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.awsports.pojo.User;
 import com.awsports.pojo.UserQuery;
 import com.awsports.service.UserService;
+import com.awsports.util.CustomException;
+import com.awsports.util.TypeMap;
 
 /**
  * 
@@ -41,6 +42,9 @@ public class UserController {
 			userQuery.setUser(user);
 		List<User> users=userService.findAll(userQuery);
 		model.addAttribute("users", users);
+		model.addAttribute("sexTypes", TypeMap.sexType());
+		model.addAttribute("forehandTypes",TypeMap.forehandType());
+		model.addAttribute("backhandTypes", TypeMap.backhandType());
 		return "user/list";
 	}
 	
@@ -53,26 +57,33 @@ public class UserController {
 			user=new User();
 		}
 		model.addAttribute("user", user);
+		model.addAttribute("sexTypes", TypeMap.sexType());
+		model.addAttribute("forehandTypes", TypeMap.forehandType());
+		model.addAttribute("backhandTypes", TypeMap.backhandType());
 		return "user/update";
 	}
 	
 	@RequestMapping(value="/save")
-	public String save(@Validated User user, BindingResult validationResult, Integer id, Model model) throws Exception{
+	public String save(@Validated User user, BindingResult validationResult, Model model) throws Exception{
 		if(validationResult.hasErrors()){
 			model.addAttribute("errors", validationResult);
 			return "user/update";
 		}
-		if(id!=null){//更新用户
-			Date date=new Date();
-			user.setUpdatedAt(date);
-			user.setId(id);
-			userService.updateById(user);
-		}else{//添加用户
-			userService.insertOne(user);
+		try{
+			if(user.getId()!=null){//更新用户
+				userService.updateById(user);
+			}else{//添加用户
+				userService.insertOne(user);
+			}
+//			return "user/save";
+			//用户信息修改或添加成功后跳转到用户列表页面
+			return "redirect:list";
+		}catch(CustomException e){
+			e.setMessage("数据存储失败");
+			model.addAttribute("errorMessage", e.getMessage());
+			return "error";
 		}
-//		return "user/save";
-		//用户信息修改或添加成功后跳转到用户列表页面
-		return "redirect:list";
+		
 	}
 
 	@RequestMapping("/delete")

@@ -8,8 +8,8 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="indoorNumber" jdbcType="INTEGER" property="indoornumber" />
     <result column="outdoorNumber" jdbcType="INTEGER" property="outdoornumber" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
     <result column="invalid" jdbcType="BIT" property="invalid" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwArena">
@@ -74,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, address, type, indoorNumber, outdoorNumber, created_at, updated_at, invalid
+    id, name, address, type, indoorNumber, outdoorNumber, createdAt, updatedAt, invalid
   </sql>
   <sql id="Blob_Column_List">
     note
@@ -130,11 +130,11 @@
   <insert id="insert" parameterType="com.awsports.pojo.AwArena">
     insert into aw_arena (id, name, address, 
       type, indoorNumber, outdoorNumber, 
-      created_at, updated_at, invalid, 
+      createdAt, updatedAt, invalid, 
       note)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{address,jdbcType=CHAR}, 
       #{type,jdbcType=INTEGER}, #{indoornumber,jdbcType=INTEGER}, #{outdoornumber,jdbcType=INTEGER}, 
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
+      #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
       #{note,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwArena">
@@ -158,11 +158,11 @@
       <if test="outdoornumber != null">
         outdoorNumber,
       </if>
-      <if test="createdAt != null">
-        created_at,
+      <if test="createdat != null">
+        createdAt,
       </if>
-      <if test="updatedAt != null">
-        updated_at,
+      <if test="updatedat != null">
+        updatedAt,
       </if>
       <if test="invalid != null">
         invalid,
@@ -190,11 +190,11 @@
       <if test="outdoornumber != null">
         #{outdoornumber,jdbcType=INTEGER},
       </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedAt != null">
-        #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="invalid != null">
         #{invalid,jdbcType=BIT},
@@ -231,11 +231,11 @@
       <if test="record.outdoornumber != null">
         outdoorNumber = #{record.outdoornumber,jdbcType=INTEGER},
       </if>
-      <if test="record.createdAt != null">
-        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      <if test="record.createdat != null">
+        createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updatedAt != null">
-        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      <if test="record.updatedat != null">
+        updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="record.invalid != null">
         invalid = #{record.invalid,jdbcType=BIT},
@@ -256,8 +256,8 @@
       type = #{record.type,jdbcType=INTEGER},
       indoorNumber = #{record.indoornumber,jdbcType=INTEGER},
       outdoorNumber = #{record.outdoornumber,jdbcType=INTEGER},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT},
       note = #{record.note,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
@@ -272,8 +272,8 @@
       type = #{record.type,jdbcType=INTEGER},
       indoorNumber = #{record.indoornumber,jdbcType=INTEGER},
       outdoorNumber = #{record.outdoornumber,jdbcType=INTEGER},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -297,11 +297,11 @@
       <if test="outdoornumber != null">
         outdoorNumber = #{outdoornumber,jdbcType=INTEGER},
       </if>
-      <if test="createdAt != null">
-        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedAt != null">
-        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="invalid != null">
         invalid = #{invalid,jdbcType=BIT},
@@ -319,8 +319,8 @@
       type = #{type,jdbcType=INTEGER},
       indoorNumber = #{indoornumber,jdbcType=INTEGER},
       outdoorNumber = #{outdoornumber,jdbcType=INTEGER},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT},
       note = #{note,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -332,8 +332,8 @@
       type = #{type,jdbcType=INTEGER},
       indoorNumber = #{indoornumber,jdbcType=INTEGER},
       outdoorNumber = #{outdoornumber,jdbcType=INTEGER},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>

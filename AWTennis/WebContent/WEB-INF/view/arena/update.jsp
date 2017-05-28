@@ -36,7 +36,7 @@
 				<option value="default">-请选择-</option>
 				<c:forEach items="${ arenaTypes }" var="arenaType">
 					<c:choose>
-						<c:when test="${ arenaType.key==arena.type }">
+						<c:when test="${ arenaType.key。equals(arena.type) }">
 							<option value="${ arenaType.key }" selected="selected">${ arenaType.value }</option>
 						</c:when>
 						<c:otherwise>

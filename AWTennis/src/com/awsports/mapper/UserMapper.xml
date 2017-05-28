@@ -41,19 +41,19 @@
 			<if test="idcard!=null and idcard!=''">idcard = #{idcard,jdbcType=CHAR},</if>
 			<if test="phone!=null and phone!=''">phone = #{phone,jdbcType=CHAR},</if>
 			<if test="email!=null and email!=''">email = #{email,jdbcType=CHAR},</if>
-			<if test="sex!=null and sex!=''">sex = #{sex,jdbcType=BIT},</if>
+			<if test="sex!=null">sex = #{sex,jdbcType=BIT},</if>
 			<if test="height!=null and height!=''">height = #{height,jdbcType=DOUBLE},</if>
 			<if test="weight!=null and weight!=''">weight = #{weight,jdbcType=DOUBLE},</if>
 			<if test="level!=null and level!=''">level = #{level,jdbcType=DOUBLE},</if>
 			<if test="playedyears!=null and playedyears!=''">playedYears = #{playedyears,jdbcType=DOUBLE},</if>
 			<if test="forehand!=null and forehand!=''">forehand = #{forehand,jdbcType=INTEGER},</if>
-			<if test="backhand!=null and backhand!=''">backhand = #{backhand,jdbcType=BIT},</if>
+			<if test="backhand!=null">backhand = #{backhand,jdbcType=BIT},</if>
 			<if test="address!=null and address!=''">address = #{address,jdbcType=CHAR},</if>
 			<if test="singletitles!=null and singletitles!=''">singleTitles = #{singletitles,jdbcType=INTEGER},</if>
 			<if test="doubletitles!=null and doubletitles!=''">doubleTitles = #{doubletitles,jdbcType=INTEGER},</if>
-			<if test="createdAt!=null">created_at = #{createdAt,jdbcType=TIMESTAMP},</if>
-			<if test="updatedAt!=null">updated_at = #{updatedAt,jdbcType=TIMESTAMP},</if>
-			<if test="invalid!=null and invalid!=''">invalid = #{invalid,jdbcType=BIT}</if>
+			<if test="createdAt!=null">createdAt = #{createdat,jdbcType=TIMESTAMP},</if>
+			<if test="updatedAt!=null">updatedAt = #{updatedat,jdbcType=TIMESTAMP},</if>
+			<if test="invalid!=null">invalid = #{invalid,jdbcType=BIT}</if>
 		</set>
 	    where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -62,9 +62,6 @@
 	<insert id="insertOne" parameterType="com.awsports.pojo.User">
 		    insert into aw_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-<!-- 	    <if test="id != null"> -->
-<!-- 	      id, -->
-<!-- 	    </if> -->
 	    <if test="name != null and name != '' ">
 	      name,
 	    </if>
@@ -89,50 +86,38 @@
 	    <if test="email != null and email != '' ">
 	      email,
 	    </if>
-	    <if test="sex != null and sex != '' ">
+	    <if test="sex != null">
 	      sex,
 	    </if>
-	    <if test="height != null and height != '' ">
+	    <if test="height != null">
 	      height,
 	    </if>
-	    <if test="weight != null and weight != '' ">
+	    <if test="weight != null">
 	      weight,
 	    </if>
-	    <if test="level != null and level != '' ">
+	    <if test="level != null">
 	      level,
 	    </if>
-	    <if test="playedyears != null and playedyears != '' ">
+	    <if test="playedyears != null">
 	      playedYears,
 	    </if>
-	    <if test="forehand != null and forehand != '' ">
+	    <if test="forehand != null">
 	      forehand,
 	    </if>
-	    <if test="backhand != null and backhand != '' ">
+	    <if test="backhand != null">
 	      backhand,
 	    </if>
 	    <if test="address != null and address != '' ">
 	      address,
 	    </if>
-	    <if test="singletitles != null and singletitles != '' ">
+	    <if test="singletitles != null">
 	      singleTitles,
 	    </if>
-	    <if test="doubletitles != null and doubletitles != '' ">
+	    <if test="doubletitles != null">
 	      doubleTitles,
 	    </if>
-<!-- 	    <if test="createdAt != null"> -->
-<!-- 	      created_at, -->
-<!-- 	    </if> -->
-<!-- 	    <if test="updatedAt != null"> -->
-<!-- 	      updated_at, -->
-<!-- 	    </if> -->
-<!-- 	    <if test="invalid != null"> -->
-<!-- 	      invalid, -->
-<!-- 	    </if> -->
 	  </trim>
 	  <trim prefix="values (" suffix=")" suffixOverrides=",">
-<!-- 	    <if test="id != null"> -->
-<!-- 	      #{id,jdbcType=INTEGER}, -->
-<!-- 	    </if> -->
 	    <if test="name != null and name != '' ">
 	      #{name,jdbcType=CHAR},
 	    </if>
@@ -157,45 +142,36 @@
 	    <if test="email != null and email != '' ">
 	      #{email,jdbcType=CHAR},
 	    </if>
-	    <if test="sex != null and sex != '' ">
+	    <if test="sex != null">
 	      #{sex,jdbcType=BIT},
 	    </if>
-	    <if test="height != null and height != '' ">
+	    <if test="height != null">
 	      #{height,jdbcType=DOUBLE},
 	    </if>
-	    <if test="weight != null and weight != '' ">
+	    <if test="weight != null">
 	      #{weight,jdbcType=DOUBLE},
 	    </if>
-	    <if test="level != null and level != '' ">
+	    <if test="level != null">
 	      #{level,jdbcType=DOUBLE},
 	    </if>
-	    <if test="playedyears != null and playedyears != '' ">
+	    <if test="playedyears != null">
 	      #{playedyears,jdbcType=DOUBLE},
 	    </if>
-	    <if test="forehand != null and forehand != '' ">
+	    <if test="forehand != null">
 	      #{forehand,jdbcType=INTEGER},
 	    </if>
-	    <if test="backhand != null and backhand != '' ">
+	    <if test="backhand != null">
 	      #{backhand,jdbcType=BIT},
 	    </if>
 	    <if test="address != null and address != '' ">
 	      #{address,jdbcType=CHAR},
 	    </if>
-	    <if test="singletitles != null and singletitles != '' ">
+	    <if test="singletitles != null">
 	      #{singletitles,jdbcType=INTEGER},
 	    </if>
-	    <if test="doubletitles != null and doubletitles != '' ">
+	    <if test="doubletitles != null">
 	      #{doubletitles,jdbcType=INTEGER},
 	    </if>
-<!-- 	    <if test="createdAt != null"> -->
-<!-- 	      #{createdAt,jdbcType=TIMESTAMP}, -->
-<!-- 	    </if> -->
-<!-- 	    <if test="updatedAt != null"> -->
-<!-- 	      #{updatedAt,jdbcType=TIMESTAMP}, -->
-<!-- 	    </if> -->
-<!-- 	    <if test="invalid != null"> -->
-<!-- 	      #{invalid,jdbcType=BIT}, -->
-<!-- 	    </if> -->
 	  </trim>
 	</insert>
 	

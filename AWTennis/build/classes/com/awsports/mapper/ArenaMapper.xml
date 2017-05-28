@@ -41,10 +41,10 @@
 <!-- 	      <if test="createdAt != null"> -->
 <!-- 	        created_at = #{createdAt,jdbcType=TIMESTAMP}, -->
 <!-- 	      </if> -->
-	      <if test="updatedAt != null">
-	        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-	      </if>
-	      <if test="invalid != null and invalid != ''">
+<!-- 	      <if test="updatedAt != null"> -->
+<!-- 	        updatedAt = #{updatedAt,jdbcType=TIMESTAMP}, -->
+<!-- 	      </if> -->
+	      <if test="invalid != null">
 	        invalid = #{invalid,jdbcType=BIT},
 	      </if>
 	      <if test="note != null and note != ''">
@@ -79,7 +79,7 @@
 <!-- 	        created_at, -->
 <!-- 	      </if> -->
 <!-- 	      <if test="updatedAt != null"> -->
-<!-- 	        updated_at, -->
+<!-- 	        updatedAt, -->
 <!-- 	      </if> -->
 <!-- 	      <if test="invalid != null"> -->
 <!-- 	        invalid, -->

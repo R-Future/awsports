@@ -9,23 +9,23 @@
 		-->
 		<id column="id" property="activity.id"/>
 		<result column="name" property="activity.name"/>
-		<result column="arena_id" property="activity.arenaId"/>
+		<result column="arenaId" property="activity.arenaid"/>
 		<result column="startedAt" property="activity.startedat"/>
 		<result column="endedAt" property="activity.endedat"/>
 		<result column="cost" property="activity.cost"/>
 		<result column="detail" property="activity.detail"/>
 		<result column="note" property="activity.note"/>
-		<result column="created_at" property="activity.createdAt"/>
-		<result column="updated_at" property="activity.updatedAt"/>
+		<result column="createdAt" property="activity.createdat"/>
+		<result column="updatedAt" property="activity.updatedat"/>
 		<result column="invalid" property="activity.invalid"/>
 		<!-- 一个活动对应一个场馆，使用association -->
 		<association property="arena" javaType="com.awsports.pojo.Arena">
-			<id column="arena_id" property="id"/>
+			<id column="arenaId" property="id"/>
 			<result column="arena_name" property="name"/>
 		</association>
 	</resultMap>
 	<select id="findAll" parameterType="com.awsports.pojo.ActivityQuery" resultMap="activityMap">
-			select aw_activity.*,aw_arena.name as 'arena_name' from aw_activity left join aw_arena on aw_activity.arena_id=aw_arena.id
+			select aw_activity.*,aw_arena.name as 'arena_name' from aw_activity left join aw_arena on aw_activity.arenaId=aw_arena.id
 			<where>
 				<!-- 首先要判断类型是否为空！！！！ -->
 				<if test="activity!=null">
@@ -62,15 +62,12 @@
 	        endedAt = #{endedat,jdbcType=TIMESTAMP},
 	      </if>
 	      <if test="arenaId != null and arenaId != '' ">
-	        arena_id = #{arenaId,jdbcType=INTEGER},
+	        arenaId = #{arenaid,jdbcType=INTEGER},
 	      </if>
 	      <if test="cost != null and cost != '' ">
 	        cost = #{cost,jdbcType=DOUBLE},
 	      </if>
-	      <if test="updatedAt != null">
-	        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-	      </if>
-	      <if test="invalid != null and invalid != '' ">
+	      <if test="invalid != null">
 	        invalid = #{invalid,jdbcType=BIT},
 	      </if>
 	      <if test="detail != null and detail != '' ">
@@ -90,9 +87,6 @@
 	<insert id="insertOne" parameterType="com.awsports.pojo.Activity">
 		insert into aw_activity
 	    <trim prefix="(" suffix=")" suffixOverrides=",">
-<!-- 	      <if test="id != null and id != ''"> -->
-<!-- 	        id, -->
-<!-- 	      </if> -->
 	      <if test="name != null and name != ''">
 	        name,
 	      </if>
@@ -103,20 +97,11 @@
 	        endedAt,
 	      </if>
 	      <if test="arenaId != null and arenaId != ''">
-	        arena_id,
+	        arenaId,
 	      </if>
 	      <if test="cost != null and cost != ''">
 	        cost,
 	      </if>
-<!-- 	      <if test="createdAt != null"> -->
-<!-- 	        created_at, -->
-<!-- 	      </if> -->
-<!-- 	      <if test="updatedAt != null"> -->
-<!-- 	        updated_at, -->
-<!-- 	      </if> -->
-<!-- 	      <if test="invalid != null"> -->
-<!-- 	        invalid, -->
-<!-- 	      </if> -->
 	      <if test="detail != null and detail != ''">
 	        detail,
 	      </if>
@@ -125,9 +110,6 @@
 	      </if>
 	    </trim>
 	    <trim prefix="values (" suffix=")" suffixOverrides=",">
-<!-- 	      <if test="id != null and id != ''"> -->
-<!-- 	        #{id,jdbcType=INTEGER}, -->
-<!-- 	      </if> -->
 	      <if test="name != null and name != ''">
 	        #{name,jdbcType=CHAR},
 	      </if>
@@ -143,15 +125,6 @@
 	      <if test="cost != null and cost != ''">
 	        #{cost,jdbcType=DOUBLE},
 	      </if>
-<!-- 	      <if test="createdAt != null"> -->
-<!-- 	        #{createdAt,jdbcType=TIMESTAMP}, -->
-<!-- 	      </if> -->
-<!-- 	      <if test="updatedAt != null"> -->
-<!-- 	        #{updatedAt,jdbcType=TIMESTAMP}, -->
-<!-- 	      </if> -->
-<!-- 	      <if test="invalid != null"> -->
-<!-- 	        #{invalid,jdbcType=BIT}, -->
-<!-- 	      </if> -->
 	      <if test="detail != null and detail != ''">
 	        #{detail,jdbcType=LONGVARCHAR},
 	      </if>

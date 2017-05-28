@@ -1,6 +1,5 @@
 package com.awsports.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +25,7 @@ public class ActivityController {
 	private ArenaService arenaService;
 	
 	@RequestMapping("/list")
-	public String list(Model model, String name, String startedat, String endedat, String arenaName) throws Exception{
-		ActivityQuery activityQuery=new ActivityQuery();
-		if((name!=null&&!name.isEmpty())||(startedat!=null&&!startedat.isEmpty()&&endedat!=null&&!endedat.isEmpty())){
-			Activity activity=new Activity();
-			activity.setName(name);
-			activity.setStartedat(startedat);
-			activity.setEndedat(endedat);
-			activityQuery.setActivity(activity);		
-		}
-		if(arenaName!=null&&!arenaName.isEmpty()){
-			Arena arena=new Arena();
-			arena.setName(arenaName);
-			activityQuery.setArena(arena);
-		}
+	public String list(Model model, ActivityQuery activityQuery) throws Exception{
 		List<ActivityQuery> activities=activityService.findAll(activityQuery);
 		model.addAttribute("activities", activities);
 		return "activity/list";
@@ -60,15 +46,12 @@ public class ActivityController {
 	}
 	
 	@RequestMapping("/save")
-	public String save(@Validated Activity activity, BindingResult br, Integer id, Model model) throws Exception{
+	public String save(@Validated Activity activity, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
 			return "activity/update";
 		}else{
-			if(id!=null){//更新
-				Date updatedAt=new Date();
-				activity.setId(id);
-				activity.setUpdatedAt(updatedAt);
+			if(activity.getId()!=null){//更新
 				activityService.updateById(activity);
 			}else{//新增
 				activityService.insertOne(activity);

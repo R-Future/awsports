@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 使用注解的方式格式化输出数据 -->
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<!-- spring自带的form表单 -->
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,24 +13,24 @@
 </head>
 <body>
 <div class="container-fluid">
-	<form class="form-inline" action="<%=request.getContextPath()%>/activity/list" method="post">
+	<form:form class="form-inline" action="list" method="post" modelAttribute="activityQuery">
 		<div class="form-group">
 			<label for="activityName">活动名称</label>
-			<input type="text" name="name" id="activityName" class="form-control"/>
+			<form:input path="activity.name" id="activityName" class="form-control"/>
 		</div>
 		<div class="form-group">
 			<label for="arenaName">活动地点</label>
-			<input type="text" name="arenaName" id="arenaName" class="form-control"/>
+			<form:input path="arena.name" id="arenaName" class="form-control"/>
 		</div>
 		<div class="form-group">
 			<label for="startedAt">时间</label>
-			<input type="text" name="startedat" id="startedAt" class="form-control"/>
+			<form:input path="activity.startedat" id="startedAt" class="form-control"/>
 			-
 			<label for="endedAt"></label>
-			<input type="text" name="endedat" id="endedAt" class="form-control"/>
+			<form:input path="activity.endedat" id="endedAt" class="form-control"/>
 		</div>
 		<button type="submit" class="btn btn-default">查询</button>
-	</form>
+	</form:form>
 	<a href="<%=request.getContextPath()%>/activity/update">添加活动</a>
  	<table class="table table-striped table-responsive">
 		<tr>

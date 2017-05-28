@@ -9,13 +9,13 @@ public class AwTeam {
 
     private Integer user2id;
 
-    private byte[] entry;
+    private Integer entry;
 
-    private Date startedAt;
+    private Date startedat;
 
-    private Date createdAt;
+    private Date createdat;
 
-    private Date updatedAt;
+    private Date updatedat;
 
     private Boolean invalid;
 
@@ -45,36 +45,36 @@ public class AwTeam {
         this.user2id = user2id;
     }
 
-    public byte[] getEntry() {
+    public Integer getEntry() {
         return entry;
     }
 
-    public void setEntry(byte[] entry) {
+    public void setEntry(Integer entry) {
         this.entry = entry;
     }
 
-    public Date getStartedAt() {
-        return startedAt;
+    public Date getStartedat() {
+        return startedat;
     }
 
-    public void setStartedAt(Date startedAt) {
-        this.startedAt = startedAt;
+    public void setStartedat(Date startedat) {
+        this.startedat = startedat;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedat() {
+        return createdat;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedat(Date createdat) {
+        this.createdat = createdat;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdatedat() {
+        return updatedat;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedat(Date updatedat) {
+        this.updatedat = updatedat;
     }
 
     public Boolean getInvalid() {

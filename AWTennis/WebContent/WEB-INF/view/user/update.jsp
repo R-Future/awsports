@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,7 +21,7 @@
 			</c:forEach>
 		</c:if>
 	</div>
-	<form class="form" action="<%=request.getContextPath()%>/user/save" method="post">
+	<form:form action="save" method="post" modelAttribute="user">
 		<input type="hidden" name="id" id="id" value="${user.id}" class="form-control"/>
 		<div class="form-group">
 			<label for="name">用户名</label>
@@ -39,6 +40,20 @@
 			<input type="text" name="portrait" id="portrait" value="${user.portrait}" class="form-control"/>
 		</div>
 		<div class="form-group">
+			<label for="sex">性别</label>
+			<!-- Boolean比较用compareTo()方法，相等则返回0，不想等若参数为false则返回1，参数为true则返回-1 -->
+			<c:forEach items="${ sexTypes }" var="sexType">
+				<c:choose>
+					<c:when test="${ sexType.key.compareTo(user.sex)==0 }">
+						<form:radiobutton path="sex" value="${ sexType.key }" check="true"/>${ sexType.value }
+					</c:when>
+					<c:otherwise>
+						<form:radiobutton path="sex" value="${ sexType.key }"/>${ sexType.value }
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</div>
+		<div class="form-group">
 			<label for="realname">真实姓名</label>
 			<input type="text" name="realname" id="realname" value="${user.realname}" class="form-control"/>
 		</div>
@@ -55,6 +70,10 @@
 			<input type="text" name="email" id="email" value="${user.email}" class="form-control"/>
 		</div>
 		<div class="form-group">
+			<label for="address">住址</label>
+			<input type="text" name="address" id="address" value="${user.address}" class="form-control"/>
+		</div>
+		<div class="form-group">
 			<label for="height">身高(cm)</label>
 			<input type="text" name="height" id="height" value="${user.height}" class="form-control"/>
 		</div>
@@ -67,16 +86,37 @@
 			<input type="text" name="level" id="level" value="${user.level}" class="form-control"/>
 		</div>
 		<div class="form-group">
-			<label for="playedyears">球龄</label>
+			<label for="playedyears">球龄(年)</label>
 			<input type="text" name="playedyears" id="playedyears" value="${user.playedyears}" class="form-control"/>
 		</div>
 		<div class="form-group">
 			<label for="forehand">正手</label>
-			<input type="text" name="forehand" id="forehand" value="${user.forehand}" class="form-control"/>
+			<select id="forehand" name="forehand">
+				<option value="default">-请选择-</option>
+				<c:forEach items="${ forehandTypes }" var="forehandType">
+					<c:choose>
+						<c:when test="${ forehandType.key.equals(user.forehand) }">
+							<option value="${ forehandType.key }" selected="selected">${ forehandType.value }</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${ forehandType.key }">${ forehandType.value }</option>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</select>
 		</div>
 		<div class="form-group">
 			<label for="backhand">反手</label>
-			<input type="text" name="backhand" id="backhand" value="${user.backhand}" class="form-control"/>
+			<c:forEach items="${ backhandTypes }" var="backhandType">
+				<c:choose>
+					<c:when test="${ backhandType.key.compareTo(user.backhand)==0 }">
+						<form:radiobutton path="backhand" value="${ backhandType.key }" check="true"/>${ backhandType.value }
+					</c:when>
+					<c:otherwise>
+						<form:radiobutton path="backhand" value="${ backhandType.key }"/>${ backhandType.value }
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
 		</div>
 		<div class="form-group">
 			<label for="singletitles">单打冠军数</label>
@@ -91,7 +131,7 @@
 <%-- 			<input type="text" name="updatedAt" id="updatedAt" value="${user.updatedAt}" class="form-control"/> --%>
 <!-- 		</div> -->
 		<button type="submit" class="btn btn-default">提交</button>
-	</form>
+	</form:form>
 </div>
 </body>
 </html>

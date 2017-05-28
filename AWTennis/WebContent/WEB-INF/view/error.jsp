@@ -7,6 +7,6 @@
 <title>错误提示</title>
 </head>
 <body>
-${ error.getMessage() }
+${ errorMessage}
 </body>
 </html>

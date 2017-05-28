@@ -29,9 +29,10 @@
 		<div class="form-group">
 			<label for="arenaId">活动场馆</label>
 			<select id="arenaId" name="arenaId">
+				<option>-请选择-</option>
 				<c:forEach items="${arenas}" var="arena">
 					<c:choose>
-						<c:when test="${arena.id==activity.arenaId}">
+						<c:when test="${arena.id.equals(activity.arenaid)}">
 							<option value="${arena.id}" selected="selected">${arena.name}</option>
 						</c:when>
 						<c:otherwise>

@@ -7,15 +7,15 @@
     <result column="awayPlayer" jdbcType="INTEGER" property="awayplayer" />
     <result column="matchTime" jdbcType="TIMESTAMP" property="matchtime" />
     <result column="matchPlace" jdbcType="INTEGER" property="matchplace" />
-    <result column="tournamentID" jdbcType="INTEGER" property="tournamentid" />
+    <result column="tournamentId" jdbcType="INTEGER" property="tournamentid" />
     <result column="entry" jdbcType="INTEGER" property="entry" />
     <result column="round" jdbcType="INTEGER" property="round" />
     <result column="sets" jdbcType="INTEGER" property="sets" />
     <result column="outcome" jdbcType="BIT" property="outcome" />
     <result column="winnerPoint" jdbcType="INTEGER" property="winnerpoint" />
     <result column="loserPoint" jdbcType="INTEGER" property="loserpoint" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
     <result column="invalid" jdbcType="BIT" property="invalid" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwDoublematch">
@@ -80,8 +80,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, homeContestant, awayPlayer, matchTime, matchPlace, tournamentID, entry, round, 
-    sets, outcome, winnerPoint, loserPoint, created_at, updated_at, invalid
+    id, homeContestant, awayPlayer, matchTime, matchPlace, tournamentId, entry, round, 
+    sets, outcome, winnerPoint, loserPoint, createdAt, updatedAt, invalid
   </sql>
   <sql id="Blob_Column_List">
     note
@@ -124,16 +124,16 @@
   </delete>
   <insert id="insert" parameterType="com.awsports.pojo.AwDoublematch">
     insert into aw_doublematch (id, homeContestant, awayPlayer, 
-      matchTime, matchPlace, tournamentID, 
+      matchTime, matchPlace, tournamentId, 
       entry, round, sets, 
       outcome, winnerPoint, loserPoint, 
-      created_at, updated_at, invalid, 
+      createdAt, updatedAt, invalid, 
       note)
     values (#{id,jdbcType=INTEGER}, #{homecontestant,jdbcType=INTEGER}, #{awayplayer,jdbcType=INTEGER}, 
       #{matchtime,jdbcType=TIMESTAMP}, #{matchplace,jdbcType=INTEGER}, #{tournamentid,jdbcType=INTEGER}, 
       #{entry,jdbcType=INTEGER}, #{round,jdbcType=INTEGER}, #{sets,jdbcType=INTEGER}, 
       #{outcome,jdbcType=BIT}, #{winnerpoint,jdbcType=INTEGER}, #{loserpoint,jdbcType=INTEGER}, 
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
+      #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
       #{note,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwDoublematch">
@@ -155,7 +155,7 @@
         matchPlace,
       </if>
       <if test="tournamentid != null">
-        tournamentID,
+        tournamentId,
       </if>
       <if test="entry != null">
         entry,
@@ -175,11 +175,11 @@
       <if test="loserpoint != null">
         loserPoint,
       </if>
-      <if test="createdAt != null">
-        created_at,
+      <if test="createdat != null">
+        createdAt,
       </if>
-      <if test="updatedAt != null">
-        updated_at,
+      <if test="updatedat != null">
+        updatedAt,
       </if>
       <if test="invalid != null">
         invalid,
@@ -225,11 +225,11 @@
       <if test="loserpoint != null">
         #{loserpoint,jdbcType=INTEGER},
       </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedAt != null">
-        #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="invalid != null">
         #{invalid,jdbcType=BIT},
@@ -264,7 +264,7 @@
         matchPlace = #{record.matchplace,jdbcType=INTEGER},
       </if>
       <if test="record.tournamentid != null">
-        tournamentID = #{record.tournamentid,jdbcType=INTEGER},
+        tournamentId = #{record.tournamentid,jdbcType=INTEGER},
       </if>
       <if test="record.entry != null">
         entry = #{record.entry,jdbcType=INTEGER},
@@ -284,11 +284,11 @@
       <if test="record.loserpoint != null">
         loserPoint = #{record.loserpoint,jdbcType=INTEGER},
       </if>
-      <if test="record.createdAt != null">
-        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      <if test="record.createdat != null">
+        createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updatedAt != null">
-        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      <if test="record.updatedat != null">
+        updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       </if>
       <if test="record.invalid != null">
         invalid = #{record.invalid,jdbcType=BIT},
@@ -308,15 +308,15 @@
       awayPlayer = #{record.awayplayer,jdbcType=INTEGER},
       matchTime = #{record.matchtime,jdbcType=TIMESTAMP},
       matchPlace = #{record.matchplace,jdbcType=INTEGER},
-      tournamentID = #{record.tournamentid,jdbcType=INTEGER},
+      tournamentId = #{record.tournamentid,jdbcType=INTEGER},
       entry = #{record.entry,jdbcType=INTEGER},
       round = #{record.round,jdbcType=INTEGER},
       sets = #{record.sets,jdbcType=INTEGER},
       outcome = #{record.outcome,jdbcType=BIT},
       winnerPoint = #{record.winnerpoint,jdbcType=INTEGER},
       loserPoint = #{record.loserpoint,jdbcType=INTEGER},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT},
       note = #{record.note,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
@@ -330,15 +330,15 @@
       awayPlayer = #{record.awayplayer,jdbcType=INTEGER},
       matchTime = #{record.matchtime,jdbcType=TIMESTAMP},
       matchPlace = #{record.matchplace,jdbcType=INTEGER},
-      tournamentID = #{record.tournamentid,jdbcType=INTEGER},
+      tournamentId = #{record.tournamentid,jdbcType=INTEGER},
       entry = #{record.entry,jdbcType=INTEGER},
       round = #{record.round,jdbcType=INTEGER},
       sets = #{record.sets,jdbcType=INTEGER},
       outcome = #{record.outcome,jdbcType=BIT},
       winnerPoint = #{record.winnerpoint,jdbcType=INTEGER},
       loserPoint = #{record.loserpoint,jdbcType=INTEGER},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />

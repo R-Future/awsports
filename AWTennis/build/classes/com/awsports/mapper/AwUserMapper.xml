@@ -24,6 +24,7 @@
     <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
     <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
     <result column="invalid" jdbcType="BIT" property="invalid" />
+    <result column="grade" jdbcType="VARCHAR" property="grade" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -86,7 +87,7 @@
   <sql id="Base_Column_List">
     id, name, password, nickname, portrait, realName, idcard, phone, email, sex, height, 
     weight, level, playedYears, forehand, backhand, address, singleTitles, doubleTitles, 
-    createdAt, updatedAt, invalid
+    createdAt, updatedAt, invalid, grade
   </sql>
   <select id="selectByExample" parameterType="com.awsports.pojo.AwUserExample" resultMap="BaseResultMap">
     select
@@ -125,16 +126,16 @@
       height, weight, level, 
       playedYears, forehand, backhand, 
       address, singleTitles, doubleTitles, 
-      createdAt, updatedAt, invalid
-      )
+      createdAt, updatedAt, invalid, 
+      grade)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{password,jdbcType=CHAR}, 
       #{nickname,jdbcType=CHAR}, #{portrait,jdbcType=CHAR}, #{realname,jdbcType=CHAR}, 
       #{idcard,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{email,jdbcType=CHAR}, #{sex,jdbcType=BIT}, 
       #{height,jdbcType=DOUBLE}, #{weight,jdbcType=DOUBLE}, #{level,jdbcType=DOUBLE}, 
       #{playedyears,jdbcType=DOUBLE}, #{forehand,jdbcType=INTEGER}, #{backhand,jdbcType=BIT}, 
       #{address,jdbcType=CHAR}, #{singletitles,jdbcType=INTEGER}, #{doubletitles,jdbcType=INTEGER}, 
-      #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}
-      )
+      #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
+      #{grade,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwUser">
     insert into aw_user
@@ -205,6 +206,9 @@
       <if test="invalid != null">
         invalid,
       </if>
+      <if test="grade != null">
+        grade,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -272,6 +276,9 @@
       </if>
       <if test="invalid != null">
         #{invalid,jdbcType=BIT},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -350,6 +357,9 @@
       <if test="record.invalid != null">
         invalid = #{record.invalid,jdbcType=BIT},
       </if>
+      <if test="record.grade != null">
+        grade = #{record.grade,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -378,7 +388,8 @@
       doubleTitles = #{record.doubletitles,jdbcType=INTEGER},
       createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
-      invalid = #{record.invalid,jdbcType=BIT}
+      invalid = #{record.invalid,jdbcType=BIT},
+      grade = #{record.grade,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -449,6 +460,9 @@
       <if test="invalid != null">
         invalid = #{invalid,jdbcType=BIT},
       </if>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -474,7 +488,8 @@
       doubleTitles = #{doubletitles,jdbcType=INTEGER},
       createdAt = #{createdat,jdbcType=TIMESTAMP},
       updatedAt = #{updatedat,jdbcType=TIMESTAMP},
-      invalid = #{invalid,jdbcType=BIT}
+      invalid = #{invalid,jdbcType=BIT},
+      grade = #{grade,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -2,6 +2,8 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class AwDoublematch {
     private Integer id;
 
@@ -9,6 +11,7 @@ public class AwDoublematch {
 
     private Integer awayplayer;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date matchtime;
 
     private Integer matchplace;
@@ -21,17 +24,22 @@ public class AwDoublematch {
 
     private Integer sets;
 
-    private Boolean outcome;
+    private String outcome;
 
-    private Integer winnerpoint;
+    private Integer hcpoint;
 
-    private Integer loserpoint;
+    private Integer appoint;
 
-    private Date createdat;
+    //将Date换成String,便于利用时间查询
+    private String createdat;
 
     private Date updatedat;
 
     private Boolean invalid;
+
+    private Boolean hcretired;
+
+    private Boolean apretired;
 
     private String note;
 
@@ -107,35 +115,35 @@ public class AwDoublematch {
         this.sets = sets;
     }
 
-    public Boolean getOutcome() {
+    public String getOutcome() {
         return outcome;
     }
 
-    public void setOutcome(Boolean outcome) {
-        this.outcome = outcome;
+    public void setOutcome(String outcome) {
+        this.outcome = outcome == null ? null : outcome.trim();
     }
 
-    public Integer getWinnerpoint() {
-        return winnerpoint;
+    public Integer getHcpoint() {
+        return hcpoint;
     }
 
-    public void setWinnerpoint(Integer winnerpoint) {
-        this.winnerpoint = winnerpoint;
+    public void setHcpoint(Integer hcpoint) {
+        this.hcpoint = hcpoint;
     }
 
-    public Integer getLoserpoint() {
-        return loserpoint;
+    public Integer getAppoint() {
+        return appoint;
     }
 
-    public void setLoserpoint(Integer loserpoint) {
-        this.loserpoint = loserpoint;
+    public void setAppoint(Integer appoint) {
+        this.appoint = appoint;
     }
 
-    public Date getCreatedat() {
+    public String getCreatedat() {
         return createdat;
     }
 
-    public void setCreatedat(Date createdat) {
+    public void setCreatedat(String createdat) {
         this.createdat = createdat;
     }
 
@@ -153,6 +161,22 @@ public class AwDoublematch {
 
     public void setInvalid(Boolean invalid) {
         this.invalid = invalid;
+    }
+
+    public Boolean getHcretired() {
+        return hcretired;
+    }
+
+    public void setHcretired(Boolean hcretired) {
+        this.hcretired = hcretired;
+    }
+
+    public Boolean getApretired() {
+        return apretired;
+    }
+
+    public void setApretired(Boolean apretired) {
+        this.apretired = apretired;
     }
 
     public String getNote() {

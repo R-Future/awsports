@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.IndividualpointMapper">
+  
+  <resultMap type="com.awsports.pojo.IndividualpointQuery" id="individualpointMap">
+  	<id column="id" property="individualpoint.id"/>
+  	<result column="userId" property="individualpoint.userid"/>
+  	<result column="entry" property="individualpoint.entry"/>
+  	<result column="year" property="individualpoint.year"/>
+  	<result column="week" property="individualpoint.week"/>
+	<result column="matchs" property="individualpoint.matchs"/>
+  	<result column="wins" property="individualpoint.wins"/>
+  	<result column="marginBureau" property="individualpoint.marginbureau"/>
+  	<result column="points" property="individualpoint.points"/>
+  	<result column="createdAt" property="individualpoint.createdat"/>
+  	<result column="updatedAt" property="individualpoint.updatedat"/>
+  	<result column="invalid" property="individualpoint.invalid"/>
+  	<result column="note" property="individualpoint.note"/>
+  	<association property="user" javaType="com.awsports.pojo.User">
+  		<id column="userId" property='id'/>
+  		<result column="user_name" property="name"/>
+  	</association>
+  </resultMap>
+  
+  <sql id="individualpointQuery_where">
+  	<if test="user!=null">
+  		<if test="user.name!=null and user.name!=''">
+  			and aw_user.name like "%${user.name}%"
+  		</if>
+  	</if>
+  	<if test="individualpoint!=null">
+  		<if test="individualpoint.entry!=null and individualpoint.entry.intValue()!=0">
+			and aw_individualpoint.entry=#{individualpoint.entry}
+		</if>
+		<if test="individualpoint.year!=null">
+			and aw_individualpoint.year=#{individualpoint.year}
+		</if>
+		<if test="individualpoint.week!=null">
+			and aw_individualpoint.week=#{individualpoint.week}
+		</if>
+  	</if>
+  </sql>
+  
+  <select id="findAll" parameterType="com.awsports.pojo.IndividualpointQuery" resultMap="individualpointMap">
+    select aw_individualpoint.*,aw_user.name as user_name
+    from aw_individualpoint
+	left join aw_user on aw_user.id=aw_individualpoint.userId
+	<where>
+		<include refid="individualpointQuery_where"></include>
+	</where>
+  </select>
+  
+  <select id="findByUseridYearWeekEntry" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
+  	select * from aw_individualpoint
+	where userid=#{userid} and entry=#{entry} and year=#{year} and week=#{week}
+  </select>
+  
+  <select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Individualpoint">
+  	select * from aw_individualpoint where id=#{id}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from aw_individualpoint
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+ 
+ 
+  <insert id="insertOne" parameterType="com.awsports.pojo.Individualpoint">
+    insert into aw_individualpoint
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="entry != null">
+        entry,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="week != null">
+        week,
+      </if>
+      <if test="matchs != null">
+        matchs,
+      </if>
+      <if test="wins != null">
+        wins,
+      </if>
+      <if test="marginbureau != null">
+        marginBureau,
+      </if>
+      <if test="points != null">
+        points,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="entry != null">
+        #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="week != null">
+        #{week,jdbcType=INTEGER},
+      </if>
+      <if test="matchs != null">
+        #{matchs,jdbcType=INTEGER},
+      </if>
+      <if test="wins != null">
+        #{wins,jdbcType=INTEGER},
+      </if>
+      <if test="marginbureau != null">
+        #{marginbureau,jdbcType=INTEGER},
+      </if>
+      <if test="points != null">
+        #{points,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+<!--   <select id="countByExample" parameterType="com.awsports.pojo.AwIndividualpointExample" resultType="java.lang.Long"> -->
+<!--     select count(*) from aw_individualpoint -->
+<!--     <if test="_parameter != null"> -->
+<!--       <include refid="Example_Where_Clause" /> -->
+<!--     </if> -->
+<!--   </select> -->
+  
+  <update id="updateById" parameterType="com.awsports.pojo.Individualpoint">
+    update aw_individualpoint
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="entry != null">
+        entry = #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="week != null">
+        week = #{week,jdbcType=INTEGER},
+      </if>
+      <if test="matchs != null">
+        matchs = #{matchs,jdbcType=INTEGER},
+      </if>
+      <if test="wins != null">
+        wins = #{wins,jdbcType=INTEGER},
+      </if>
+      <if test="marginbureau != null">
+        marginBureau = #{marginbureau,jdbcType=INTEGER},
+      </if>
+      <if test="points != null">
+        points = #{points,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

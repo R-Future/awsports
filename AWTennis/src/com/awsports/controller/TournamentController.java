@@ -10,10 +10,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.awsports.pojo.Arena;
+import com.awsports.pojo.Pointrule;
 import com.awsports.pojo.Tournament;
 import com.awsports.pojo.TournamentQuery;
 import com.awsports.service.ArenaService;
+import com.awsports.service.PointruleService;
 import com.awsports.service.TournamentService;
+import com.awsports.util.TypeMap;
 
 /**
  * 
@@ -30,12 +33,26 @@ public class TournamentController {
 	private TournamentService tournamentService;
 	@Autowired
 	private ArenaService arenaService;
+	@Autowired
+	private PointruleService pointruleService;
 	
 	@RequestMapping("/list")
 	public String list(Model model, TournamentQuery tournamentQuery) throws Exception{
 		List<TournamentQuery> tournaments=tournamentService.findAll(tournamentQuery);
 		model.addAttribute("tournaments", tournaments);
 		return "tournament/list";
+	}
+	
+	@RequestMapping("/detail")
+	public String detail(Model model, Integer id) throws Exception{
+		//根据ID查找赛事信息
+		TournamentQuery tournamentQuery=tournamentService.findDetailById(id);
+		//根据赛事ID查询相应的积分规则
+		List<Pointrule> pointrules=pointruleService.findByTournamentId(tournamentQuery.getTournament().getId());
+		model.addAttribute("tournamentQuery", tournamentQuery);
+		model.addAttribute("pointrules", pointrules);
+		model.addAttribute("roundTypes", TypeMap.roundType());
+		return "tournament/detail";
 	}
 	
 	@RequestMapping("/update")

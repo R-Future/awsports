@@ -2,15 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>爱网体育</title>
 <!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="/WEB-INF/resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="/WEB-INF/resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="/WEB-INF/resources/js/bootstrap.min.js"></script>
+<link href="/resources/css/bootstrap.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="/resources/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -36,8 +36,8 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="arenaId">赛事地点</label>
-			<select name="arenaId" id="arenaId">
+			<label for="arenaid">赛事地点</label>
+			<select name="arenaid" id="arenaid">
 				<option>-请选择-</option>
 				<c:forEach items="${arenas}" var="arena">
 					<c:choose>
@@ -54,22 +54,22 @@
 		
 		<div class="form-group">
 			<label for="startedat">开始时间</label>
-			<input type="text" name="startedat" id="startedat" value="${tournament.startedat}" class="form-control"/>
+			<input type="date" name="startedat" id="startedat" value="${tournament.startedat}" class="form-control"/>
 		</div>
 		
 		<div class="form-group">
 			<label for="endedat">结束时间</label>
-			<input type="text" name="endedat" id="endedat" value="${tournament.endedat}" class="form-control"/>
+			<input type="date" name="endedat" id="endedat" value="${tournament.endedat}" class="form-control"/>
 		</div>
 		
 		<div class="form-group">
 			<label for="prize">赛事奖金</label>
-			<input type="text" name="prize" id="prize" value="${tournament.prize}" class="form-control"/>
+			<input type="number" name="prize" id="prize" value="${tournament.prize}" class="form-control"/>
 		</div>
 		
 		<div class="form-group">
 			<label for="cost">比赛费用(每人)</label>
-			<input type="text" name="cost" id="cost" value="${tournament.cost}" class="form-control"/>
+			<input type="number" name="cost" id="cost" value="${tournament.cost}" class="form-control"/>
 		</div>
 		
 		<div class="form-group">

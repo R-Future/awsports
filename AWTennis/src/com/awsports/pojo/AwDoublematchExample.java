@@ -655,173 +655,183 @@ public class AwDoublematchExample {
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeEqualTo(Boolean value) {
+        public Criteria andOutcomeEqualTo(String value) {
             addCriterion("outcome =", value, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeNotEqualTo(Boolean value) {
+        public Criteria andOutcomeNotEqualTo(String value) {
             addCriterion("outcome <>", value, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeGreaterThan(Boolean value) {
+        public Criteria andOutcomeGreaterThan(String value) {
             addCriterion("outcome >", value, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andOutcomeGreaterThanOrEqualTo(String value) {
             addCriterion("outcome >=", value, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeLessThan(Boolean value) {
+        public Criteria andOutcomeLessThan(String value) {
             addCriterion("outcome <", value, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeLessThanOrEqualTo(Boolean value) {
+        public Criteria andOutcomeLessThanOrEqualTo(String value) {
             addCriterion("outcome <=", value, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeIn(List<Boolean> values) {
+        public Criteria andOutcomeLike(String value) {
+            addCriterion("outcome like", value, "outcome");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutcomeNotLike(String value) {
+            addCriterion("outcome not like", value, "outcome");
+            return (Criteria) this;
+        }
+
+        public Criteria andOutcomeIn(List<String> values) {
             addCriterion("outcome in", values, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeNotIn(List<Boolean> values) {
+        public Criteria andOutcomeNotIn(List<String> values) {
             addCriterion("outcome not in", values, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeBetween(Boolean value1, Boolean value2) {
+        public Criteria andOutcomeBetween(String value1, String value2) {
             addCriterion("outcome between", value1, value2, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andOutcomeNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andOutcomeNotBetween(String value1, String value2) {
             addCriterion("outcome not between", value1, value2, "outcome");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointIsNull() {
-            addCriterion("winnerPoint is null");
+        public Criteria andHcpointIsNull() {
+            addCriterion("HCPoint is null");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointIsNotNull() {
-            addCriterion("winnerPoint is not null");
+        public Criteria andHcpointIsNotNull() {
+            addCriterion("HCPoint is not null");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointEqualTo(Integer value) {
-            addCriterion("winnerPoint =", value, "winnerpoint");
+        public Criteria andHcpointEqualTo(Integer value) {
+            addCriterion("HCPoint =", value, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointNotEqualTo(Integer value) {
-            addCriterion("winnerPoint <>", value, "winnerpoint");
+        public Criteria andHcpointNotEqualTo(Integer value) {
+            addCriterion("HCPoint <>", value, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointGreaterThan(Integer value) {
-            addCriterion("winnerPoint >", value, "winnerpoint");
+        public Criteria andHcpointGreaterThan(Integer value) {
+            addCriterion("HCPoint >", value, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointGreaterThanOrEqualTo(Integer value) {
-            addCriterion("winnerPoint >=", value, "winnerpoint");
+        public Criteria andHcpointGreaterThanOrEqualTo(Integer value) {
+            addCriterion("HCPoint >=", value, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointLessThan(Integer value) {
-            addCriterion("winnerPoint <", value, "winnerpoint");
+        public Criteria andHcpointLessThan(Integer value) {
+            addCriterion("HCPoint <", value, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointLessThanOrEqualTo(Integer value) {
-            addCriterion("winnerPoint <=", value, "winnerpoint");
+        public Criteria andHcpointLessThanOrEqualTo(Integer value) {
+            addCriterion("HCPoint <=", value, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointIn(List<Integer> values) {
-            addCriterion("winnerPoint in", values, "winnerpoint");
+        public Criteria andHcpointIn(List<Integer> values) {
+            addCriterion("HCPoint in", values, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointNotIn(List<Integer> values) {
-            addCriterion("winnerPoint not in", values, "winnerpoint");
+        public Criteria andHcpointNotIn(List<Integer> values) {
+            addCriterion("HCPoint not in", values, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointBetween(Integer value1, Integer value2) {
-            addCriterion("winnerPoint between", value1, value2, "winnerpoint");
+        public Criteria andHcpointBetween(Integer value1, Integer value2) {
+            addCriterion("HCPoint between", value1, value2, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andWinnerpointNotBetween(Integer value1, Integer value2) {
-            addCriterion("winnerPoint not between", value1, value2, "winnerpoint");
+        public Criteria andHcpointNotBetween(Integer value1, Integer value2) {
+            addCriterion("HCPoint not between", value1, value2, "hcpoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointIsNull() {
-            addCriterion("loserPoint is null");
+        public Criteria andAppointIsNull() {
+            addCriterion("APPoint is null");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointIsNotNull() {
-            addCriterion("loserPoint is not null");
+        public Criteria andAppointIsNotNull() {
+            addCriterion("APPoint is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointEqualTo(Integer value) {
-            addCriterion("loserPoint =", value, "loserpoint");
+        public Criteria andAppointEqualTo(Integer value) {
+            addCriterion("APPoint =", value, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointNotEqualTo(Integer value) {
-            addCriterion("loserPoint <>", value, "loserpoint");
+        public Criteria andAppointNotEqualTo(Integer value) {
+            addCriterion("APPoint <>", value, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointGreaterThan(Integer value) {
-            addCriterion("loserPoint >", value, "loserpoint");
+        public Criteria andAppointGreaterThan(Integer value) {
+            addCriterion("APPoint >", value, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointGreaterThanOrEqualTo(Integer value) {
-            addCriterion("loserPoint >=", value, "loserpoint");
+        public Criteria andAppointGreaterThanOrEqualTo(Integer value) {
+            addCriterion("APPoint >=", value, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointLessThan(Integer value) {
-            addCriterion("loserPoint <", value, "loserpoint");
+        public Criteria andAppointLessThan(Integer value) {
+            addCriterion("APPoint <", value, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointLessThanOrEqualTo(Integer value) {
-            addCriterion("loserPoint <=", value, "loserpoint");
+        public Criteria andAppointLessThanOrEqualTo(Integer value) {
+            addCriterion("APPoint <=", value, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointIn(List<Integer> values) {
-            addCriterion("loserPoint in", values, "loserpoint");
+        public Criteria andAppointIn(List<Integer> values) {
+            addCriterion("APPoint in", values, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointNotIn(List<Integer> values) {
-            addCriterion("loserPoint not in", values, "loserpoint");
+        public Criteria andAppointNotIn(List<Integer> values) {
+            addCriterion("APPoint not in", values, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointBetween(Integer value1, Integer value2) {
-            addCriterion("loserPoint between", value1, value2, "loserpoint");
+        public Criteria andAppointBetween(Integer value1, Integer value2) {
+            addCriterion("APPoint between", value1, value2, "appoint");
             return (Criteria) this;
         }
 
-        public Criteria andLoserpointNotBetween(Integer value1, Integer value2) {
-            addCriterion("loserPoint not between", value1, value2, "loserpoint");
+        public Criteria andAppointNotBetween(Integer value1, Integer value2) {
+            addCriterion("APPoint not between", value1, value2, "appoint");
             return (Criteria) this;
         }
 
@@ -1002,6 +1012,126 @@ public class AwDoublematchExample {
 
         public Criteria andInvalidNotBetween(Boolean value1, Boolean value2) {
             addCriterion("invalid not between", value1, value2, "invalid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredIsNull() {
+            addCriterion("HCRetired is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredIsNotNull() {
+            addCriterion("HCRetired is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredEqualTo(Boolean value) {
+            addCriterion("HCRetired =", value, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredNotEqualTo(Boolean value) {
+            addCriterion("HCRetired <>", value, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredGreaterThan(Boolean value) {
+            addCriterion("HCRetired >", value, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("HCRetired >=", value, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredLessThan(Boolean value) {
+            addCriterion("HCRetired <", value, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredLessThanOrEqualTo(Boolean value) {
+            addCriterion("HCRetired <=", value, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredIn(List<Boolean> values) {
+            addCriterion("HCRetired in", values, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredNotIn(List<Boolean> values) {
+            addCriterion("HCRetired not in", values, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredBetween(Boolean value1, Boolean value2) {
+            addCriterion("HCRetired between", value1, value2, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andHcretiredNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("HCRetired not between", value1, value2, "hcretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredIsNull() {
+            addCriterion("APRetired is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredIsNotNull() {
+            addCriterion("APRetired is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredEqualTo(Boolean value) {
+            addCriterion("APRetired =", value, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredNotEqualTo(Boolean value) {
+            addCriterion("APRetired <>", value, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredGreaterThan(Boolean value) {
+            addCriterion("APRetired >", value, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("APRetired >=", value, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredLessThan(Boolean value) {
+            addCriterion("APRetired <", value, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredLessThanOrEqualTo(Boolean value) {
+            addCriterion("APRetired <=", value, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredIn(List<Boolean> values) {
+            addCriterion("APRetired in", values, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredNotIn(List<Boolean> values) {
+            addCriterion("APRetired not in", values, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredBetween(Boolean value1, Boolean value2) {
+            addCriterion("APRetired between", value1, value2, "apretired");
+            return (Criteria) this;
+        }
+
+        public Criteria andApretiredNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("APRetired not between", value1, value2, "apretired");
             return (Criteria) this;
         }
     }

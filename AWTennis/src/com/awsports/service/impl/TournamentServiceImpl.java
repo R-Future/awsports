@@ -44,4 +44,10 @@ public class TournamentServiceImpl implements TournamentService {
 		tournamentMapper.deleteById(id);
 	}
 
+	@Override
+	public TournamentQuery findDetailById(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		return tournamentMapper.findDetailById(id);
+	}
+
 }

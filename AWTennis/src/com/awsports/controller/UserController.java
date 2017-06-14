@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.awsports.pojo.User;
-import com.awsports.pojo.UserQuery;
 import com.awsports.service.UserService;
 import com.awsports.util.CustomException;
 import com.awsports.util.TypeMap;
@@ -37,10 +36,7 @@ public class UserController {
 	
 	@RequestMapping(value="/list",method={RequestMethod.GET,RequestMethod.POST})
 	public String list(Model model,User user) throws Exception{
-		UserQuery userQuery=new UserQuery();
-		if(user!=null)//传入用户查询条件
-			userQuery.setUser(user);
-		List<User> users=userService.findAll(userQuery);
+		List<User> users=userService.findAll(user);
 		model.addAttribute("users", users);
 		model.addAttribute("sexTypes", TypeMap.sexType());
 		model.addAttribute("forehandTypes",TypeMap.forehandType());

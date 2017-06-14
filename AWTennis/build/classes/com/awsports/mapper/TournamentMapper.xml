@@ -41,8 +41,14 @@
 		</where>
 	</select>
 	
-	<select id="findById" parameterType="integer" resultType="com.awsports.pojo.Tournament">
+	<select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Tournament">
 		select * from aw_tournament where id=#{id}
+	</select>
+	
+	<select id="findDetailById" parameterType="Integer" resultMap="tournamentMap">
+		select aw_tournament.*,aw_arena.name as 'arena_name' 
+		from aw_tournament left join aw_arena on aw_tournament.arenaId=aw_arena.id
+		where aw_tournament.id=#{id}
 	</select>
 	
 	<update id="updateById" parameterType="com.awsports.pojo.Tournament">
@@ -91,7 +97,7 @@
 	      <if test="endedat != null">
 	        endedAt,
 	      </if>
-	      <if test="arenaId != null">
+	      <if test="arenaid != null">
 	        arenaId,
 	      </if>
 	      <if test="level != null and level != ''">
@@ -103,7 +109,7 @@
 	      <if test="cost != null">
 	        cost,
 	      </if>
-	      <if test="note != null">
+	      <if test="note != null and note != ''">
 	        note,
 	      </if>
 	    </trim>
@@ -117,8 +123,8 @@
 	      <if test="endedat != null">
 	        #{endedat,jdbcType=TIMESTAMP},
 	      </if>
-	      <if test="arenaId != null">
-	        #{arenaId,jdbcType=INTEGER},
+	      <if test="arenaid != null">
+	        #{arenaid,jdbcType=INTEGER},
 	      </if>
 	      <if test="level != null and level != ''">
 	        #{level,jdbcType=CHAR},

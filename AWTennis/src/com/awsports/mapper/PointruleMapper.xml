@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.PointruleMapper">
+
+  <select id="findByTournamentId" parameterType="java.lang.Integer" resultType="com.awsports.pojo.Pointrule">
+    select *
+    from aw_pointrule
+    where tournamentId = #{tournamentid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findByTournamentIdAndRound" parameterType="com.awsports.pojo.Pointrule" resultType="com.awsports.pojo.Pointrule">
+  	select *
+    from aw_pointrule
+    <where>
+		<if test="tournamentid!=null">
+			and tournamentId = #{tournamentid,jdbcType=INTEGER}
+		</if>
+		<if test="round!=null">
+			and round = #{round, jdbcType=INTEGER}
+		</if>   
+    </where> 
+  </select>
+  
+  <select id="findById" parameterType="java.lang.Integer" resultType="com.awsports.pojo.Pointrule">
+    select *
+    from aw_pointrule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insertOne" parameterType="com.awsports.pojo.Pointrule">
+    insert into aw_pointrule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tournamentid != null">
+        tournamentId,
+      </if>
+      <if test="round != null">
+        round,
+      </if>
+      <if test="winner != null">
+        winner,
+      </if>
+      <if test="loser != null">
+        loser,
+      </if>
+      <if test="penalty != null">
+        penalty,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
+      </if>
+      <if test="round != null">
+        #{round,jdbcType=INTEGER},
+      </if>
+      <if test="winner != null">
+        #{winner,jdbcType=INTEGER},
+      </if>
+      <if test="loser != null">
+        #{loser,jdbcType=INTEGER},
+      </if>
+      <if test="penalty != null">
+        #{penalty,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateById" parameterType="com.awsports.pojo.Pointrule">
+    update aw_pointrule
+    <set>
+      <if test="tournamentid != null">
+        tournamentId = #{tournamentid,jdbcType=INTEGER},
+      </if>
+      <if test="round != null">
+        round = #{round,jdbcType=INTEGER},
+      </if>
+      <if test="winner != null">
+        winner = #{winner,jdbcType=INTEGER},
+      </if>
+      <if test="loser != null">
+        loser = #{loser,jdbcType=INTEGER},
+      </if>
+      <if test="penalty != null">
+        penalty = #{penalty,jdbcType=INTEGER},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from aw_pointrule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+ 
+</mapper>

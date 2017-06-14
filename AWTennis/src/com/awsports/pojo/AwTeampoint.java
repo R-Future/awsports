@@ -19,7 +19,7 @@ public class AwTeampoint {
 
     private Integer marginbureau;
 
-    private Integer point;
+    private Integer points;
 
     private Date createdat;
 
@@ -93,12 +93,12 @@ public class AwTeampoint {
         this.marginbureau = marginbureau;
     }
 
-    public Integer getPoint() {
-        return point;
+    public Integer getPoints() {
+        return points;
     }
 
-    public void setPoint(Integer point) {
-        this.point = point;
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
     public Date getCreatedat() {

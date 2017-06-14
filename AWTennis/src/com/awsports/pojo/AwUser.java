@@ -10,9 +10,9 @@ public class AwUser {
     private Integer id;
 
     /**
-     * @NotEmpty 用在集合类上面
-     * @NotBlank 用在String上面
-     * @NotNull  用在基本类型上
+     * @NotEmpty 锟斤拷锟节硷拷锟斤拷锟斤拷锟斤拷锟斤拷
+     * @NotBlank 锟斤拷锟斤拷String锟斤拷锟斤拷
+     * @NotNull  锟斤拷锟节伙拷锟斤拷锟斤拷锟斤拷锟斤拷
      */
     @NotBlank(message="{user.name.null}")
     private String name;
@@ -60,8 +60,18 @@ public class AwUser {
     private Date updatedat;
 
     private Boolean invalid;
+    
+    private String grade;
 
-    public Integer getId() {
+    public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
+	public Integer getId() {
         return id;
     }
 

@@ -2,6 +2,8 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class AwTeam {
     private Integer id;
 
@@ -11,6 +13,7 @@ public class AwTeam {
 
     private Integer entry;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date startedat;
 
     private Date createdat;
@@ -18,6 +21,8 @@ public class AwTeam {
     private Date updatedat;
 
     private Boolean invalid;
+
+    private String name;
 
     private String note;
 
@@ -83,6 +88,14 @@ public class AwTeam {
 
     public void setInvalid(Boolean invalid) {
         this.invalid = invalid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getNote() {

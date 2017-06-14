@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.TeamMapper">
+  
+  <resultMap id="teamMap" type="com.awsports.pojo.TeamQuery">
+  	<id column="id" property="team.id"/>
+  	<result column="user1Id" property="team.user1id"/>
+  	<result column="user2Id" property="team.user2id"/>
+  	<result column="entry" property="team.entry"/>
+  	<result column="startedAt" property="team.startedat"/>
+  	<result column="createdAt" property="team.createdat"/>
+  	<result column="updatedAt" property="team.updatedat"/>
+  	<result column="name" property="team.name"/>
+  	<result column="invalid" property="team.invalid"/>
+  	<result column="note" property="team.note"/>
+  	<association property="user1" javaType="com.awsports.pojo.User">
+  		<id column="user1Id" property="id"/>
+  		<result column="user1_name" property="name"/>
+  	</association>
+  	<association property="user2" javaType="com.awsports.pojo.User">
+  		<id column="user2Id" property="id"/>
+  		<result column="user2_name" property="name"/>
+  	</association>
+  </resultMap>
+  <sql id="team_query_where">
+	<if test="user1 != null">
+	 	<if test="user1.name != null and user1.name != ''">
+	 		and user1.name like "%${user1.name}%"
+	 	</if>
+ 	</if>
+	<if test="user2 != null">
+		<if test="user2.name != null and user2.name != ''">
+	  		and user2.name like "%${user2.name}%"
+	  	</if>
+	</if>
+  	
+  	<if test="team != null">
+  		<if test="team.entry != null and team.entry.intValue() != 0">
+  			and aw_team.entry=#{team.entry}
+  		</if>
+  	</if>
+  </sql>
+  <select id="findAll" parameterType="com.awsports.pojo.TeamQuery" resultMap="teamMap">
+    select aw_team.*,user1.name as user1_name,user2.name as user2_name 
+	from aw_team 
+	left join aw_user as user1 on aw_team.user1Id=user1.id
+	left join aw_user as user2 on aw_team.user2Id=user2.id
+    <where>
+    	<include refid="team_query_where"/>
+    </where>
+  </select>
+  
+  <select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Team">
+  	select * from aw_team where id=#{id}
+  </select>
+  
+  <insert id="insertOne" parameterType="com.awsports.pojo.Team">
+    insert into aw_team
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="user1id != null">
+        user1Id,
+      </if>
+      <if test="user2id != null">
+        user2Id,
+      </if>
+      <if test="entry != null and entry != ''">
+        entry,
+      </if>
+      <if test="startedat != null">
+        startedAt,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="name != null and name != ''">
+      	name,
+      </if>
+      <if test="note != null and note != ''">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="user1id != null">
+        #{user1id,jdbcType=INTEGER},
+      </if>
+      <if test="user2id != null">
+        #{user2id,jdbcType=INTEGER},
+      </if>
+      <if test="entry != null and entry != ''">
+        #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="startedat != null">
+        #{startedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="name != null and name != ''">
+      	#{name,jdbcType=VARCHAR}
+      </if>
+      <if test="note != null and note != ''">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateById" parameterType="com.awsports.pojo.Team">
+    update aw_team
+    <set>
+      <if test="user1id != null">
+        user1Id = #{user1id,jdbcType=INTEGER},
+      </if>
+      <if test="user2id != null">
+        user2Id = #{user2id,jdbcType=INTEGER},
+      </if>
+      <if test="entry != null">
+        entry = #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="startedat != null">
+        startedAt = #{startedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="name != null and name != ''">
+      	name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null and note != ''">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from aw_team where id = #{id,jdbcType=INTEGER}
+  </delete>
+ 	
+</mapper>

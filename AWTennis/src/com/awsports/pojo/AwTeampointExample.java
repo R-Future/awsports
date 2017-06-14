@@ -585,63 +585,63 @@ public class AwTeampointExample {
             return (Criteria) this;
         }
 
-        public Criteria andPointIsNull() {
-            addCriterion("point is null");
+        public Criteria andPointsIsNull() {
+            addCriterion("points is null");
             return (Criteria) this;
         }
 
-        public Criteria andPointIsNotNull() {
-            addCriterion("point is not null");
+        public Criteria andPointsIsNotNull() {
+            addCriterion("points is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPointEqualTo(Integer value) {
-            addCriterion("point =", value, "point");
+        public Criteria andPointsEqualTo(Integer value) {
+            addCriterion("points =", value, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointNotEqualTo(Integer value) {
-            addCriterion("point <>", value, "point");
+        public Criteria andPointsNotEqualTo(Integer value) {
+            addCriterion("points <>", value, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointGreaterThan(Integer value) {
-            addCriterion("point >", value, "point");
+        public Criteria andPointsGreaterThan(Integer value) {
+            addCriterion("points >", value, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointGreaterThanOrEqualTo(Integer value) {
-            addCriterion("point >=", value, "point");
+        public Criteria andPointsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("points >=", value, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointLessThan(Integer value) {
-            addCriterion("point <", value, "point");
+        public Criteria andPointsLessThan(Integer value) {
+            addCriterion("points <", value, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointLessThanOrEqualTo(Integer value) {
-            addCriterion("point <=", value, "point");
+        public Criteria andPointsLessThanOrEqualTo(Integer value) {
+            addCriterion("points <=", value, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointIn(List<Integer> values) {
-            addCriterion("point in", values, "point");
+        public Criteria andPointsIn(List<Integer> values) {
+            addCriterion("points in", values, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointNotIn(List<Integer> values) {
-            addCriterion("point not in", values, "point");
+        public Criteria andPointsNotIn(List<Integer> values) {
+            addCriterion("points not in", values, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointBetween(Integer value1, Integer value2) {
-            addCriterion("point between", value1, value2, "point");
+        public Criteria andPointsBetween(Integer value1, Integer value2) {
+            addCriterion("points between", value1, value2, "points");
             return (Criteria) this;
         }
 
-        public Criteria andPointNotBetween(Integer value1, Integer value2) {
-            addCriterion("point not between", value1, value2, "point");
+        public Criteria andPointsNotBetween(Integer value1, Integer value2) {
+            addCriterion("points not between", value1, value2, "points");
             return (Criteria) this;
         }
 

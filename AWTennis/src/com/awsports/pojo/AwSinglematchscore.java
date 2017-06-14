@@ -2,6 +2,8 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class AwSinglematchscore {
     private Integer id;
 
@@ -17,8 +19,10 @@ public class AwSinglematchscore {
 
     private Integer aptiescore;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdat;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedat;
 
     private Boolean invalid;

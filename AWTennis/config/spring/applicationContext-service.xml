@@ -21,6 +21,13 @@
 	<bean id="activityService" class="com.awsports.service.impl.ActivityServiceImpl"/>
 	<bean id="arenaService" class="com.awsports.service.impl.ArenaServiceImpl"/>
 	<bean id="tournamentService" class="com.awsports.service.impl.TournamentServiceImpl"/>
-<!-- 	<context:component-scan base-package="com.awsports.service.impl"/> -->
+	<bean id="teamService" class="com.awsports.service.impl.TeamServiceImpl"/>
+	<bean id="pointruleService" class="com.awsports.service.impl.PointruleServiceImpl"/>
+	<bean id="singlematchService" class="com.awsports.service.impl.SinglematchServiceImpl"/>
+	<bean id="singlematchscoreService" class="com.awsports.service.impl.SinglematchscoreServiceImpl"/>
+	<bean id="individualpointService" class="com.awsports.service.impl.IndividualpointServiceImpl"/>
+	<bean id="doublematchscoreService" class="com.awsports.service.impl.DoublematchscoreServiceImpl"/>
+	<bean id="doublematchService" class="com.awsports.service.impl.DoublematchServiceImpl"/>
+	<bean id="teampointService" class="com.awsports.service.impl.TeampointServiceImpl"/>
 	
 </beans>

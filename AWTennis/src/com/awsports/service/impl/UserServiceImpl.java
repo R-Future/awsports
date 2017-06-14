@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.awsports.mapper.UserMapper;
 import com.awsports.pojo.User;
-import com.awsports.pojo.UserQuery;
 import com.awsports.service.UserService;
 
 public class UserServiceImpl implements UserService {
@@ -15,9 +14,9 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 
 	@Override
-	public List<User> findAll(UserQuery userQuery) throws Exception {
+	public List<User> findAll(User user) throws Exception {
 		// TODO Auto-generated method stub
-		return userMapper.findAll(userQuery);
+		return userMapper.findAll(user);
 	}
 
 	@Override

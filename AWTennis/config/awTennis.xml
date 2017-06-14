@@ -46,8 +46,11 @@
 		<!-- 转换器 -->
 		<property name="converters">
 			<list>
-				<bean class="com.awsports.converter.StringToDateConverter"/>
+				<bean class="com.awsports.converter.DatetimeConverter"/>
+				<bean class="com.awsports.converter.DateConverter"/>
 				<bean class="com.awsports.converter.DateToStringConverter"/>
+				<bean class="com.awsports.converter.DoubleConverter"/>
+				<bean class="com.awsports.converter.BooleanConverter"/>
 			</list>
 		</property>
 	</bean>

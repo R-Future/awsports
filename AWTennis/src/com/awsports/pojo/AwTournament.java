@@ -19,7 +19,7 @@ public class AwTournament {
     private String level;
 
     @NumberFormat(style=Style.CURRENCY)
-    private Integer praize;
+    private Integer prize;
 
     @NumberFormat(style=Style.CURRENCY)
     private Double cost;
@@ -80,12 +80,12 @@ public class AwTournament {
         this.level = level == null ? null : level.trim();
     }
 
-    public Integer getPraize() {
-        return praize;
+    public Integer getPrize() {
+        return prize;
     }
 
-    public void setPraize(Integer praize) {
-        this.praize = praize;
+    public void setPraize(Integer prize) {
+        this.prize = prize;
     }
 
     public Double getCost() {

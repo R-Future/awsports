@@ -10,6 +10,7 @@
     <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
     <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
     <result column="invalid" jdbcType="BIT" property="invalid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwTeam">
     <result column="note" jdbcType="LONGVARCHAR" property="note" />
@@ -73,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user1Id, user2Id, entry, startedAt, createdAt, updatedAt, invalid
+    id, user1Id, user2Id, entry, startedAt, createdAt, updatedAt, invalid, name
   </sql>
   <sql id="Blob_Column_List">
     note
@@ -129,12 +130,12 @@
   <insert id="insert" parameterType="com.awsports.pojo.AwTeam">
     insert into aw_team (id, user1Id, user2Id, 
       entry, startedAt, createdAt, 
-      updatedAt, invalid, note
-      )
+      updatedAt, invalid, name, 
+      note)
     values (#{id,jdbcType=INTEGER}, #{user1id,jdbcType=INTEGER}, #{user2id,jdbcType=INTEGER}, 
       #{entry,jdbcType=INTEGER}, #{startedat,jdbcType=TIMESTAMP}, #{createdat,jdbcType=TIMESTAMP}, 
-      #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, #{note,jdbcType=LONGVARCHAR}
-      )
+      #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, 
+      #{note,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwTeam">
     insert into aw_team
@@ -162,6 +163,9 @@
       </if>
       <if test="invalid != null">
         invalid,
+      </if>
+      <if test="name != null">
+        name,
       </if>
       <if test="note != null">
         note,
@@ -191,6 +195,9 @@
       </if>
       <if test="invalid != null">
         #{invalid,jdbcType=BIT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         #{note,jdbcType=LONGVARCHAR},
@@ -230,6 +237,9 @@
       <if test="record.invalid != null">
         invalid = #{record.invalid,jdbcType=BIT},
       </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.note != null">
         note = #{record.note,jdbcType=LONGVARCHAR},
       </if>
@@ -248,6 +258,7 @@
       createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT},
+      name = #{record.name,jdbcType=VARCHAR},
       note = #{record.note,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -262,7 +273,8 @@
       startedAt = #{record.startedat,jdbcType=TIMESTAMP},
       createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
-      invalid = #{record.invalid,jdbcType=BIT}
+      invalid = #{record.invalid,jdbcType=BIT},
+      name = #{record.name,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -291,6 +303,9 @@
       <if test="invalid != null">
         invalid = #{invalid,jdbcType=BIT},
       </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="note != null">
         note = #{note,jdbcType=LONGVARCHAR},
       </if>
@@ -306,6 +321,7 @@
       createdAt = #{createdat,jdbcType=TIMESTAMP},
       updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
       note = #{note,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -317,7 +333,8 @@
       startedAt = #{startedat,jdbcType=TIMESTAMP},
       createdAt = #{createdat,jdbcType=TIMESTAMP},
       updatedAt = #{updatedat,jdbcType=TIMESTAMP},
-      invalid = #{invalid,jdbcType=BIT}
+      invalid = #{invalid,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

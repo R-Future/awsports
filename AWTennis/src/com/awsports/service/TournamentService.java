@@ -15,4 +15,5 @@ public interface TournamentService {
 	public void updateById(Tournament tournament) throws Exception;
 	public void insertOne(Tournament tournament) throws Exception;
 	public void deleteById(Integer id) throws Exception;
+	public Tournament findByName(Tournament tournament) throws Exception;
 }

@@ -32,6 +32,7 @@ import com.awsports.service.UserService;
 import com.awsports.util.CalculatePoint;
 import com.awsports.util.CustomException;
 import com.awsports.util.EntryEnum;
+import com.awsports.util.RoundEnum;
 import com.awsports.util.SexEnum;
 import com.awsports.util.TypeMap;
 import com.awsports.util.WinLoseEnum;
@@ -208,39 +209,40 @@ public class SinglematchController {
 				for(SinglematchQuery singlematchQuery:singlematchQuerys){
 					Singlematch originMatch=singlematchQuery.getSinglematch();
 					List<Singlematchscore> originMatchscores=singlematchQuery.getSinglematchscores();
-					if(originMatch.getInvalid()==null||originMatch.getInvalid()==false){//合法数据
-						originMatch.setMatchtime(matchtime);//比赛时间
-						originMatch.setMatchplace(matchplace);//比赛地点
-						originMatch.setTournamentid(tournamentid);//赛事类型
-						originMatch.setRound(round);//比赛轮次
-						originMatch.setSets(sets);//比赛盘数
-						setOriginMatch(originMatch,originMatchscores);//设置比赛记录保存项
-						//save single match record
-						singlematchService.insertOne(originMatch);
-						//exchange the home contestant and away player, then save another match record
-						Singlematch mirrorMatch=new Singlematch();
-						setMirrorMatch(originMatch,mirrorMatch);//设置镜像比赛保存项
-						singlematchService.insertOne(mirrorMatch);
-						//save match scores
-						Integer originMatchid=originMatch.getId();
-						Integer mirrorMatchid=mirrorMatch.getId();
-						Singlematchscore mirrorMatchscore=null;
-						for(Singlematchscore originMatchscore:originMatchscores){
-							//origin match score
-							originMatchscore.setMatchid(originMatchid);
-							singlematchscoreService.insertOne(originMatchscore);
-							//mirror match score
-							mirrorMatchscore=new Singlematchscore();
-							setMirrorMatchscore(originMatchscore,mirrorMatchscore,mirrorMatchid);
-							singlematchscoreService.insertOne(mirrorMatchscore);
-							
-						}
+					originMatch.setMatchtime(matchtime);//比赛时间
+					originMatch.setMatchplace(matchplace);//比赛地点
+					originMatch.setTournamentid(tournamentid);//赛事类型
+					originMatch.setRound(round);//比赛轮次
+					originMatch.setSets(sets);//比赛盘数
+					setOriginMatch(originMatch,originMatchscores);//设置比赛记录保存项
+					//save single match record
+					singlematchService.insertOne(originMatch);
+					//exchange the home contestant and away player, then save another match record
+					Singlematch mirrorMatch=new Singlematch();
+					setMirrorMatch(originMatch,mirrorMatch);//设置镜像比赛保存项
+					singlematchService.insertOne(mirrorMatch);
+					//save match scores
+					Integer originMatchid=originMatch.getId();
+					Integer mirrorMatchid=mirrorMatch.getId();
+					Singlematchscore mirrorMatchscore=null;
+					for(Singlematchscore originMatchscore:originMatchscores){
+						//origin match score
+						originMatchscore.setMatchid(originMatchid);
+						singlematchscoreService.insertOne(originMatchscore);
+						//mirror match score
+						mirrorMatchscore=new Singlematchscore();
+						setMirrorMatchscore(originMatchscore,mirrorMatchscore,mirrorMatchid);
+						singlematchscoreService.insertOne(mirrorMatchscore);
 						
+					}
+					//比赛有效才可更新积分
+					if(originMatch.getInvalid()==null||!originMatch.getInvalid().booleanValue()){
 						//更新个人积分
-						if(!CalculatePoint.individual(individualpointService,originMatch,hcMarginBureau)){
+						//获取年终赛事的id
+						CalculatePoint calculatePoint=new CalculatePoint(originMatch,hcMarginBureau,tournamentService);
+						if(!calculatePoint.individual(individualpointService,originMatch)){
 							throw new CustomException("积分保存失败");
-						}
-						
+						}			
 					}else{
 						continue;
 					}
@@ -270,9 +272,8 @@ public class SinglematchController {
 			List<Singlematchscore> originMatchscores=singlematchQuery.getSinglematchscores();
 			Singlematch oldOriginMatch=singlematchService.findById(originMatch.getId());
 			List<Singlematchscore> oldOriginMatchscores=singlematchscoreService.findByMatchid(originMatch.getId());
-			if(oldOriginMatch==null){
-				throw new CustomException("原比赛记录不存在，积分删除失败！");
-			}else{
+			CalculatePoint calculatePoint=null;
+			if(oldOriginMatch!=null&&!oldOriginMatch.getInvalid().booleanValue()){
 				if(oldOriginMatchscores==null){
 					throw new CustomException("原比赛比分记录不存在，积分删除失败！");
 				}else{
@@ -280,85 +281,87 @@ public class SinglematchController {
 					hcMarginBureau=0;//主场选手的净胜局
 					for(Singlematchscore oldOriginMatchscore:oldOriginMatchscores){
 						//必须是合法数据
-						if(oldOriginMatchscore.getInvalid()==null||oldOriginMatchscore.getInvalid()==false){
+						if(!oldOriginMatchscore.getInvalid().booleanValue()){
 							hcMarginBureau+=oldOriginMatchscore.getHcscore().intValue()-oldOriginMatchscore.getApscore().intValue();
 						}else{
 							continue;
 						}
 					}
-				}			
+					calculatePoint=new CalculatePoint(oldOriginMatch,hcMarginBureau,tournamentService);
+					if(!calculatePoint.deleteIndividual(individualpointService, oldOriginMatch)){
+						throw new CustomException("原始积分删除失败，无法更新比赛记录");
+					}else{
+						//删除单打冠军得数
+						deleteSingleTitles(oldOriginMatch);
+					}
+				}
 			}
 			
-			if(!CalculatePoint.deleteIndividual(individualpointService, oldOriginMatch, hcMarginBureau)){
-				throw new CustomException("原始积分删除失败，无法更新比赛记录");
-			}else{
-				//对修改后的比赛重新计算个人积分
-				Pointrule pointrule=new Pointrule();
-				pointrule.setTournamentid(originMatch.getTournamentid());
-				pointrule.setRound(originMatch.getRound());
-				pointrule=pointruleService.findByTournamentIdAndRound(pointrule);
-				if(pointrule!=null&&!pointrule.getInvalid()){
-					winnerPoint=pointrule.getWinner().intValue();
-					loserPoint=pointrule.getLoser().intValue();
-					penalty=pointrule.getPenalty().intValue();
-					if(!originMatch.getInvalid().booleanValue()){//合法数据
-						
-						setOriginMatch(originMatch,originMatchscores);
-						
-						//save single match record
-						singlematchService.updateById(originMatch);
-						//exchange the home contestant and away player, then save another match record
-						Singlematch oldMirrorMatch=singlematchService.findMirrorByOrigin(oldOriginMatch);
-						List<Singlematchscore> oldMirrorMatchscores=null;
-						Integer oldMirrorMatchid=null;
-						if(oldMirrorMatch!=null){
-							oldMirrorMatchid=oldMirrorMatch.getId();
-							setMirrorMatch(originMatch,oldMirrorMatch);		
-							singlematchService.updateById(oldMirrorMatch);
-							oldMirrorMatchscores=singlematchscoreService.findByMatchid(oldMirrorMatchid);
-							Singlematchscore oldMirrorMatchscore=null;
-							for(Singlematchscore originMatchscore:originMatchscores){
-								//origin match score
-								singlematchscoreService.updateById(originMatchscore);
-								//added match score
-								if(oldMirrorMatchscores!=null){
-									oldMirrorMatchscore=oldMirrorMatchscores.get(originMatchscore.getSetth().intValue()-1);
-									setMirrorMatchscore(originMatchscore,oldMirrorMatchscore,oldMirrorMatchid);
-									singlematchscoreService.updateById(oldMirrorMatchscore);
-								}else{
-									oldMirrorMatchscore=new Singlematchscore();
-									setMirrorMatchscore(originMatchscore,oldMirrorMatchscore,oldMirrorMatchid);
-									singlematchscoreService.insertOne(oldMirrorMatchscore);
-								}
-								
-							}
+			//对修改后的比赛重新计算个人积分
+			Pointrule pointrule=new Pointrule();
+			pointrule.setTournamentid(originMatch.getTournamentid());
+			pointrule.setRound(originMatch.getRound());
+			pointrule=pointruleService.findByTournamentIdAndRound(pointrule);
+			if(pointrule!=null&&!pointrule.getInvalid()){
+				winnerPoint=pointrule.getWinner().intValue();
+				loserPoint=pointrule.getLoser().intValue();
+				penalty=pointrule.getPenalty().intValue();
+				setOriginMatch(originMatch,originMatchscores);			
+				//save single match record
+				singlematchService.updateById(originMatch);
+				//exchange the home contestant and away player, then save another match record
+				Singlematch oldMirrorMatch=singlematchService.findMirrorByOrigin(oldOriginMatch);
+				List<Singlematchscore> oldMirrorMatchscores=null;
+				Integer oldMirrorMatchid=null;
+				if(oldMirrorMatch!=null){
+					oldMirrorMatchid=oldMirrorMatch.getId();
+					setMirrorMatch(originMatch,oldMirrorMatch);		
+					singlematchService.updateById(oldMirrorMatch);
+					oldMirrorMatchscores=singlematchscoreService.findByMatchid(oldMirrorMatchid);
+					Singlematchscore oldMirrorMatchscore=null;
+					for(Singlematchscore originMatchscore:originMatchscores){
+						//origin match score
+						singlematchscoreService.updateById(originMatchscore);
+						//added match score
+						if(oldMirrorMatchscores!=null){
+							oldMirrorMatchscore=oldMirrorMatchscores.get(originMatchscore.getSetth().intValue()-1);
+							setMirrorMatchscore(originMatchscore,oldMirrorMatchscore,oldMirrorMatchid);
+							singlematchscoreService.updateById(oldMirrorMatchscore);
 						}else{
-							oldMirrorMatch=new Singlematch();
-							setMirrorMatch(originMatch,oldMirrorMatch);
-							singlematchService.insertOne(oldMirrorMatch);
-							oldMirrorMatchid=oldMirrorMatch.getId();
-							Singlematchscore oldMirrorMatchscore=null;
-							for(Singlematchscore originMatchscore:originMatchscores){
-								//origin match score
-								singlematchscoreService.updateById(originMatchscore);
-								//added match score
-								oldMirrorMatchscore=new Singlematchscore();
-								setMirrorMatchscore(originMatchscore,oldMirrorMatchscore,oldMirrorMatchid);
-								singlematchscoreService.insertOne(oldMirrorMatchscore);	
-							}
+							oldMirrorMatchscore=new Singlematchscore();
+							setMirrorMatchscore(originMatchscore,oldMirrorMatchscore,oldMirrorMatchid);
+							singlematchscoreService.insertOne(oldMirrorMatchscore);
 						}
-	
-						if(!CalculatePoint.individual(individualpointService, originMatch, hcMarginBureau)){
-							throw new CustomException("积分更新失败");
-						}
-					}else{
-						//...
-					}//end if(originMatch.getInvalid()==null||!originMatch.getInvalid().booleanValue())
-					return "redirect:list";
+						
+					}
 				}else{
-					throw new CustomException("未匹配到当前赛事本轮次的积分");
-				}//end if(pointrule!=null&&!pointrule.getInvalid())
-			}//end if(!CalculatePoint.deleteIndividual(individualpointService, oldOriginMatch, hcMarginBureau))
+					oldMirrorMatch=new Singlematch();
+					setMirrorMatch(originMatch,oldMirrorMatch);
+					singlematchService.insertOne(oldMirrorMatch);
+					oldMirrorMatchid=oldMirrorMatch.getId();
+					Singlematchscore oldMirrorMatchscore=null;
+					for(Singlematchscore originMatchscore:originMatchscores){
+						//origin match score
+						singlematchscoreService.updateById(originMatchscore);
+						//added match score
+						oldMirrorMatchscore=new Singlematchscore();
+						setMirrorMatchscore(originMatchscore,oldMirrorMatchscore,oldMirrorMatchid);
+						singlematchscoreService.insertOne(oldMirrorMatchscore);	
+					}
+				}
+				//有效比赛才可更新积分
+				if(!originMatch.getInvalid().booleanValue()){
+					calculatePoint=new CalculatePoint(originMatch,hcMarginBureau,tournamentService);
+					if(!calculatePoint.individual(individualpointService, originMatch)){
+						throw new CustomException("积分更新失败");
+					}
+				}else{
+					//...
+				}//end if(!originMatch.getInvalid().booleanValue())
+				return "redirect:list";
+			}else{
+				throw new CustomException("未匹配到当前赛事本轮次的积分");
+			}//end if(pointrule!=null&&!pointrule.getInvalid())
 		}//end if(br.hasErrors())
 	}
 	
@@ -379,32 +382,41 @@ public class SinglematchController {
 			Singlematch originMatch=singlematchService.findById(id);
 			List<Singlematchscore> originMatchscores=singlematchscoreService.findByMatchid(id);
 			if(originMatch!=null&&originMatchscores!=null){
-				//扣除原比赛记录所对应的个人积分
-				hcMarginBureau=0;//主场选手的净胜局
-				for(Singlematchscore originMatchscore:originMatchscores){
-					//必须是合法数据
-					if(originMatchscore.getInvalid()==null||originMatchscore.getInvalid()==false){
-						hcMarginBureau+=originMatchscore.getHcscore().intValue()-originMatchscore.getApscore().intValue();
-					}else{
-						continue;
+				//比赛须有效才可删除积分和个人单打冠军得数
+				if(!originMatch.getInvalid().booleanValue()){
+					//扣除原比赛记录所对应的个人积分
+					hcMarginBureau=0;//主场选手的净胜局
+					for(Singlematchscore originMatchscore:originMatchscores){
+						//必须是合法数据
+						if(!originMatchscore.getInvalid().booleanValue()){
+							hcMarginBureau+=originMatchscore.getHcscore().intValue()-originMatchscore.getApscore().intValue();
+						}else{
+							continue;
+						}
 					}
-				}
-				if(!CalculatePoint.deleteIndividual(individualpointService, originMatch, hcMarginBureau)){
-					throw new CustomException("删除个人积分失败");
+					//获取年终赛事的id
+					CalculatePoint calculatePoint=new CalculatePoint(originMatch,hcMarginBureau,tournamentService);
+					if(!calculatePoint.deleteIndividual(individualpointService, originMatch)){
+						throw new CustomException("删除个人积分失败");
+					}else{
+						//删除单打冠军得数
+						deleteSingleTitles(originMatch);
+					}	
 				}else{
-					//删除镜像比赛记录
-					Singlematch mirrorMatch=singlematchService.findMirrorByOrigin(originMatch);
-					if(mirrorMatch!=null){
-						singlematchscoreService.deleteByMatchid(mirrorMatch.getId());
-						singlematchService.deleteById(mirrorMatch.getId());
-					}else{
-						//...
-					}
-					//由于存在外键约束，所以先根据matchid删除比分
-					singlematchscoreService.deleteByMatchid(id);
-					//删除比赛
-					singlematchService.deleteById(id);
+					//...
 				}
+				//删除镜像比赛记录
+				Singlematch mirrorMatch=singlematchService.findMirrorByOrigin(originMatch);
+				if(mirrorMatch!=null){
+					singlematchscoreService.deleteByMatchid(mirrorMatch.getId());
+					singlematchService.deleteById(mirrorMatch.getId());
+				}else{
+					//...
+				}
+				//由于存在外键约束，所以先根据matchid删除比分
+				singlematchscoreService.deleteByMatchid(id);
+				//删除比赛
+				singlematchService.deleteById(id);	
 				return "redirect:list";
 			}else{
 				throw new CustomException("未查询到相关比赛记录，无法进行删除操作！");
@@ -470,6 +482,7 @@ public class SinglematchController {
 			
 		}else if(hcSets<apSets){
 			originMatch.setOutcome(WinLoseEnum.LOSE.getValue());
+			
 			if(originMatch.getHcretired()){//退赛扣分
 				originMatch.setHcpoint(loserPoint-penalty);
 			}else{
@@ -495,6 +508,28 @@ public class SinglematchController {
 			}else{
 				originMatch.setAppoint(average);
 			}
+		}
+		//比赛有效才可更新冠军数量
+		if(originMatch.getInvalid()==null||!originMatch.getInvalid().booleanValue()){
+			//决赛，统计个人单打冠军数量
+			if(originMatch.getRound().equals(RoundEnum.FINAL.getValue())){
+				int singletitles=0;
+				if(originMatch.getOutcome().equals(WinLoseEnum.WIN.getValue())){
+					singletitles=homeContestant.getSingletitles().intValue()+1;
+					homeContestant.setSingletitles(singletitles);
+					userService.updateById(homeContestant);
+				}else if(originMatch.getOutcome().equals(WinLoseEnum.LOSE.getValue())){
+					singletitles=awayPlayer.getSingletitles().intValue()+1;
+					awayPlayer.setSingletitles(singletitles);
+					userService.updateById(awayPlayer);
+				}else{
+					//...
+				}
+			}else{
+				//...
+			}
+		}else{
+			//...
 		}
 	}
 	
@@ -547,5 +582,38 @@ public class SinglematchController {
 		mirrorMatchscore.setHctiescore(originMatchscore.getAptiescore());
 		mirrorMatchscore.setInvalid(originMatchscore.getInvalid());
 		mirrorMatchscore.setNote(originMatchscore.getNote());
+	}
+	
+	/**
+	 * 
+	 * @Author: Fu
+	 * @date: 2017年6月15日 下午9:52:11
+	 * @return: void
+	 * @description: 当更新或删除比赛记录的时候，如果原比赛是决赛，则需要扣除选手的冠军得数
+	 *
+	 */
+	private void deleteSingleTitles(Singlematch singlematch) throws Exception{
+		if(!singlematch.getInvalid().booleanValue()){//有效比赛
+			if(singlematch.getRound().equals(RoundEnum.FINAL.getValue())){
+				User homeContestant=userService.findById(singlematch.getHomecontestant());
+				User awayPlayer=userService.findById(singlematch.getAwayplayer());
+				int singletitles=0;
+				if(singlematch.getOutcome().equals(WinLoseEnum.WIN.getValue())){
+					singletitles=homeContestant.getSingletitles().intValue()-1;
+					homeContestant.setSingletitles(singletitles);
+					userService.updateById(homeContestant);
+				}else if(singlematch.getOutcome().equals(WinLoseEnum.LOSE.getValue())){
+					singletitles=awayPlayer.getSingletitles().intValue()-1;
+					awayPlayer.setSingletitles(singletitles);
+					userService.updateById(awayPlayer);
+				}else{
+					//...
+				}
+			}else{
+				//...
+			}
+		}else{
+			//...
+		}
 	}
 }

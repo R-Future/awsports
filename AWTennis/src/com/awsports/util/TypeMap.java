@@ -17,7 +17,6 @@ public class TypeMap {
 	private static Map<Boolean,String> backhandTypes;
 	private static Map<Boolean,String> sexTypes;
 	private static Map<Integer,String> entryTypes;
-	private static Map<String,Integer> entryReverseTypes;
 	private static Map<Integer,String> teamTypes;
 	private static Map<Integer,String> roundTypes;
 	
@@ -102,28 +101,6 @@ public class TypeMap {
 		entryTypes.put(7, "女双");
 		entryTypes.put(8, "混双");
 		return entryTypes;
-	}
-	
-	/**
-	 * 
-	 * @Author: Fu
-	 * @date: 2017年6月6日
-	 * @return: Map<String,Integer>
-	 * @description: 参赛类型与数据库中数字的反对应关系
-	 *
-	 */
-	public static Map<String,Integer> entryReverseType(){
-		entryReverseTypes=new HashMap<String,Integer>();
-		//Integer会为空对象默认复制0，这样会导致数据查询时，若传入0，则被判定为null
-		entryReverseTypes.put("男单",1);
-		entryReverseTypes.put("女单",2);
-		entryReverseTypes.put("混合单打",3);
-		entryReverseTypes.put("双打男子个人",4);
-		entryReverseTypes.put("双打女子个人",5);
-		entryReverseTypes.put("男双",6);
-		entryReverseTypes.put("女双",7);
-		entryReverseTypes.put("混双",8);
-		return entryReverseTypes;
 	}
 	
 	/**

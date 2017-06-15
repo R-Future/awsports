@@ -50,4 +50,11 @@ public class TournamentServiceImpl implements TournamentService {
 		return tournamentMapper.findDetailById(id);
 	}
 
+	@Override
+	public Tournament findByName(Tournament tournament) throws Exception {
+		// TODO Auto-generated method stub
+		return tournamentMapper.findByName(tournament);
+	}
+
+
 }

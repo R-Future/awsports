@@ -21,7 +21,9 @@
 	</resultMap>
 
 	<select id="findAll" parameterType="com.awsports.pojo.TournamentQuery" resultMap="tournamentMap">
-		select aw_tournament.*,aw_arena.name as 'arena_name' from aw_tournament left join aw_arena on aw_tournament.arenaId=aw_arena.id
+		select aw_tournament.*,aw_arena.name as 'arena_name' 
+		from aw_tournament 
+		join aw_arena on aw_tournament.arenaId=aw_arena.id
 		<where>
 			<!-- 首先要判断类型是否为空！！！！ -->
 			<if test="tournament!=null">
@@ -47,9 +49,15 @@
 	
 	<select id="findDetailById" parameterType="Integer" resultMap="tournamentMap">
 		select aw_tournament.*,aw_arena.name as 'arena_name' 
-		from aw_tournament left join aw_arena on aw_tournament.arenaId=aw_arena.id
+		from aw_tournament 
+		join aw_arena on aw_tournament.arenaId=aw_arena.id
 		where aw_tournament.id=#{id}
 	</select>
+	
+	<select id="findByName" parameterType="com.awsports.pojo.Tournament" resultType="com.awsports.pojo.Tournament">
+		select * from aw_tournament where name like "%${name}%"
+	</select>
+	
 	
 	<update id="updateById" parameterType="com.awsports.pojo.Tournament">
 		update aw_tournament

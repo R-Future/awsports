@@ -31,8 +31,8 @@
 					<label for="entry">组合类型</label>
 					<form:select path="team.entry" id="entry" class="form-control">
 						<option value="0">-请选择-</option>
-						<c:forEach items="${ teamTypes }" var="teamType">
-							<option value="${ teamType.key }">${ teamType.value }</option>
+						<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
+							<option value="${ teamEntryType.key }">${ teamEntryType.value }</option>
 						</c:forEach>
 					</form:select>
 				</div>
@@ -61,7 +61,7 @@
 			<tr>
 			<td>${ item.user1.name }</td>
 			<td>${ item.user2.name }</td>
-			<td>${ teamTypes.get(item.team.entry) }</td>
+			<td>${ teamEntryTypes.get(item.team.entry) }</td>
 			<td><spring:eval expression="item.team.startedat"/></td>
 			<td>${ item.team.note }</td>
 			<td>

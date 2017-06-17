@@ -26,8 +26,8 @@
 			<label for="entry">参赛类型</label>
 			<select name="teampoint.entry" id="entry" class="form-control">
 				<option value="0">-请选择-</option>
-				<c:forEach items="${ teamTypes }" var="teamType">
-					<option value="${ teamType.key }">${ teamType.value }</option>
+				<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
+					<option value="${ teamEntryType.key }">${ teamEntryType.value }</option>
 				</c:forEach>
 			</select>
 		</div>
@@ -57,7 +57,7 @@
 		</tr>
 		<c:forEach items="${teampointQuerys}" var="teampointQuery">
 			<tr>
-			<td>${ teamTypes.get(teampointQuery.teampoint.entry) }</td>
+			<td>${ teamEntryTypes.get(teampointQuery.teampoint.entry) }</td>
 			<td>${ teampointQuery.team.name }</td>
 			<td>${ teampointQuery.teampoint.year }</td>
 			<td>${ teampointQuery.teampoint.week }</td>

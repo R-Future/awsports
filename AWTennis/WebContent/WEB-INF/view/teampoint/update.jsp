@@ -42,13 +42,13 @@
 			<label for="entry">参赛类型</label>
 			<select id="entry" name="entry" class="form-control">
 				<option>-请选择-</option>
-				<c:forEach items="${teamTypes}" var="teamType">
+				<c:forEach items="${teamEntryTypes}" var="teamEntryType">
 					<c:choose>
-						<c:when test="${teamType.key.equals(teampoint.entry)}">
-							<option value="${teamType.key}" selected="selected">${teamType.value}</option>
+						<c:when test="${teamEntryType.key.equals(teampoint.entry)}">
+							<option value="${teamEntryType.key}" selected="selected">${teamEntryType.value}</option>
 						</c:when>
 						<c:otherwise>
-							<option value="${teamType.key}">${teamType.value}</option>
+							<option value="${teamEntryType.key}">${teamEntryType.value}</option>
 						</c:otherwise>
 					</c:choose>	
 				</c:forEach>

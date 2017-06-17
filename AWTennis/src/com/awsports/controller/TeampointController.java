@@ -27,7 +27,7 @@ public class TeampointController {
 	@Autowired
 	private TeamService teamService;
 	
-	private Map<Integer,String> teamTypes=TypeMap.teamType();
+	private Map<Integer,String> teamEntryTypes=TypeMap.teamEntryType();
 	
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class TeampointController {
 	public String list(Model model,TeampointQuery teampointQuery) throws Exception{
 		List<TeampointQuery> teampointQuerys=teampointService.findAll(teampointQuery);
 		model.addAttribute("teampointQuerys",teampointQuerys);
-		model.addAttribute("teamTypes", teamTypes);
+		model.addAttribute("teamEntryTypes", teamEntryTypes);
 		return "teampoint/list";
 	}
 	
@@ -69,7 +69,7 @@ public class TeampointController {
 		List<TeamQuery> teamQuerys=teamService.findAll(null);
 		model.addAttribute("teamQuerys", teamQuerys);
 		//获取组合类型信息
-		model.addAttribute("teamTypes", teamTypes);
+		model.addAttribute("teamEntryTypes", teamEntryTypes);
 		return "teampoint/update";
 	}
 	

@@ -17,7 +17,8 @@ public class TypeMap {
 	private static Map<Boolean,String> backhandTypes;
 	private static Map<Boolean,String> sexTypes;
 	private static Map<Integer,String> entryTypes;
-	private static Map<Integer,String> teamTypes;
+	private static Map<Integer,String> teamEntryTypes;
+	private static Map<Integer,String> individualEntryTypes;
 	private static Map<Integer,String> roundTypes;
 	
 	/**
@@ -105,17 +106,36 @@ public class TypeMap {
 	
 	/**
 	 * 
+	 * @Author: Fu
+	 * @date: 2017年6月17日 下午4:56:29
+	 * @return: Map<Integer,String>
+	 * @description: 单体参赛类型与数据库中数字的对应关系
+	 *
+	 */
+	public static Map<Integer,String> individualEntryType(){
+		individualEntryTypes=new HashMap<Integer,String>();
+		//Integer会为空对象默认复制0，这样会导致数据查询时，若传入0，则被判定为null
+		individualEntryTypes.put(1, "男单");
+		individualEntryTypes.put(2, "女单");
+		individualEntryTypes.put(3, "混合单打");
+		individualEntryTypes.put(4, "双打男子个人");
+		individualEntryTypes.put(5, "双打女子个人");
+		return individualEntryTypes;
+	}
+	
+	/**
+	 * 
 	 * @date: 2017年5月30日
 	 * @return: Map<Integer,String>
 	 * @description: 双打组合类型与数字的映射关系
 	 *
 	 */
-	public static Map<Integer,String> teamType(){
-		teamTypes=new HashMap<Integer,String>();
-		teamTypes.put(6, "男双");
-		teamTypes.put(7, "女双");
-		teamTypes.put(8, "混双");
-		return teamTypes;
+	public static Map<Integer,String> teamEntryType(){
+		teamEntryTypes=new HashMap<Integer,String>();
+		teamEntryTypes.put(6, "男双");
+		teamEntryTypes.put(7, "女双");
+		teamEntryTypes.put(8, "混双");
+		return teamEntryTypes;
 	}
 	
 	/**

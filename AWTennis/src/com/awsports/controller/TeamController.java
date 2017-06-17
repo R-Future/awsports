@@ -38,7 +38,7 @@ public class TeamController {
 	public String list(Model model, TeamQuery teamQuery) throws Exception{
 		List<TeamQuery> teams=teamService.findAll(teamQuery);
 		model.addAttribute("teams", teams);
-		model.addAttribute("teamTypes", TypeMap.teamType());
+		model.addAttribute("teamEntryTypes", TypeMap.teamEntryType());
 		return "team/list";
 	}
 	

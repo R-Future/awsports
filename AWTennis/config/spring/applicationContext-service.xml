@@ -29,5 +29,6 @@
 	<bean id="doublematchscoreService" class="com.awsports.service.impl.DoublematchscoreServiceImpl"/>
 	<bean id="doublematchService" class="com.awsports.service.impl.DoublematchServiceImpl"/>
 	<bean id="teampointService" class="com.awsports.service.impl.TeampointServiceImpl"/>
+	<bean id="punishmentService" class="com.awsports.service.impl.PunishmentServiceImpl"/>
 	
 </beans>

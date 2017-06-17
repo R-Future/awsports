@@ -170,6 +170,33 @@
 			<div class="form-group">
 				<label>主场选手:</label>
 				<c:choose>
+					<c:when test="${ !doublematchQuery.doublematch.ishcchallenger }">
+						<input type="radio" name="doublematch.ishcchallenger" id="HCChallengerF" value="false" checked/>不是挑战者
+						<input type="radio" name="doublematch.ishcchallenger" id="HCChallengerT" value="true"/>是挑战者
+					</c:when>
+					<c:otherwise>
+						<input type="radio" name="doublematch.ishcchallenger" id="HCChallengerF" value="false"/>不是挑战者
+						<input type="radio" name="doublematch.ishcchallenger" id="HCChallengerT" value="true" checked/>是挑战者
+					</c:otherwise>
+				</c:choose>
+			</div>
+			<div class="form-group">
+				<label>客场选手:</label>
+				<c:choose>
+					<c:when test="${ !doublematchQuery.doublematch.isapchallenger }">
+						<input type="radio" name="doublematch.isapchallenger" id="APChallengerF" value="false" checked/>不是挑战者
+						<input type="radio" name="doublematch.isapchallenger" id="APChallengerT" value="true"/>是挑战者
+					</c:when>
+					<c:otherwise>
+						<input type="radio" name="doublematch.isapchallenger" id="APChallengerF" value="false"/>不是挑战者
+						<input type="radio" name="doublematch.isapchallenger" id="APChallengerT" value="true" checked/>是挑战者
+					</c:otherwise>
+				</c:choose>
+			</div>
+			
+			<div class="form-group">
+				<label>主场选手:</label>
+				<c:choose>
 					<c:when test="${ !doublematchQuery.doublematch.hcretired }">
 						<input type="radio" name="doublematch.hcretired" id="HCRetiredF" value="false" checked/>未退赛
 						<input type="radio" name="doublematch.hcretired" id="HCRetiredT" value="true"/>退赛

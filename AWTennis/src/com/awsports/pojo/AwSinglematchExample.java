@@ -1134,6 +1134,126 @@ public class AwSinglematchExample {
             addCriterion("APRetired not between", value1, value2, "apretired");
             return (Criteria) this;
         }
+
+        public Criteria andIshcchallengerIsNull() {
+            addCriterion("isHCChallenger is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerIsNotNull() {
+            addCriterion("isHCChallenger is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerEqualTo(Boolean value) {
+            addCriterion("isHCChallenger =", value, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerNotEqualTo(Boolean value) {
+            addCriterion("isHCChallenger <>", value, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerGreaterThan(Boolean value) {
+            addCriterion("isHCChallenger >", value, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("isHCChallenger >=", value, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerLessThan(Boolean value) {
+            addCriterion("isHCChallenger <", value, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerLessThanOrEqualTo(Boolean value) {
+            addCriterion("isHCChallenger <=", value, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerIn(List<Boolean> values) {
+            addCriterion("isHCChallenger in", values, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerNotIn(List<Boolean> values) {
+            addCriterion("isHCChallenger not in", values, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerBetween(Boolean value1, Boolean value2) {
+            addCriterion("isHCChallenger between", value1, value2, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIshcchallengerNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("isHCChallenger not between", value1, value2, "ishcchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerIsNull() {
+            addCriterion("isAPChallenger is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerIsNotNull() {
+            addCriterion("isAPChallenger is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerEqualTo(Boolean value) {
+            addCriterion("isAPChallenger =", value, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerNotEqualTo(Boolean value) {
+            addCriterion("isAPChallenger <>", value, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerGreaterThan(Boolean value) {
+            addCriterion("isAPChallenger >", value, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("isAPChallenger >=", value, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerLessThan(Boolean value) {
+            addCriterion("isAPChallenger <", value, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerLessThanOrEqualTo(Boolean value) {
+            addCriterion("isAPChallenger <=", value, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerIn(List<Boolean> values) {
+            addCriterion("isAPChallenger in", values, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerNotIn(List<Boolean> values) {
+            addCriterion("isAPChallenger not in", values, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerBetween(Boolean value1, Boolean value2) {
+            addCriterion("isAPChallenger between", value1, value2, "isapchallenger");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsapchallengerNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("isAPChallenger not between", value1, value2, "isapchallenger");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

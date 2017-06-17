@@ -61,6 +61,17 @@
 				</tr>
 			</c:forEach>
 			<tr>
+				<th>挑战者</th>
+				<td>
+					<label>主场选手:</label>
+					<input type="radio" name="singlematchQuerys[${i}].singlematch.ishcchallenger" id="HCChallengerF" value="false" checked/>不是
+					<input type="radio" name="singlematchQuerys[${i}].singlematch.ishcchallenger" id="HCChallengerT" value="true"/>是
+					<label>客场选手:</label>
+					<input type="radio" name="singlematchQuerys[${i}].singlematch.isapchallenger" id="APChallengerF" value="false" checked/>不是
+					<input type="radio" name="singlematchQuerys[${i}].singlematch.isapchallenger" id="APChallengerT" value="true"/>是
+				</td>
+			</tr>
+			<tr>
 				<th>是否退赛</th>
 				<td>
 					<label>主场选手:</label>

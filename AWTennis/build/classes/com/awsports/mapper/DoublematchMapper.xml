@@ -17,6 +17,8 @@
   	<result column="APPoint" property="doublematch.appoint"/>
   	<result column="HCRetired" property="doublematch.hcretired"/>
   	<result column="APRetired" property="doublematch.apretired"/>
+  	<result column="isHCChallenger" property="doublematch.ishcchallenger" />
+    <result column="isAPChallenger" property="doublematch.isapchallenger" />
   	<result column="createdAt" property="doublematch.createdat"/>
   	<result column="updatedAt" property="doublematch.updatedat"/>
   	<result column="invalid" property="doublematch.invalid"/>
@@ -190,6 +192,12 @@
       <if test="apretired != null">
         APRetired,
       </if>
+      <if test="ishcchallenger != null">
+        isHCChallenger,
+      </if>
+      <if test="isapchallenger != null">
+        isAPChallenger,
+      </if>
       <if test="note != null">
         note,
       </if>
@@ -245,6 +253,12 @@
       </if>
       <if test="apretired != null">
         #{apretired,jdbcType=BIT},
+      </if>
+       <if test="ishcchallenger != null">
+        #{ishcchallenger,jdbcType=BIT},
+      </if>
+      <if test="isapchallenger != null">
+        #{isapchallenger,jdbcType=BIT},
       </if>
       <if test="note != null">
         #{note,jdbcType=LONGVARCHAR},
@@ -309,6 +323,12 @@
       </if>
       <if test="apretired != null">
         APRetired = #{apretired,jdbcType=BIT},
+      </if>
+      <if test="ishcchallenger != null">
+        isHCChallenger = #{ishcchallenger,jdbcType=BIT},
+      </if>
+      <if test="isapchallenger != null">
+        isAPChallenger = #{isapchallenger,jdbcType=BIT},
       </if>
       <if test="note != null">
         note = #{note,jdbcType=LONGVARCHAR},

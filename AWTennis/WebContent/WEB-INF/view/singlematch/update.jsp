@@ -170,6 +170,33 @@
 			<div class="form-group">
 				<label>主场选手:</label>
 				<c:choose>
+					<c:when test="${ !singlematchQuery.singlematch.ishcchallenger }">
+						<input type="radio" name="singlematch.ishcchallenger" id="HCChallengerF" value="false" checked/>不是挑战者
+						<input type="radio" name="singlematch.ishcchallenger" id="HCChallengerT" value="true"/>是挑战者
+					</c:when>
+					<c:otherwise>
+						<input type="radio" name="singlematch.ishcchallenger" id="HCChallengerF" value="false"/>不是挑战者
+						<input type="radio" name="singlematch.ishcchallenger" id="HCChallengerT" value="true" checked/>是挑战者
+					</c:otherwise>
+				</c:choose>
+			</div>
+			<div class="form-group">
+				<label>客场选手:</label>
+				<c:choose>
+					<c:when test="${ !singlematchQuery.singlematch.isapchallenger }">
+						<input type="radio" name="singlematch.isapchallenger" id="APChallengerF" value="false" checked/>不是挑战者
+						<input type="radio" name="singlematch.isapchallenger" id="APChallengerT" value="true"/>是挑战者
+					</c:when>
+					<c:otherwise>
+						<input type="radio" name="singlematch.isapchallenger" id="APChallengerF" value="false"/>不是挑战者
+						<input type="radio" name="singlematch.isapchallenger" id="APChallengerT" value="true" checked/>是挑战者
+					</c:otherwise>
+				</c:choose>
+			</div>
+			
+			<div class="form-group">
+				<label>主场选手:</label>
+				<c:choose>
 					<c:when test="${ !singlematchQuery.singlematch.hcretired }">
 						<input type="radio" name="singlematch.hcretired" id="HCRetiredF" value="false" checked/>未退赛
 						<input type="radio" name="singlematch.hcretired" id="HCRetiredT" value="true"/>退赛
@@ -181,7 +208,7 @@
 				</c:choose>
 			</div>
 			
-			<div>
+			<div class="form-group">
 				<label>客场选手:</label>
 				<c:choose>
 					<c:when test="${ !singlematchQuery.singlematch.apretired }">
@@ -195,7 +222,7 @@
 				</c:choose>	
 		 	</div>
 		 	
-		 	<div>
+		 	<div class="form-group">
 				<label>比赛是否有效</label>
 				<c:choose>
 					<c:when test="${ !singlematchQuery.singlematch.invalid }">

@@ -41,6 +41,10 @@ public class AwSinglematch {
     private Boolean hcretired;
 
     private Boolean apretired;
+    
+    private Boolean ishcchallenger;
+
+    private Boolean isapchallenger;
 
     private String note;
 
@@ -180,7 +184,23 @@ public class AwSinglematch {
         this.apretired = apretired;
     }
 
-    public String getNote() {
+    public Boolean getIshcchallenger() {
+		return ishcchallenger;
+	}
+
+	public void setIshcchallenger(Boolean ishcchallenger) {
+		this.ishcchallenger = ishcchallenger;
+	}
+
+	public Boolean getIsapchallenger() {
+		return isapchallenger;
+	}
+
+	public void setIsapchallenger(Boolean isapchallenger) {
+		this.isapchallenger = isapchallenger;
+	}
+
+	public String getNote() {
         return note;
     }
 

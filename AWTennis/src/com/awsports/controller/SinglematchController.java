@@ -192,65 +192,65 @@ public class SinglematchController {
 									 Integer tournamentid,
 									 Integer round,
 									 Integer sets) throws Exception{
-		List<SinglematchQuery> singlematchQuerys=singlematchQueryVo.getSinglematchQuerys();
-		if(br.hasErrors()){
-			model.addAttribute("errors", br);
-			return "singlematch/add";
-		}else{
-			//查询当前赛事本轮次的积分计算规则
-			Pointrule pointrule=new Pointrule();
-			pointrule.setTournamentid(tournamentid);
-			pointrule.setRound(round);
-			pointrule=pointruleService.findByTournamentIdAndRound(pointrule);
-			if(pointrule!=null&&!pointrule.getInvalid()){
-				winnerPoint=pointrule.getWinner().intValue();
-				loserPoint=pointrule.getLoser().intValue();
-				penalty=pointrule.getPenalty().intValue();
-				for(SinglematchQuery singlematchQuery:singlematchQuerys){
-					Singlematch originMatch=singlematchQuery.getSinglematch();
-					List<Singlematchscore> originMatchscores=singlematchQuery.getSinglematchscores();
-					originMatch.setMatchtime(matchtime);//比赛时间
-					originMatch.setMatchplace(matchplace);//比赛地点
-					originMatch.setTournamentid(tournamentid);//赛事类型
-					originMatch.setRound(round);//比赛轮次
-					originMatch.setSets(sets);//比赛盘数
-					setOriginMatch(originMatch,originMatchscores);//设置比赛记录保存项
-					//save single match record
-					singlematchService.insertOne(originMatch);
-					//exchange the home contestant and away player, then save another match record
-					Singlematch mirrorMatch=new Singlematch();
-					setMirrorMatch(originMatch,mirrorMatch);//设置镜像比赛保存项
-					singlematchService.insertOne(mirrorMatch);
-					//save match scores
-					Integer originMatchid=originMatch.getId();
-					Integer mirrorMatchid=mirrorMatch.getId();
-					Singlematchscore mirrorMatchscore=null;
-					for(Singlematchscore originMatchscore:originMatchscores){
-						//origin match score
-						originMatchscore.setMatchid(originMatchid);
-						singlematchscoreService.insertOne(originMatchscore);
-						//mirror match score
-						mirrorMatchscore=new Singlematchscore();
-						setMirrorMatchscore(originMatchscore,mirrorMatchscore,mirrorMatchid);
-						singlematchscoreService.insertOne(mirrorMatchscore);
-						
-					}
-					//比赛有效才可更新积分
-					if(originMatch.getInvalid()==null||!originMatch.getInvalid().booleanValue()){
-						//更新个人积分
-						//获取年终赛事的id
-						CalculatePoint calculatePoint=new CalculatePoint(originMatch,hcMarginBureau,tournamentService);
-						if(!calculatePoint.individual(individualpointService,originMatch)){
-							throw new CustomException("积分保存失败");
-						}			
-					}else{
-						continue;
-					}
-				}
-				return "redirect:add";
+		if(singlematchQueryVo!=null){
+			List<SinglematchQuery> singlematchQuerys=singlematchQueryVo.getSinglematchQuerys();
+			if(br.hasErrors()){
+				model.addAttribute("errors", br);
+				return "singlematch/add";
 			}else{
-				throw new CustomException("未匹配到当前赛事本轮次的积分");
+				if(singlematchQuerys==null){
+					throw new CustomException("比赛信息为空，无法保存！");
+				}else{
+					if(getPointrule(tournamentid,round)){
+						for(SinglematchQuery singlematchQuery:singlematchQuerys){
+							Singlematch originMatch=singlematchQuery.getSinglematch();
+							List<Singlematchscore> originMatchscores=singlematchQuery.getSinglematchscores();
+							originMatch.setMatchtime(matchtime);//比赛时间
+							originMatch.setMatchplace(matchplace);//比赛地点
+							originMatch.setTournamentid(tournamentid);//赛事类型
+							originMatch.setRound(round);//比赛轮次
+							originMatch.setSets(sets);//比赛盘数
+							setOriginMatch(originMatch,originMatchscores);//设置比赛记录保存项
+							//save single match record
+							singlematchService.insertOne(originMatch);
+							//exchange the home contestant and away player, then save another match record
+							Singlematch mirrorMatch=new Singlematch();
+							setMirrorMatch(originMatch,mirrorMatch);//设置镜像比赛保存项
+							singlematchService.insertOne(mirrorMatch);
+							//save match scores
+							Integer originMatchid=originMatch.getId();
+							Integer mirrorMatchid=mirrorMatch.getId();
+							Singlematchscore mirrorMatchscore=null;
+							for(Singlematchscore originMatchscore:originMatchscores){
+								//origin match score
+								originMatchscore.setMatchid(originMatchid);
+								singlematchscoreService.insertOne(originMatchscore);
+								//mirror match score
+								mirrorMatchscore=new Singlematchscore();
+								setMirrorMatchscore(originMatchscore,mirrorMatchscore,mirrorMatchid);
+								singlematchscoreService.insertOne(mirrorMatchscore);
+								
+							}
+							//比赛有效才可更新积分
+							if(originMatch.getInvalid()==null||!originMatch.getInvalid().booleanValue()){
+								//更新个人积分
+								//获取年终赛事的id
+								CalculatePoint calculatePoint=new CalculatePoint(originMatch,hcMarginBureau,tournamentService);
+								if(!calculatePoint.individual(individualpointService,originMatch)){
+									throw new CustomException("积分保存失败");
+								}			
+							}else{
+								continue;
+							}
+						}
+						return "redirect:add";
+					}else{
+						throw new CustomException("未匹配到当前赛事本轮次的积分");
+					}
+				}//end if(singlematchQuerys==null)
 			}
+		}else{
+			throw new CustomException("非法操作！");
 		}
 	}
 	
@@ -297,15 +297,7 @@ public class SinglematchController {
 				}
 			}
 			
-			//对修改后的比赛重新计算个人积分
-			Pointrule pointrule=new Pointrule();
-			pointrule.setTournamentid(originMatch.getTournamentid());
-			pointrule.setRound(originMatch.getRound());
-			pointrule=pointruleService.findByTournamentIdAndRound(pointrule);
-			if(pointrule!=null&&!pointrule.getInvalid()){
-				winnerPoint=pointrule.getWinner().intValue();
-				loserPoint=pointrule.getLoser().intValue();
-				penalty=pointrule.getPenalty().intValue();
+			if(getPointrule(originMatch.getTournamentid(),originMatch.getRound())){
 				setOriginMatch(originMatch,originMatchscores);			
 				//save single match record
 				singlematchService.updateById(originMatch);
@@ -453,8 +445,8 @@ public class SinglematchController {
 		int apScore=0;
 		hcMarginBureau=0;//home contestant's margin bureau;
 		for(Singlematchscore originMatchscore:originMatchscores){
-			//必须是合法数据
-			if(originMatchscore.getInvalid()==null||originMatchscore.getInvalid()==false){
+			//必须是有效比分
+			if(originMatchscore.getInvalid()==null||!originMatchscore.getInvalid().booleanValue()){
 				hcScore=originMatchscore.getHcscore().intValue();
 				apScore=originMatchscore.getApscore().intValue();
 				hcMarginBureau+=hcScore-apScore;
@@ -463,31 +455,54 @@ public class SinglematchController {
 				}else if(hcScore<apScore){
 					apSets++;
 				}else{
-					//...
+					continue;
 				}
+			}else{
+				continue;
 			}
 		}
-		if(hcSets>apSets){
+		if(hcSets>apSets){//主场选手胜
 			originMatch.setOutcome(WinLoseEnum.WIN.getValue());
+			//主场选手
 			if(originMatch.getHcretired()){//退赛扣分
 				originMatch.setHcpoint(winnerPoint-penalty);
 			}else{
 				originMatch.setHcpoint(winnerPoint);
 			}
+			//客场选手
 			if(originMatch.getApretired()){//退赛扣分
-				originMatch.setAppoint(loserPoint-penalty);
-			}else{
-				originMatch.setAppoint(loserPoint);
+				if(originMatch.getIsapchallenger().booleanValue()){
+					//如果败者为挑战者
+					originMatch.setAppoint(-penalty);
+				}else{
+					originMatch.setAppoint(loserPoint-penalty);
+				}	
+			}else{//未退赛
+				if(originMatch.getIsapchallenger().booleanValue()){
+					//如果败者为挑战者
+					originMatch.setAppoint(0);
+				}else{
+					originMatch.setAppoint(loserPoint);
+				}
 			}
 			
-		}else if(hcSets<apSets){
+		}else if(hcSets<apSets){//客场选手胜
 			originMatch.setOutcome(WinLoseEnum.LOSE.getValue());
-			
+			//主场选手
 			if(originMatch.getHcretired()){//退赛扣分
-				originMatch.setHcpoint(loserPoint-penalty);
+				if(originMatch.getIshcchallenger().booleanValue()){
+					originMatch.setHcpoint(-penalty);
+				}else{
+					originMatch.setHcpoint(loserPoint-penalty);
+				}				
 			}else{
-				originMatch.setHcpoint(loserPoint);
+				if(originMatch.getIshcchallenger().booleanValue()){
+					originMatch.setHcpoint(0);
+				}else{
+					originMatch.setHcpoint(loserPoint);
+				}		
 			}
+			//客场选手
 			if(originMatch.getApretired()){//退赛扣分
 				originMatch.setAppoint(winnerPoint-penalty);
 			}else{
@@ -614,6 +629,30 @@ public class SinglematchController {
 			}
 		}else{
 			//...
+		}
+	}
+	
+	/**
+	 * 
+	 * @Author: Fu
+	 * @date: 2017年6月16日 上午10:44:32
+	 * @return: boolean
+	 * @description: 获取赛事的某个轮次的积分
+	 *
+	 */
+	private boolean getPointrule(Integer tournamentid,Integer round) throws Exception{
+		//对修改后的比赛重新计算个人积分
+		Pointrule pointrule=new Pointrule();
+		pointrule.setTournamentid(tournamentid);
+		pointrule.setRound(round);
+		pointrule=pointruleService.findByTournamentIdAndRound(pointrule);
+		if(pointrule!=null&&!pointrule.getInvalid().booleanValue()){
+			winnerPoint=pointrule.getWinner().intValue();
+			loserPoint=pointrule.getLoser().intValue();
+			penalty=pointrule.getPenalty().intValue();
+			return true;
+		}else{
+			return false;
 		}
 	}
 }

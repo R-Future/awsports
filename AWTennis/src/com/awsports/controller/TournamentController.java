@@ -16,6 +16,7 @@ import com.awsports.pojo.TournamentQuery;
 import com.awsports.service.ArenaService;
 import com.awsports.service.PointruleService;
 import com.awsports.service.TournamentService;
+import com.awsports.util.CustomException;
 import com.awsports.util.TypeMap;
 
 /**
@@ -36,6 +37,17 @@ public class TournamentController {
 	@Autowired
 	private PointruleService pointruleService;
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:25:30
+	 * @param model
+	 * @param tournamentQuery
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 赛事信息列表
+	 *
+	 */
 	@RequestMapping("/list")
 	public String list(Model model, TournamentQuery tournamentQuery) throws Exception{
 		List<TournamentQuery> tournaments=tournamentService.findAll(tournamentQuery);
@@ -43,6 +55,17 @@ public class TournamentController {
 		return "tournament/list";
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:25:48
+	 * @param model
+	 * @param id
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 赛事详细信息，包括赛事积分规则
+	 *
+	 */
 	@RequestMapping("/detail")
 	public String detail(Model model, Integer id) throws Exception{
 		//根据ID查找赛事信息
@@ -55,6 +78,17 @@ public class TournamentController {
 		return "tournament/detail";
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:26:22
+	 * @param model
+	 * @param id
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 更新或添加赛事信息
+	 *
+	 */
 	@RequestMapping("/update")
 	public String update(Model model, Integer id) throws Exception{
 		Tournament tournament=null;
@@ -69,6 +103,18 @@ public class TournamentController {
 		return "tournament/update";
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:26:54
+	 * @param tournament
+	 * @param br
+	 * @param model
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 保存修改后的赛事信息
+	 *
+	 */
 	@RequestMapping("/save")
 	public String save(@Validated Tournament tournament, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
@@ -84,10 +130,24 @@ public class TournamentController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:27:17
+	 * @param id
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 删除赛事
+	 *
+	 */
 	@RequestMapping("/delete")
 	public String delete(Integer id) throws Exception{
-		tournamentService.deleteById(id);
-		return "redirect:list";
+		if(id==null){
+			throw new CustomException("非法操作！");
+		}else{
+			tournamentService.deleteById(id);
+			return "redirect:list";
+		}
 	}
 	
 }

@@ -49,4 +49,10 @@ public class TeampointServiceImpl implements TeampointService {
 		teampointMapper.deleteById(id);
 	}
 
+	@Override
+	public List<Teampoint> findByEntryYearWeek(Teampoint teampoint) throws Exception {
+		// TODO Auto-generated method stub
+		return teampointMapper.findByEntryYearWeek(teampoint);
+	}
+
 }

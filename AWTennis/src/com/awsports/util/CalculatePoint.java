@@ -1,7 +1,5 @@
 package com.awsports.util;
 
-import java.util.Calendar;
-
 import com.awsports.pojo.Doublematch;
 import com.awsports.pojo.Individualpoint;
 import com.awsports.pojo.Singlematch;
@@ -15,7 +13,6 @@ public class CalculatePoint{
 	
 	private int year;
 	private int week;
-	private Calendar date;
 	private Integer[] playerids=new Integer[2];
 	private int[] points=new int[2];
 	private int[] marginBureaus=new int[2];
@@ -25,12 +22,9 @@ public class CalculatePoint{
 	private Tournament tournament;
 	
 	public CalculatePoint(Singlematch singlematch,int hcMarginBureau,TournamentService tournamentService){
-		date=Calendar.getInstance();
-		date.setTime(singlematch.getMatchtime());
-		//设置每周的第一天为周一，默认为周日
-		date.setFirstDayOfWeek(Calendar.MONDAY);
-		year=date.get(Calendar.YEAR);
-		week=date.get(Calendar.WEEK_OF_YEAR);
+		CustomDate customDate=new CustomDate(singlematch.getMatchtime());
+		year=customDate.getYear();
+		week=customDate.getWeek();
 		playerids[0]=singlematch.getHomecontestant();
 		playerids[1]=singlematch.getAwayplayer();
 	    points[0]=singlematch.getHcpoint();
@@ -58,12 +52,9 @@ public class CalculatePoint{
 	}
 	
 	public CalculatePoint(Doublematch doublematch,int hcMarginBureau,TournamentService tournamentService){
-		date=Calendar.getInstance();
-		date.setTime(doublematch.getMatchtime());
-		//设置每周的第一天为周一，默认为周日
-		date.setFirstDayOfWeek(Calendar.MONDAY);
-		year=date.get(Calendar.YEAR);
-		week=date.get(Calendar.WEEK_OF_YEAR);
+		CustomDate customDate=new CustomDate(doublematch.getMatchtime());
+		year=customDate.getYear();
+		week=customDate.getWeek();
 		playerids[0]=doublematch.getHomecontestant();
 		playerids[1]=doublematch.getAwayplayer();
 		points[0]=doublematch.getHcpoint();

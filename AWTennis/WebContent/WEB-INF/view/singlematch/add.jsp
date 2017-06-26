@@ -13,48 +13,48 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){		
-		var tbodys=document.getElementsByClassName("interimScores");
-		//根据比赛盘数动态添加比分记录，默认一盘
-		$("input#singlematchSets").change(function(){
-			var sets=$("input#singlematchSets").val();
-			clear(tbodys);//清空之前创建的表格
-			for(var k=0;k<tbodys.length;k++){
-				for(var i=1;i<sets;i++){
-					var tr=document.createElement("tr");
-					var th=document.createElement("th");
-					var td=document.createElement("td");
-					var text1=document.createTextNode("第");
-					var text2=document.createTextNode("盘");
-					var inputSetth=document.createElement("input");
-					var inputHCScore=document.createElement("input");
-					var inputHCTieScore=document.createElement("input");
-					var inputAPScore=document.createElement("input");
-					var inputAPTieScore=document.createElement("input");
-					var text3=document.createTextNode(":");
-					inputSetth.setAttribute("name","singlematchscore.setth");
-					inputSetth.setAttribute("type","number");
-					th.appendChild(text1);
-					th.appendChild(inputSetth);
-					th.appendChild(text2);
-					inputHCScore.setAttribute("name","singlematchscore.hcscore");
-					inputHCScore.setAttribute("type","number");
-					inputHCTieScore.setAttribute("name","singlematchscore.hctiescore");
-					inputHCTieScore.setAttribute("type","number");
-					inputAPScore.setAttribute("name","singlematchscore.apscore");
-					inputAPScore.setAttribute("type","number");
-					inputAPTieScore.setAttribute("name","singlematchscore.aptiescore");
-					inputAPTieScore.setAttribute("type","number");
-					td.appendChild(inputHCScore);
-					td.appendChild(inputHCTieScore);
-					td.appendChild(text3);
-					td.appendChild(inputAPScore);
-					td.appendChild(inputAPTieScore);
-					tr.appendChild(th);
-					tr.appendChild(td);
-					tbodys[k].appendChild(tr);
-				}	
-			}
-		});
+// 		var tbodys=document.getElementsByClassName("interimScores");
+// 		//根据比赛盘数动态添加比分记录，默认一盘
+// 		$("input#singlematchSets").change(function(){
+// 			var sets=$("input#singlematchSets").val();
+// 			clear(tbodys);//清空之前创建的表格
+// 			for(var k=0;k<tbodys.length;k++){
+// 				for(var i=1;i<sets;i++){
+// 					var tr=document.createElement("tr");
+// 					var th=document.createElement("th");
+// 					var td=document.createElement("td");
+// 					var text1=document.createTextNode("第");
+// 					var text2=document.createTextNode("盘");
+// 					var inputSetth=document.createElement("input");
+// 					var inputHCScore=document.createElement("input");
+// 					var inputHCTieScore=document.createElement("input");
+// 					var inputAPScore=document.createElement("input");
+// 					var inputAPTieScore=document.createElement("input");
+// 					var text3=document.createTextNode(":");
+// 					inputSetth.setAttribute("name","singlematchscore.setth");
+// 					inputSetth.setAttribute("type","number");
+// 					th.appendChild(text1);
+// 					th.appendChild(inputSetth);
+// 					th.appendChild(text2);
+// 					inputHCScore.setAttribute("name","singlematchscore.hcscore");
+// 					inputHCScore.setAttribute("type","number");
+// 					inputHCTieScore.setAttribute("name","singlematchscore.hctiescore");
+// 					inputHCTieScore.setAttribute("type","number");
+// 					inputAPScore.setAttribute("name","singlematchscore.apscore");
+// 					inputAPScore.setAttribute("type","number");
+// 					inputAPTieScore.setAttribute("name","singlematchscore.aptiescore");
+// 					inputAPTieScore.setAttribute("type","number");
+// 					td.appendChild(inputHCScore);
+// 					td.appendChild(inputHCTieScore);
+// 					td.appendChild(text3);
+// 					td.appendChild(inputAPScore);
+// 					td.appendChild(inputAPTieScore);
+// 					tr.appendChild(th);
+// 					tr.appendChild(td);
+// 					tbodys[k].appendChild(tr);
+// 				}	
+// 			}
+// 		});
 		//动态添加比赛记录
 		$("a#add").click(function(){
 			$.ajax({
@@ -71,13 +71,13 @@
 		
 	});
 	
-	function clear(tbodys){
-		for(var i=0;i<tbodys.length;i++){
-			while(tbodys[i].childNodes.length>0){
-				tbodys[i].removeChild(tbodys[i].firstChild)
-			}
-		}
-	}
+// 	function clear(tbodys){
+// 		for(var i=0;i<tbodys.length;i++){
+// 			while(tbodys[i].childNodes.length>0){
+// 				tbodys[i].removeChild(tbodys[i].firstChild)
+// 			}
+// 		}
+// 	}
 </script>
 </head>
 <body>

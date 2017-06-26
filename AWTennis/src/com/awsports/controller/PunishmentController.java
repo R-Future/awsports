@@ -17,6 +17,7 @@ import com.awsports.pojo.User;
 import com.awsports.service.PunishmentService;
 import com.awsports.service.TournamentService;
 import com.awsports.service.UserService;
+import com.awsports.util.CustomException;
 import com.awsports.util.TypeMap;
 
 @Controller
@@ -114,7 +115,11 @@ public class PunishmentController {
 	 */
 	@RequestMapping("delete")
 	public String delete(Integer id) throws Exception{
-		punishmentService.deleteById(id);
-		return "redirect:list";
+		if(id==null){
+			throw new CustomException("非法操作！");
+		}else{
+			punishmentService.deleteById(id);
+			return "redirect:list";
+		}
 	}
 }

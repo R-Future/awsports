@@ -101,7 +101,11 @@ public class TeampointController {
 	
 	@RequestMapping("/delete")
 	public String delete(Integer id) throws Exception{
-		teampointService.deleteById(id);
-		return "redirect:list";
+		if(id==null){
+			throw new CustomException("非法操作！");
+		}else{
+			teampointService.deleteById(id);
+			return "redirect:list";
+		}
 	}
 }

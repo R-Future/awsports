@@ -54,6 +54,12 @@
   	select * from aw_individualpoint
 	where userid=#{userid} and entry=#{entry} and year=#{year} and week=#{week}
   </select>
+  <!-- 用户计算个人排名 -->
+  <select id="findByEntryYearWeek" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
+  	select * from aw_individualpoint
+	where entry in (#{manSingleEntry},#{womanSingleEntry},#{entry}) and (year=#{year} or (year=#{lastYear} and (week between #{week} and 55)))
+	order by aw_individualpoint.userId ASC
+  </select>
   
   <select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Individualpoint">
   	select * from aw_individualpoint where id=#{id}

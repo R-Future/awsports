@@ -34,6 +34,17 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:27:55
+	 * @param model
+	 * @param user
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 用户信息列表
+	 *
+	 */
 	@RequestMapping(value="/list",method={RequestMethod.GET,RequestMethod.POST})
 	public String list(Model model,User user) throws Exception{
 		List<User> users=userService.findAll(user);
@@ -44,6 +55,17 @@ public class UserController {
 		return "user/list";
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:28:15
+	 * @param model
+	 * @param id
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 更新或添加用户
+	 *
+	 */
 	@RequestMapping(value="/update",method={RequestMethod.GET,RequestMethod.POST})
 	public String update(Model model,Integer id)  throws Exception{
 		User user=null;
@@ -59,6 +81,18 @@ public class UserController {
 		return "user/update";
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:28:33
+	 * @param user
+	 * @param validationResult
+	 * @param model
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 保存修改后的用户信息
+	 *
+	 */
 	@RequestMapping(value="/save")
 	public String save(@Validated User user, BindingResult validationResult, Model model) throws Exception{
 		if(validationResult.hasErrors()){
@@ -82,13 +116,23 @@ public class UserController {
 		
 	}
 
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:28:53
+	 * @param id
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 删除用户
+	 *
+	 */
 	@RequestMapping("/delete")
 	public String delete(Integer id) throws Exception{
-		try{
+		if(id==null){
+			throw new CustomException("非法操作！");
+		}else{
 			userService.deleteById(id);
-		}catch(Exception e){
-			e.printStackTrace();
+			return "redirect:list";
 		}
-		return "redirect:list";
 	}
 }

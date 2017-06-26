@@ -21,6 +21,7 @@ import com.awsports.pojo.TeamQuery;
 import com.awsports.pojo.User;
 import com.awsports.service.TeamService;
 import com.awsports.service.UserService;
+import com.awsports.util.CustomException;
 import com.awsports.util.EntryEnum;
 import com.awsports.util.SexEnum;
 import com.awsports.util.TypeMap;
@@ -34,6 +35,17 @@ public class TeamController {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:23:35
+	 * @param model
+	 * @param teamQuery
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 组合信息列表
+	 *
+	 */
 	@RequestMapping("/list")
 	public String list(Model model, TeamQuery teamQuery) throws Exception{
 		List<TeamQuery> teams=teamService.findAll(teamQuery);
@@ -42,6 +54,17 @@ public class TeamController {
 		return "team/list";
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:23:47
+	 * @param model
+	 * @param id
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 更新或添加组合
+	 *
+	 */
 	@RequestMapping("/update")
 	public String update(Model model, Integer id) throws Exception{
 		Team team=null;
@@ -55,6 +78,18 @@ public class TeamController {
 		return "team/update";
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:24:01
+	 * @param team
+	 * @param br
+	 * @param model
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 保存修改后的组合信息
+	 *
+	 */
 	@RequestMapping("/save")
 	public String save(@Validated Team team, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
@@ -92,10 +127,24 @@ public class TeamController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年6月26日 下午6:24:16
+	 * @param id
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 删除组合
+	 *
+	 */
 	@RequestMapping("/delete")
 	public String delete(Integer id) throws Exception{
-		teamService.deleteById(id);
-		return "redirect:list";
+		if(id==null){
+			throw new CustomException("非法操作！");
+		}else{
+			teamService.deleteById(id);
+			return "redirect:list";
+		}
 	}
 	
 	/**

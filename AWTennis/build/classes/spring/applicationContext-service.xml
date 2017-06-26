@@ -30,5 +30,9 @@
 	<bean id="doublematchService" class="com.awsports.service.impl.DoublematchServiceImpl"/>
 	<bean id="teampointService" class="com.awsports.service.impl.TeampointServiceImpl"/>
 	<bean id="punishmentService" class="com.awsports.service.impl.PunishmentServiceImpl"/>
+	<bean id="individualrankService" class="com.awsports.service.impl.IndividualrankServiceImpl"/>
+	<bean id="individualrankestService" class="com.awsports.service.impl.IndividualrankestServiceImpl"/>
+	<bean id="teamrankService" class="com.awsports.service.impl.TeamrankServiceImpl"/>
+	<bean id="teamrankestService" class="com.awsports.service.impl.TeamrankestServiceImpl"/>
 	
 </beans>

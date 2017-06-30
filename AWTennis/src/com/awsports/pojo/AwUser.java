@@ -62,6 +62,8 @@ public class AwUser {
     private Boolean invalid;
     
     private Integer grade;
+    
+    private Integer privilege;
 
     public Integer getGrade() {
 		return grade;
@@ -246,4 +248,12 @@ public class AwUser {
     public void setInvalid(Boolean invalid) {
         this.invalid = invalid;
     }
+
+	public Integer getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(Integer privilege) {
+		this.privilege = privilege;
+	}
 }

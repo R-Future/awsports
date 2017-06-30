@@ -27,6 +27,7 @@
 	    <result column="updatedAt" jdbcType="TIMESTAMP" property="user.updatedat" />
 	    <result column="invalid" jdbcType="BIT" property="user.invalid" />
 	    <result column="grade" jdbcType="INTEGER" property="user.grade" />
+	    <result column="privilege" jdbcType="INTEGER" property="privilege" />
 	    <result column="note" jdbcType="CHAR" property="user.note" />
 	    <association property="level" javaType="com.awsports.pojo.Level">
 	    	<id column="grade" property="id"/>
@@ -137,6 +138,9 @@
 	      <if test="grade != null">
 	        grade = #{grade,jdbcType=INTEGER},
 	      </if>
+	      <if test="privilege != null">
+	        privilege = #{privilege,jdbcType=INTEGER},
+	      </if>
 	    </set>
 	    where id = #{id,jdbcType=INTEGER}
   	</update>
@@ -214,6 +218,9 @@
 	      <if test="grade != null">
 	        grade,
 	      </if>
+	      <if test="privilege != null">
+	        privilege,
+	      </if>
 	    </trim>
 	    <trim prefix="values (" suffix=")" suffixOverrides=",">
 	      <if test="id != null">
@@ -284,6 +291,9 @@
 	      </if>
 	      <if test="grade != null">
 	        #{grade,jdbcType=INTEGER},
+	      </if>
+	      <if test="privilege != null">
+	        #{privilege,jdbcType=INTEGER},
 	      </if>
 	    </trim>
 	</insert>

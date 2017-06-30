@@ -14,8 +14,6 @@ import com.awsports.util.MD5;
 @Controller
 public class LoginController {
 	
-	private String adminName="admin";
-	private String adminPassword="admin";
 	@Autowired
 	private UserService userService;
 	
@@ -26,18 +24,24 @@ public class LoginController {
 			user.setName(username);
 			user=userService.findByName(user);
 			if(user!=null){
-				if(user.getPassword().equals(MD5.Encode(password))){
-					if(rememberMe!=null&&rememberMe.booleanValue()){
-						
+				//判断是否是管理员
+				if(user.getPrivilege()!=null&&user.getPrivilege().intValue()==1){
+					if(user.getPassword().equals(MD5.Encode(password))){
+						if(rememberMe!=null&&rememberMe.booleanValue()){
+							
+						}else{
+							//...
+						}
+						//存入session
+						session.setAttribute("username", username);
+						return "redirect:/user/list";
 					}else{
-						//...
+						model.addAttribute("username", username);
+						model.addAttribute("error", "密码错误！");
+						return "login";
 					}
-					//存入session
-					session.setAttribute("username", username);
-					return "redirect:/user/list";
 				}else{
-					model.addAttribute("username", username);
-					model.addAttribute("error", "密码错误！");
+					model.addAttribute("error", "对不起，您没有登陆权限！请联系管理员！");
 					return "login";
 				}
 			}else{

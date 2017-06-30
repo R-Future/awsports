@@ -1574,6 +1574,66 @@ public class AwUserExample {
             addCriterion("grade not between", value1, value2, "grade");
             return (Criteria) this;
         }
+
+        public Criteria andPrivilegeIsNull() {
+            addCriterion("privilege is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeIsNotNull() {
+            addCriterion("privilege is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeEqualTo(Integer value) {
+            addCriterion("privilege =", value, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeNotEqualTo(Integer value) {
+            addCriterion("privilege <>", value, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeGreaterThan(Integer value) {
+            addCriterion("privilege >", value, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("privilege >=", value, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeLessThan(Integer value) {
+            addCriterion("privilege <", value, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeLessThanOrEqualTo(Integer value) {
+            addCriterion("privilege <=", value, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeIn(List<Integer> values) {
+            addCriterion("privilege in", values, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeNotIn(List<Integer> values) {
+            addCriterion("privilege not in", values, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeBetween(Integer value1, Integer value2) {
+            addCriterion("privilege between", value1, value2, "privilege");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrivilegeNotBetween(Integer value1, Integer value2) {
+            addCriterion("privilege not between", value1, value2, "privilege");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -11,14 +11,7 @@
   <select id="findByTournamentIdAndRound" parameterType="com.awsports.pojo.Pointrule" resultType="com.awsports.pojo.Pointrule">
   	select *
     from aw_pointrule
-    <where>
-		<if test="tournamentid!=null">
-			and tournamentId = #{tournamentid,jdbcType=INTEGER}
-		</if>
-		<if test="round!=null">
-			and round = #{round, jdbcType=INTEGER}
-		</if>   
-    </where> 
+	where tournamentId = #{tournamentid,jdbcType=INTEGER} and round = #{round, jdbcType=INTEGER}
   </select>
   
   <select id="findById" parameterType="java.lang.Integer" resultType="com.awsports.pojo.Pointrule">

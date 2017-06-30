@@ -32,9 +32,9 @@
 					<if test=" activity.name!=null and activity.name!='' ">
 						and aw_activity.name like "%${activity.name}%"
 					</if>	
-					<if test="(activity.startedat!=null and activity.startedat!='') and (activity.endedat!=null and activity.endedat!='') ">
-					  	and (aw_activity.startedAt between #{activity.startedat} and #{activity.endedat})
-					  	and (aw_activity.endedAt between #{activity.startedat} and #{activity.endedat})
+					<if test="(activity.startTime!=null and activity.startTime!='') and (activity.endTime!=null and activity.endTime!='') ">
+					  	and (aw_activity.startedAt between #{activity.startTime} and #{activity.endTime})
+					  	and (aw_activity.endedAt between #{activity.startTime} and #{activity.endTime})
 					</if>
 				</if>
 				<if test="arena!=null">

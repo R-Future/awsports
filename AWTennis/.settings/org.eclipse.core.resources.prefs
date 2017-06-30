@@ -1,4 +1,7 @@
 eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/view/footer.jsp=UTF-8
+encoding//WebContent/WEB-INF/view/header.jsp=UTF-8
+encoding//WebContent/WEB-INF/view/json/menu.json=UTF-8
 encoding//WebContent/WEB-INF/view/success.jsp=UTF-8
 encoding//src/com/awsports/service/impl/UserServiceImpl.java=UTF-8
 encoding/<project>=UTF-8

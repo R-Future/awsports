@@ -24,7 +24,7 @@
     <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
     <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
     <result column="invalid" jdbcType="BIT" property="invalid" />
-    <result column="grade" jdbcType="VARCHAR" property="grade" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -135,7 +135,7 @@
       #{playedyears,jdbcType=DOUBLE}, #{forehand,jdbcType=INTEGER}, #{backhand,jdbcType=BIT}, 
       #{address,jdbcType=CHAR}, #{singletitles,jdbcType=INTEGER}, #{doubletitles,jdbcType=INTEGER}, 
       #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
-      #{grade,jdbcType=VARCHAR})
+      #{grade,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwUser">
     insert into aw_user
@@ -278,7 +278,7 @@
         #{invalid,jdbcType=BIT},
       </if>
       <if test="grade != null">
-        #{grade,jdbcType=VARCHAR},
+        #{grade,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -358,7 +358,7 @@
         invalid = #{record.invalid,jdbcType=BIT},
       </if>
       <if test="record.grade != null">
-        grade = #{record.grade,jdbcType=VARCHAR},
+        grade = #{record.grade,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -389,7 +389,7 @@
       createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT},
-      grade = #{record.grade,jdbcType=VARCHAR}
+      grade = #{record.grade,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -461,7 +461,7 @@
         invalid = #{invalid,jdbcType=BIT},
       </if>
       <if test="grade != null">
-        grade = #{grade,jdbcType=VARCHAR},
+        grade = #{grade,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -489,7 +489,7 @@
       createdAt = #{createdat,jdbcType=TIMESTAMP},
       updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT},
-      grade = #{grade,jdbcType=VARCHAR}
+      grade = #{grade,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

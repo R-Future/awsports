@@ -17,7 +17,7 @@ import com.awsports.pojo.Individualpoint;
 import com.awsports.pojo.Individualrank;
 import com.awsports.pojo.IndividualrankQuery;
 import com.awsports.pojo.Individualrankest;
-import com.awsports.pojo.User;
+import com.awsports.pojo.UserQuery;
 import com.awsports.service.IndividualpointService;
 import com.awsports.service.IndividualrankService;
 import com.awsports.service.IndividualrankestService;
@@ -62,6 +62,8 @@ public class IndividualrankController {
 		model.addAttribute("individualrankQuerys", individualrankQuerys);
 		//获取个人参赛类型
 		model.addAttribute("individualEntryTypes", individualEntryTypes);
+		//获取性别类型
+		model.addAttribute("sexTypes", TypeMap.sexType());
 		return "individualrank/list";
 	}
 	
@@ -90,8 +92,8 @@ public class IndividualrankController {
 		//获取个人参赛类型
 		model.addAttribute("individualEntryTypes", individualEntryTypes);
 		//获取用户名
-		List<User> users=userService.findAll(null);
-		model.addAttribute("users", users);
+		List<UserQuery> userQuerys=userService.findAll(null);
+		model.addAttribute("userQuerys", userQuerys);
 		return "individualrank/update";
 	}
 	

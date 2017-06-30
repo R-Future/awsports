@@ -2,6 +2,7 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -10,9 +11,11 @@ public class AwActivity {
 
     private String name;
 
-    private String startedat;
-
-    private String endedat;
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date startedat;
+    
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date endedat;
 
     private Integer arenaid;
 
@@ -41,19 +44,19 @@ public class AwActivity {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getStartedat() {
+    public Date getStartedat() {
         return startedat;
     }
 
-    public void setStartedat(String startedat) {
+    public void setStartedat(Date startedat) {
         this.startedat = startedat;
     }
 
-    public String getEndedat() {
+    public Date getEndedat() {
         return endedat;
     }
 
-    public void setEndedat(String endedat) {
+    public void setEndedat(Date endedat) {
         this.endedat = endedat;
     }
 

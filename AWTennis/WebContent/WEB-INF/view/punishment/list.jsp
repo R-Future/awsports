@@ -4,60 +4,90 @@
 <!-- 使用注解的方式格式化输出数据 -->
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>个人扣分信息</title>
-<!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
+<title>退赛扣分</title>
 </head>
-<body>
-<div class="container-fluid">
-	<form:form class="form-inline" action="list" method="post" modelAttribute="punishmentQuery">
-		<div class="form-group">
-			<label for="userName">用户名</label>
-			<form:input path="user.name" id="userName" class="form-control"/>
-		</div>
-		<div class="form-group">
-			<label for="entry">参赛类型</label>
-			<form:select path="punishment.entry" id="entry" class="form-control">
-				<form:option value="0">-请选择-</form:option>
-				<c:forEach items="${ individualEntryTypes }" var="individualEntryType">
-					<form:option value="${ individualEntryType.key }">${ individualEntryType.value }</form:option>
-				</c:forEach>
-			</form:select>
-		</div>
-		<button type="submit" class="btn btn-default">查询</button>
-	</form:form>
-	<a href="<%=request.getContextPath()%>/punishment/update">添加个人扣分</a>
- 	<table class="table table-striped table-responsive">
-		<tr>
-		<td>用户名</td>
-		<td>赛事类型</td>
-		<td>比赛时间</td>
-		<td>参赛类型</td>
-		<td>扣除分数</td>
-		<td>注释</td>
-		<td>操作</td>
-		</tr>
-		<c:forEach items="${punishmentQuerys}" var="punishmentQuery">
-			<tr>
-			<td>${ punishmentQuery.user.name }</td>
-			<td>${ punishmentQuery.tournament.name }</td>
-			<td><spring:eval expression="punishmentQuery.punishment.matchtime" /></td>
-			<td>${ individualEntryTypes.get(punishmentQuery.punishment.entry) }</td>
-			<td>${ punishmentQuery.punishment.points }</td>
-			<td>${ item.tournament.note }</td>
-			<td>
-				<a href="<%=request.getContextPath()%>/punishment/update?id=${punishmentQuery.punishment.id}">修改</a>
-				<a href="<%=request.getContextPath()%>/punishment/delete?id=${punishmentQuery.punishment.id}">删除</a>
-			</td>
-			</tr>
-		</c:forEach>
-	</table>
+<jsp:include page="../header.jsp"/>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+	  <h1>退赛扣分</h1>
+	  <!-- 面包屑 -->
+	  <ol class="breadcrumb">
+        <li><a href="<%=request.getContextPath()%>"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">退赛扣分</li>
+      </ol>
+	</section>
+	
+	<!-- Main content -->
+	<section class="content">
+	<div class="container-fluid">
+		<form:form class="form-inline" action="list" method="post" modelAttribute="punishmentQuery">
+			<div class="form-group">
+				<label for="userName">用户名</label>
+				<form:input path="user.name" id="userName" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label for="entry">参赛类型</label>
+				<form:select path="punishment.entry" id="entry" class="form-control">
+					<form:option value="0">-请选择-</form:option>
+					<c:forEach items="${ individualEntryTypes }" var="individualEntryType">
+						<form:option value="${ individualEntryType.key }">${ individualEntryType.value }</form:option>
+					</c:forEach>
+				</form:select>
+			</div>
+			<button type="submit" class="btn btn-default">查询</button>
+		</form:form>
+		<hr class="hrStyle">
+		<a href="<%=request.getContextPath()%>/punishment/update" title="添加个人扣分" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">个人扣分列表</h3>
+			</div>
+			<div class="box-body">
+		 	<table id="punishment_list" class="table table-striped table-bordered">
+		 		<thead>
+				<tr>
+				<th>#</th>
+				<th>用户名</th>
+				<th>赛事类型</th>
+				<th>比赛时间</th>
+				<th>参赛类型</th>
+				<th>扣除分数</th>
+				<th>注释</th>
+				<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:if test="${punishmentQuerys.size()>0}">
+					<c:forEach var="i" begin="0" end="${punishmentQuerys.size()-1}" step="1">
+						<tr>
+						<td>${ i+1 }</td>
+						<td>${ punishmentQuerys[i].user.name }</td>
+						<td>${ punishmentQuerys[i].tournament.name }</td>
+						<td><spring:eval expression="punishmentQuerys[${i}].punishment.matchtime" /></td>
+						<td>${ individualEntryTypes.get(punishmentQuerys[i].punishment.entry) }</td>
+						<td>${ punishmentQuerys[i].punishment.points }</td>
+						<td>${ punishmentQuerys[i].tournament.note }</td>
+						<td>
+							<a href="<%=request.getContextPath()%>/punishment/update?id=${punishmentQuerys[i].punishment.id}" title="修改"><i class="fa fa-edit"></i></a>
+							<a href="<%=request.getContextPath()%>/punishment/delete?id=${punishmentQuerys[i].punishment.id}" title="删除"><i class="fa fa-trash"></i></a>
+						</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				</tbody>
+			</table>
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
+	</div>
+	</section>
 </div>
-</body>
-</html>
+<script>
+	$(function(){
+		$("table#punishment_list").DataTable();
+	});
+</script>
+<jsp:include page="../footer.jsp"/>

@@ -11,9 +11,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.awsports.pojo.Level;
 import com.awsports.pojo.User;
+import com.awsports.pojo.UserQuery;
+import com.awsports.service.LevelService;
 import com.awsports.service.UserService;
 import com.awsports.util.CustomException;
+import com.awsports.util.MD5;
 import com.awsports.util.TypeMap;
 
 /**
@@ -33,7 +37,8 @@ public class UserController {
 	//注入service
 	@Autowired
 	private UserService userService;
-	
+	@Autowired
+	private LevelService levelService;
 	/**
 	 * 
 	 * @Author: peRFect
@@ -46,9 +51,9 @@ public class UserController {
 	 *
 	 */
 	@RequestMapping(value="/list",method={RequestMethod.GET,RequestMethod.POST})
-	public String list(Model model,User user) throws Exception{
-		List<User> users=userService.findAll(user);
-		model.addAttribute("users", users);
+	public String list(Model model,UserQuery userQuery) throws Exception{
+		List<UserQuery> userQuerys=userService.findAll(userQuery);
+		model.addAttribute("userQuerys", userQuerys);
 		model.addAttribute("sexTypes", TypeMap.sexType());
 		model.addAttribute("forehandTypes",TypeMap.forehandType());
 		model.addAttribute("backhandTypes", TypeMap.backhandType());
@@ -78,7 +83,12 @@ public class UserController {
 		model.addAttribute("sexTypes", TypeMap.sexType());
 		model.addAttribute("forehandTypes", TypeMap.forehandType());
 		model.addAttribute("backhandTypes", TypeMap.backhandType());
+		//获取俱乐部等级信息
+		List<Level> levels=levelService.findAll(null);
+		model.addAttribute("levels", levels);
 		return "user/update";
+		
+		
 	}
 	
 	/**
@@ -97,21 +107,18 @@ public class UserController {
 	public String save(@Validated User user, BindingResult validationResult, Model model) throws Exception{
 		if(validationResult.hasErrors()){
 			model.addAttribute("errors", validationResult);
-			return "user/update";
-		}
-		try{
+			return "redirect:update";
+		}else{
+			//对密钥进行MD5加密
+			String password=user.getPassword();
+			user.setPassword(MD5.Encode(password));
 			if(user.getId()!=null){//更新用户
 				userService.updateById(user);
 			}else{//添加用户
 				userService.insertOne(user);
 			}
-//			return "user/save";
 			//用户信息修改或添加成功后跳转到用户列表页面
 			return "redirect:list";
-		}catch(CustomException e){
-			e.setMessage("数据存储失败");
-			model.addAttribute("errorMessage", e.getMessage());
-			return "error";
 		}
 		
 	}

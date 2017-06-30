@@ -30,9 +30,9 @@
 				<if test=" tournament.name!=null and tournament.name!='' ">
 					and aw_tournament.name like "%${tournament.name}%"
 				</if>	
-				<if test="(tournament.startedat!=null and tournament.startedat!='') and (tournament.endedat!=null and tournament.endedat!='') ">
-				  	and (aw_tournament.startedAt between #{tournament.startedat} and #{tournament.endedat})
-				  	and (aw_tournament.endedAt between #{tournament.startedat} and #{tournament.endedat})
+				<if test="(tournament.startTime!=null and tournament.startTime!='') and (tournament.endTime!=null and tournament.endTime!='') ">
+				  	and (aw_tournament.startedAt between #{tournament.startTime} and #{tournament.endTime})
+				  	and (aw_tournament.endedAt between #{tournament.startTime} and #{tournament.endTime})
 				</if>
 			</if>
 			<if test="arena!=null">

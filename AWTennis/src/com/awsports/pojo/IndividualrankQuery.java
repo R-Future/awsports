@@ -2,17 +2,17 @@ package com.awsports.pojo;
 
 public class IndividualrankQuery {
 	private Individualrank individualrank;
-	private User user;
+	private UserQuery userQuery;
 	public Individualrank getIndividualrank() {
 		return individualrank;
 	}
 	public void setIndividualrank(Individualrank individualrank) {
 		this.individualrank = individualrank;
 	}
-	public User getUser() {
-		return user;
+	public UserQuery getUserQuery() {
+		return userQuery;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserQuery(UserQuery userQuery) {
+		this.userQuery = userQuery;
 	}
 }

@@ -16,17 +16,26 @@
     <result column="createdAt" jdbcType="TIMESTAMP" property="individualrank.createdat" />
     <result column="updatedAt" jdbcType="TIMESTAMP" property="individualrank.updatedat" />
     <result column="invalid" jdbcType="BIT" property="individualrank.invalid" />
-    <association property="user" javaType="com.awsports.pojo.User">
-    	<id column="userId" property="id"/>
-    	<result column="user_name" property="name"/>
+    <association property="userQuery" javaType="com.awsports.pojo.UserQuery">
+    	<id column="userId" property="user.id"/>
+    	<result column="user_name" property="user.name"/>
+    	<result column="user_grade" property="user.grade"/>
+    	<result column="user_sex" property="user.sex"/>
+    	<association property="level" javaType="com.awsports.pojo.Level">
+    		<id column="user_grade" property="id"/>
+    		<result column="level_chinese" property="chinese"/>
+    	</association>
     </association>
   </resultMap>
   <sql id="individualrankQuery_where">
-  	<if test="user!=null">
-  		<if test="user.name!=null and user.name!=''">
-  			and aw_user.name like "%${user.name}%"
+ 	 <if test="userQuery!=null">
+	  	<if test="userQuery.user!=null">
+	  		<if test="userQuery.user.name!=null and userQuery.user.name!=''">
+	  			and aw_user.name like "%${userQuery.user.name}%"
+	  		</if>
   		</if>
   	</if>
+  	
   	<if test="individualrank!=null">
   		<if test="individualrank.entry!=null and individualrank.entry.intValue()!=0">
   			and aw_individualrank.entry=#{individualrank.entry}
@@ -36,9 +45,13 @@
   <select id="findAll" parameterType="com.awsports.pojo.IndividualrankQuery" resultMap="individualrankQueryMap">
     SELECT
 	aw_individualrank.*,
-	aw_user.name as user_name
+	aw_user.name as user_name,
+	aw_user.sex as user_sex,
+	aw_user.grade as user_grade,
+	aw_level.chinese as level_chinese
 	from aw_individualrank
 	join aw_user on aw_user.id=aw_individualrank.userId
+	join aw_level on aw_user.grade=aw_level.id
 	<where>
 		<include refid="individualrankQuery_where"/>
 	</where>

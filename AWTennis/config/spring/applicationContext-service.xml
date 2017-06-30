@@ -34,5 +34,6 @@
 	<bean id="individualrankestService" class="com.awsports.service.impl.IndividualrankestServiceImpl"/>
 	<bean id="teamrankService" class="com.awsports.service.impl.TeamrankServiceImpl"/>
 	<bean id="teamrankestService" class="com.awsports.service.impl.TeamrankestServiceImpl"/>
+	<bean id="levelService" class="com.awsports.service.impl.LevelServiceImpl"/>
 	
 </beans>

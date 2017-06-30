@@ -5,102 +5,124 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!-- spring自带的form表单 -->
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>个人排名</title>
-<!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("a#update").click(function(){
-			var entrys=$("input[name='entrys']:checked").serialize();
-			$.ajax({
-				type:"post",
-				url:"updateRank",
-				contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-				data:entrys,
-				success:function(){
-					alert("更新成功！");
-				}
-			});
-		});
-	});
-</script>
 </head>
-<body>
-<div class="container-fluid">
-	<div class="">
-		<form:form class="form-inline" action="list" method="post" modelAttribute="individualrankQuery">
-			<div class="form-group">
-				<label for="userName">用户名</label>
-				<form:input type="text" path="user.name" id="userName" class="form-control"/>
-			</div>
-			<div class="form-group">
-				<label for="entry">参赛类型</label>
-				<form:select path="individualrank.entry" id="entry" class="form-control">
-					<c:forEach items="${ individualEntryTypes }" var="individualEntryType">
-						<form:option value="${ individualEntryType.key }">${ individualEntryType.value }</form:option>
-					</c:forEach>
-				</form:select>
-			</div>
-			<button type="submit" class="btn btn-default">查询</button>
-		</form:form>
-	</div>
+<jsp:include page="../header.jsp"/>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+	  <h1>个人排名</h1>
+	  <!-- 面包屑 -->
+	  <ol class="breadcrumb">
+        <li><a href="<%=request.getContextPath()%>"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">个人排名</li>
+      </ol>
+	</section>
 	
-	<div class="updateRank">
-		<div class="entry">
+	<!-- Main content -->
+	<section class="content">
+	<div class="container-fluid">
+		<div class="">
+		<fieldset>
+			<legend>查询</legend>
+			<form:form class="form-inline" action="list" method="post" modelAttribute="individualrankQuery">
+				<div class="form-group">
+					<label for="userName">用户名</label>
+					<form:input type="text" path="userQuery.user.name" id="userName" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="entry">参赛类型</label>
+					<form:select path="individualrank.entry" id="entry" class="form-control">
+						<form:option value="0">-请选择-</form:option>
+						<c:forEach items="${ individualEntryTypes }" var="individualEntryType">
+							<form:option value="${ individualEntryType.key }">${ individualEntryType.value }</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<button type="submit" class="btn btn-default">查询</button>
+			</form:form>
+		</fieldset>
+		</div>
+
+		<div class="entrys">
+		<fieldset>
+			<legend>更新排名</legend>
 			<c:forEach items="${ individualEntryTypes }" var="individualEntryType">
 				<input type="checkbox" name="entrys" value="${ individualEntryType.key }">${ individualEntryType.value }
 			</c:forEach>
+			<a href="javascript:void(0)" id="update" title="更新排名" class="btn btn-primary"><i class="fa fa-refresh"></i></a>
+		</fieldset>
 		</div>
-		<div class="updateButton">
-			<a id="update">更新排名</a>
+		
+		<hr class="hrStyle"/>
+		<div class="addActive">
+			<a href="<%=request.getContextPath()%>/individualrank/update" title="添加个人排名" class="btn btn-primary"><i class="fa fa-plus"></i></a>
 		</div>
-	</div>
-	
-	<div class="addActive">
-		<a href="<%=request.getContextPath()%>/individualrank/update">添加个人排名</a>
-	</div>
-	
-	<div class="list">
-	 	<table class="table table-striped table-responsive">
-			<tr>
-			<td>参赛类型</td>
-			<td>当前排名</td>
-			<td>选手</td>
-			<td>总积分</td>
-			<td>总场数</td>
-			<td>胜场数</td>
-			<td>净胜局</td>	
-			<td>年份</td>
-			<td>周</td>
-			<td>注释</td>
-			<td>操作</td>
-			</tr>
-			<c:forEach items="${individualrankQuerys}" var="individualrankQuery">
+		
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">个人排名列表</h3>
+			</div>
+			<div class="box-body">
+		 	<table id="individualrank_list" class="table table-striped table-bordered">
+		 		<thead>
 				<tr>
-				<td>${ individualEntryTypes.get(individualrankQuery.individualrank.entry) }</td>
-				<td>${ individualrankQuery.individualrank.currentrank }</td>
-				<td>${ individualrankQuery.user.name }</td>
-				<td>${ individualrankQuery.individualrank.totalpoint }</td>
-				<td>${ individualrankQuery.individualrank.totalmatchs }</td>
-				<td>${ individualrankQuery.individualrank.wins }</td>
-				<td>${ individualrankQuery.individualrank.totalmarginbureau }</td>
-				<td>${ individualrankQuery.individualrank.year }</td>
-				<td>${ individualrankQuery.individualrank.week }</td>
-				<td>${ individualrankQuery.individualrank.note }</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/individualrank/update?id=${individualrankQuery.individualrank.id}">修改</a>
-					<a href="<%=request.getContextPath()%>/individualrank/delete?id=${individualrankQuery.individualrank.id}">删除</a>
-				</td>
+				<th>#</th>
+				<th>参赛类型</th>
+				<th>当前排名</th>
+				<th>选手</th>
+				<th>俱乐部等级</th>
+				<th>性别</th>
+				<th>总积分</th>
+				<th>总场数</th>
+				<th>胜场数</th>
+				<th>胜率</th>
+				<th>净胜局</th>	
+				<th>年份</th>
+				<th>周</th>
+				<th>注释</th>
+				<th>操作</th>
 				</tr>
-			</c:forEach>
-		</table>
+				</thead>
+				<tbody>
+				<c:if test="${individualrankQuerys.size()>0}">
+					<c:forEach var="i" begin="0" end="${individualrankQuerys.size()-1}" step="1">
+						<tr>
+						<td>${ i+1 }</td>
+						<td>${ individualEntryTypes.get(individualrankQuerys[i].individualrank.entry) }</td>
+						<td>${ individualrankQuerys[i].individualrank.currentrank }</td>
+						<td>${ individualrankQuerys[i].userQuery.user.name }</td>
+						<td>${ individualrankQuerys[i].userQuery.level.chinese }</td>
+						<td>${ sexTypes.get(individualrankQuerys[i].userQuery.user.sex) }</td>
+						<td>${ individualrankQuerys[i].individualrank.totalpoint }</td>
+						<td>${ individualrankQuerys[i].individualrank.totalmatchs }</td>
+						<td>${ individualrankQuerys[i].individualrank.wins }</td>
+						<td><fmt:formatNumber type="percent" maxIntegerDigits="3" value="${ individualrankQuerys[i].individualrank.wins/individualrankQuerys[i].individualrank.totalmatchs }"/></td>
+						<td>${ individualrankQuerys[i].individualrank.totalmarginbureau }</td>
+						<td>${ individualrankQuerys[i].individualrank.year }</td>
+						<td>${ individualrankQuerys[i].individualrank.week }</td>
+						<td>${ individualrankQuerys[i].individualrank.note }</td>
+						<td>
+							<a href="<%=request.getContextPath()%>/individualrank/update?id=${individualrankQuerys[i].individualrank.id}" title="修改"><i class="fa fa-edit"></i></a>
+							<a href="<%=request.getContextPath()%>/individualrank/delete?id=${individualrankQuerys[i].individualrank.id}" title="删除"><i class="fa fa-trash"></i></a>
+						</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				</tbody>
+			</table>
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
 	</div>
+	</section>
 </div>
-</body>
-</html>
+<script>
+	$(function(){
+		$("table#individualrank_list").DataTable();
+	});
+</script>
+<jsp:include page="../footer.jsp"/>

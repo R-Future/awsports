@@ -4,19 +4,27 @@
 <!-- 使用注解的方式格式化输出数据 -->
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>单打比赛</title>
-<!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
 </head>
-<body>
-<div class="container-fluid">
-	<div class="row">
+<jsp:include page="../header.jsp"/>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+	  <h1>单打比赛</h1>
+	  <!-- 面包屑 -->
+	  <ol class="breadcrumb">
+        <li><a href="<%=request.getContextPath()%>"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">单打比赛</li>
+      </ol>
+	</section>
+	
+	<!-- Main content -->
+	<section class="content">
+	<div class="container-fluid">
+		<div class="row">
 		<form:form class="form-inline" action="list" method="post" modelAttribute="singlematchQuery">
 			<div class="col-md-12">
 				<div class="form-group">
@@ -27,8 +35,6 @@
 					<label for="user2">客场选手</label>
 					<form:input path="user2.name" class="form-control"/>
 				</div>
-			</div>
-			<div class="col-md-12">
 				<div class="form-group">
 					<label for="tournamentName">赛事名称</label>
 					<form:input path="tournament.name" class="form-control"/>
@@ -41,62 +47,119 @@
 			<div class="col-md-12">
 				<div class="form-group">
 					<label for="startedAt">比赛时间</label>
-					<form:input type="date" path="singlematch.startedat" class="form-control"/>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-clock-o"></i>
+						</div>
+						<form:input type="date" path="singlematch.startedat" class="form-control date" data-date-format="yyyy-mm-dd"/>
+					</div>
 					-
 					<label for="endedAt"></label>
-					<form:input type="date" path="singlematch.endedat" class="form-control"/>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-clock-o"></i>
+						</div>
+						<form:input type="date" path="singlematch.endedat" class="form-control date" data-date-format="yyyy-mm-dd"/>
+					</div>
 				</div>
 				<button type="submit" class="btn btn-default">查询</button>
 			</div>
 		</form:form>
-	</div>
-	
-	<a href="<%=request.getContextPath()%>/singlematch/add">添加赛事</a>
-	
-	<div class="row">
-	 	<table class="table table-striped table-responsive">
-			<tr>
-			<th>比赛地点</th>
-			<th>比赛时间</th>
-			<th>赛事名称</th>
-			<th>参赛类型</th>
-			<th>轮次</th>
-			<th>盘数</th>
-			<th>主vs客</th>
-			<th>比分</th>
-			<th>注释</th>
-			<th>操作</th>
-			</tr>
-			<c:forEach items="${singlematchs}" var="item">
-				<tr>	
-				<td>${ item.arena.name }</td>
-				<td><spring:eval expression="item.singlematch.matchtime"/></td>
-				<td>${ item.tournament.name }</td>
-				<td>${ entryTypes.get(item.singlematch.entry) }</td>
-				<td>${ roundTypes.get(item.singlematch.round) }</td>
-				<td>${ item.singlematch.sets }</td>
-				<td>${ item.user1.name } vs ${ item.user2.name }</td>
-				<td>
-					<c:forEach items="${ item.singlematchscores }" var="singlematchscore">
-						<c:choose>
-						<c:when test="${ singlematchscore.hctiescore.intValue()>0||singlematchscore.aptiescore.intValue()>0 }">
-							${ singlematchscore.hcscore }(${ singlematchscore.hctiescore }):${ singlematchscore.apscore }(${ singlematchscore.aptiescore })
-						</c:when>
-						<c:otherwise>
-							${ singlematchscore.hcscore }:${ singlematchscore.apscore }
-						</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</td>
-				<td>${ item.singlematch.note }</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/singlematch/update?id=${item.singlematch.id}">修改</a>
-					<a href="<%=request.getContextPath()%>/singlematch/delete?id=${item.singlematch.id}">删除</a>
-				</td>
+		</div>
+		
+		<hr class="hrStyle"/>
+		
+		<a href="<%=request.getContextPath()%>/singlematch/add" title="添加赛事" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+		
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">单打比赛列表</h3>
+			</div>
+			<div class="box-body">
+		 	<table id="singlematch_list" class="table table-striped table-bordered">
+		 		<thead>
+				<tr>
+				<th>#</th>
+				<th>比赛地点</th>
+				<th>比赛时间</th>
+				<th>赛事名称</th>
+				<th>参赛类型</th>
+				<th>轮次</th>
+				<th>盘数</th>
+				<th>主vs客</th>
+				<th>比分</th>
+				<th>注释</th>
+				<th>操作</th>
 				</tr>
-			</c:forEach>
-		</table>
+				</thead>
+				<tbody>
+				<c:if test="${ singlematchs.size()>0 }">
+					<c:forEach var="i" begin="0" end="${ singlematchs.size()-1 }" step="1">
+						<tr>
+						<td>${ i+1 }</td>
+						<td>${ singlematchs[i].arena.name }</td>
+						<td><spring:eval expression="singlematchs[${i}].singlematch.matchtime"/></td>
+						<td>${ singlematchs[i].tournament.name }</td>
+						<td>${ entryTypes.get(singlematchs[i].singlematch.entry) }</td>
+						<td>${ roundTypes.get(singlematchs[i].singlematch.round) }</td>
+						<td>${ singlematchs[i].singlematch.sets }</td>
+						<td>${ singlematchs[i].user1.name } vs ${ singlematchs[i].user2.name }</td>
+						<td>
+							<c:forEach items="${ singlematchs[i].singlematchscores }" var="singlematchscore">
+								<c:choose>
+								<c:when test="${ singlematchscore.hctiescore.intValue()>0||singlematchscore.aptiescore.intValue()>0 }">
+									${ singlematchscore.hcscore }(${ singlematchscore.hctiescore }):${ singlematchscore.apscore }(${ singlematchscore.aptiescore })
+								</c:when>
+								<c:otherwise>
+									${ singlematchscore.hcscore }:${ singlematchscore.apscore }
+								</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</td>
+						<td>${ singlematchs[i].singlematch.note }</td>
+						<td>
+							<a href="<%=request.getContextPath()%>/singlematch/update?id=${singlematchs[i].singlematch.id}" title="修改"><i class="fa fa-edit"></i></a>
+							<a href="<%=request.getContextPath()%>/singlematch/delete?id=${singlematchs[i].singlematch.id}" title="删除"><i class="fa fa-trash"></i></a>
+						</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				</tbody>
+			</table>
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
 	</div>
+	</section>
 </div>
-</body>
-</html>
+<script>
+	$(function(){
+		$("table#singlematch_list").DataTable();
+	});
+	var date=new Date();
+	$("input.date").datepicker({
+		/* 当选择一个日期之后是否立即关闭此日期时间选择器 */
+		autoclose:true,
+		/* 日期时间选择器打开之后首先显示的视图。 可接受的值：
+	    0 or 'hour' for the hour view
+	    1 or 'day' for the day view
+	    2 or 'month' for month view (the default)
+	    3 or 'year' for the 12-month overview
+	    4 or 'decade' for the 10-year overview. Useful for date-of-birth datetimepickers. */
+		startView:2,
+		/* 一周从哪天开始0（星期日）到6（星期六） */
+		weekStart:1,
+		/* 是否允许通过方向键改变日期 */
+		keyboardNavigation:true,
+		/* 时间格式 */
+		format:'yyyy-mm-dd',
+		/* 开始时间，该时间前的所有时间不能选择 */
+		/* startDate:date, */
+		/* 当前日期按钮 */
+		todayBtn: true,
+		/* 当天日期高亮 */
+		todayHighlight: true,
+		/* 显示语言 */
+		language: 'zh-CN'
+	});
+</script>
+<jsp:include page="../footer.jsp"/>

@@ -14,6 +14,8 @@ public class UserQuery {
 	
 	//用户信息
 	private User user;
+	
+	private Level level;
 
 	public User getUser() {
 		return user;
@@ -21,6 +23,14 @@ public class UserQuery {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
 	}
 
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.awsports.pojo.Individualpoint;
 import com.awsports.pojo.IndividualpointQuery;
-import com.awsports.pojo.User;
+import com.awsports.pojo.UserQuery;
 import com.awsports.service.IndividualpointService;
 import com.awsports.service.UserService;
 import com.awsports.util.CustomException;
@@ -63,8 +63,8 @@ public class IndividualpointController {
 		}
 		model.addAttribute("individualpoint", individualpoint);
 		//用户
-		List<User> users=userService.findAll(null);
-		model.addAttribute("users", users);
+		List<UserQuery> userQuerys=userService.findAll(null);
+		model.addAttribute("userQuerys", userQuerys);
 		//参赛类型
 		model.addAttribute("entryTypes", entryTypes);
 		return "individualpoint/update";

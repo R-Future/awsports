@@ -7,12 +7,7 @@
 		id="WebApp_ID" version="2.5">
 	<display-name>AWTennis</display-name>
 	<welcome-file-list>
-		 <welcome-file>index.html</welcome-file>
-		 <welcome-file>index.htm</welcome-file>
-		 <welcome-file>index.jsp</welcome-file>
-		 <welcome-file>default.html</welcome-file>
-		 <welcome-file>default.htm</welcome-file>
-		 <welcome-file>default.jsp</welcome-file>
+		 <welcome-file>index</welcome-file>
 	</welcome-file-list>
 	
 	 <!-- 配置监听器，监听spring的配置文件，该文件用于将mapper,service,controller加载到spring容器中 -->
@@ -65,5 +60,11 @@
 		 2. /，即所有地址都由DispatcherServlet解析，但需要配置静态文件不由其解析，该方法可实现RESTful风格的URL
 		 -->
 		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 默认欢迎页面 -->
+	 <servlet-mapping>  
+		<servlet-name>awTennis</servlet-name>
+		<url-pattern>/index</url-pattern>  
 	</servlet-mapping>
 </web-app>

@@ -61,13 +61,13 @@ public class AwUser {
 
     private Boolean invalid;
     
-    private String grade;
+    private Integer grade;
 
-    public String getGrade() {
+    public Integer getGrade() {
 		return grade;
 	}
 
-	public void setGrade(String grade) {
+	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
 

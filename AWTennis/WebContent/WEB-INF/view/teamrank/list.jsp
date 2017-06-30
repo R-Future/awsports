@@ -5,103 +5,119 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!-- spring自带的form表单 -->
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>组合排名</title>
-<!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
-<%-- <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/updateRank.js"></script> --%>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("a#update").click(function(){
-			var entrys=$("input[name='entrys']:checked").serialize();
-			$.ajax({
-				type:"post",
-				url:"updateRank",
-				contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-				data:entrys,
-				success:function(){
-					alert("更新成功！");
-				}
-			});
-		});
+</head>
+<jsp:include page="../header.jsp"/>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+	  <h1>组合排名</h1>
+	  <!-- 面包屑 -->
+	  <ol class="breadcrumb">
+        <li><a href="<%=request.getContextPath()%>"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">组合排名</li>
+      </ol>
+	</section>
+	
+	<!-- Main content -->
+	<section class="content">
+	<div class="container-fluid">
+		<div class="">
+		<fieldset>
+			<legend>查询</legend>
+			<form:form class="form-inline" action="list" method="post" modelAttribute="teamrankQuery">
+				<div class="form-group">
+					<label for="teamName">用户名</label>
+					<form:input type="text" path="team.name" id="teamName" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="entry">参赛类型</label>
+					<form:select path="teamrank.entry" id="entry" class="form-control">
+						<form:option value="0">-请选择-</form:option>
+						<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
+							<form:option value="${ teamEntryType.key }">${ teamEntryType.value }</form:option>
+						</c:forEach>
+					</form:select>
+				</div>
+				<button type="submit" class="btn btn-default">查询</button>
+			</form:form>
+		</fieldset>
+		</div>
+		
+		<div class="entry">
+			<fieldset>
+				<legend><font>更新排名</font></legend>
+				<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
+					<input type="checkbox" name="entrys" value="${ teamEntryType.key }">${ teamEntryType.value }
+				</c:forEach>
+				<a href="javascript:void(0)" id="update" title="更新排名" class="btn btn-primary"><i class="fa fa-refresh"></i></a>
+			</fieldset>
+		</div>
+		<hr class="hrStyle"/>
+		<div class="add">
+			<a href="<%=request.getContextPath()%>/teamrank/update" title="添加组合排名" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+		</div>
+		
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">组合排名列表</h3>
+			</div>
+			<div class="box-body">
+			 	<table id="teamrank_list" class="table table-striped table-bordered">
+			 		<thead>
+					<tr>
+					<th>#</th>
+					<th>参赛类型</th>
+					<th>当前排名</th>
+					<th>选手</th>
+					<th>总积分</th>
+					<th>总场数</th>
+					<th>胜场数</th>
+					<th>胜率</th>
+					<th>净胜局</th>	
+					<th>年份</th>
+					<th>周</th>
+					<th>注释</th>
+					<th>操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<c:if test="${teamrankQuerys.size()>0}">
+						<c:forEach var="i" begin="0" end="${ teamrankQuerys.size()-1 }" step="0">
+							<tr>
+							<td>${ i+1 }</td>
+							<td>${ teamEntryTypes.get(teamrankQuerys[i].teamrank.entry) }</td>
+							<td>${ teamrankQuerys[i].teamrank.currentrank }</td>
+							<td>${ teamrankQuerys[i].team.name }</td>
+							<td>${ teamrankQuerys[i].teamrank.totalpoint }</td>
+							<td>${ teamrankQuerys[i].teamrank.totalmatchs }</td>
+							<td>${ teamrankQuerys[i].teamrank.wins }</td>
+							<td><fmt:formatNumber type="percent" maxIntegerDigits="3" value="${ teamrankQuerys[i].teamrank.wins/teamrankQuerys[i].teamrank.totalmatchs }"/></td>
+							<td>${ teamrankQuerys[i].teamrank.totalmarginbureau }</td>
+							<td>${ teamrankQuerys[i].teamrank.year }</td>
+							<td>${ teamrankQuerys[i].teamrank.week }</td>
+							<td>${ teamrankQuerys[i].teamrank.note }</td>
+							<td>
+								<a href="<%=request.getContextPath()%>/teamrank/update?id=${teamrankQuerys[i].teamrank.id}" title="修改"><i class="fa fa-edit"></i></a>
+								<a href="<%=request.getContextPath()%>/teamrank/delete?id=${teamrankQuerys[i].teamrank.id}" title="删除"><i class="fa fa-trash"></i></a>
+							</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+					</tbody>
+				</table>
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
+	</div>
+	</section>
+</div>
+<script>
+	$(function(){
+		$("table#teamrank_list").DataTable();
 	});
 </script>
-</head>
-<body>
-<div class="container-fluid">
-	<div class="">
-		<form:form class="form-inline" action="list" method="post" modelAttribute="teamrankQuery">
-			<div class="form-group">
-				<label for="teamName">用户名</label>
-				<form:input type="text" path="team.name" id="teamName" class="form-control"/>
-			</div>
-			<div class="form-group">
-				<label for="entry">参赛类型</label>
-				<form:select path="teamrank.entry" id="entry" class="form-control">
-					<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
-						<form:option value="${ teamEntryType.key }">${ teamEntryType.value }</form:option>
-					</c:forEach>
-				</form:select>
-			</div>
-			<button type="submit" class="btn btn-default">查询</button>
-		</form:form>
-	</div>
-	
-	<div class="updateRank">
-		<div class="entry">
-			<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
-				<input type="checkbox" name="entrys" value="${ teamEntryType.key }">${ teamEntryType.value }
-			</c:forEach>
-		</div>
-		<div class="updateButton">
-			<a id="update">更新排名</a>
-		</div>
-	</div>
-	
-	<div class="add">
-		<a href="<%=request.getContextPath()%>/teamrank/update">添加组合排名</a>
-	</div>
-	
-	<div class="list">
-	 	<table class="table table-striped table-responsive">
-			<tr>
-			<td>参赛类型</td>
-			<td>当前排名</td>
-			<td>选手</td>
-			<td>总积分</td>
-			<td>总场数</td>
-			<td>胜场数</td>
-			<td>净胜局</td>	
-			<td>年份</td>
-			<td>周</td>
-			<td>注释</td>
-			<td>操作</td>
-			</tr>
-			<c:forEach items="${teamrankQuerys}" var="teamrankQuery">
-				<tr>
-				<td>${ teamEntryTypes.get(teamrankQuery.teamrank.entry) }</td>
-				<td>${ teamrankQuery.teamrank.currentrank }</td>
-				<td>${ teamrankQuery.team.name }</td>
-				<td>${ teamrankQuery.teamrank.totalpoint }</td>
-				<td>${ teamrankQuery.teamrank.totalmatchs }</td>
-				<td>${ teamrankQuery.teamrank.wins }</td>
-				<td>${ teamrankQuery.teamrank.totalmarginbureau }</td>
-				<td>${ teamrankQuery.teamrank.year }</td>
-				<td>${ teamrankQuery.teamrank.week }</td>
-				<td>${ teamrankQuery.teamrank.note }</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/teamrank/update?id=${teamrankQuery.teamrank.id}">修改</a>
-					<a href="<%=request.getContextPath()%>/teamrank/delete?id=${teamrankQuery.teamrank.id}">删除</a>
-				</td>
-				</tr>
-			</c:forEach>
-		</table>
-	</div>
-</div>
-</body>
-</html>
+<jsp:include page="../footer.jsp"/>

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.awsports.pojo.Punishment;
 import com.awsports.pojo.PunishmentQuery;
 import com.awsports.pojo.TournamentQuery;
-import com.awsports.pojo.User;
+import com.awsports.pojo.UserQuery;
 import com.awsports.service.PunishmentService;
 import com.awsports.service.TournamentService;
 import com.awsports.service.UserService;
@@ -75,8 +75,8 @@ public class PunishmentController {
 		//获取参赛类型
 		model.addAttribute("individualEntryTypes", individualEntryTypes);
 		//获取用户信息
-		List<User> users=userService.findAll(null);
-		model.addAttribute("users", users);
+		List<UserQuery> userQuerys=userService.findAll(null);
+		model.addAttribute("userQuerys", userQuerys);
 		return "punishment/update";
 	}
 	

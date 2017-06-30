@@ -4,17 +4,7 @@
 <!-- 使用注解的方式格式化输出数据 -->
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>赛事信息</title>
-<!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="/resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="/resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
-</head>
-<body>
+<jsp:include page="../header.jsp"/>
 <div class="container-fluid">
 	<form:form class="form-inline" action="list" method="post" modelAttribute="tournamentQuery">
 		<div class="form-group">
@@ -65,5 +55,4 @@
 		</c:forEach>
 	</table>
 </div>
-</body>
-</html>
+<jsp:include page="../footer.jsp"/>

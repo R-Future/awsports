@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.awsports.pojo.Team;
 import com.awsports.pojo.TeamQuery;
 import com.awsports.pojo.User;
+import com.awsports.pojo.UserQuery;
 import com.awsports.service.TeamService;
 import com.awsports.service.UserService;
 import com.awsports.util.CustomException;
@@ -74,7 +75,7 @@ public class TeamController {
 			team=new Team();
 		}
 		model.addAttribute("team",team);
-		model.addAttribute("users", userService.findAll(null));
+		model.addAttribute("userQuerys", userService.findAll(null));
 		return "team/update";
 	}
 	
@@ -157,15 +158,15 @@ public class TeamController {
 	 */
 	@RequestMapping(value="/linkData",method={RequestMethod.POST})
 	public String linkData(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		User user=new User();
+		UserQuery userQuery=new UserQuery();
 		String search=request.getParameter("search");
-		user.setName(search);
-		List<User> users=userService.findAll(user);//查询数据库，返回结果
-		if(users!=null&&users.size()>0){
+		userQuery.getUser().setName(search);
+		List<UserQuery> userQuerys=userService.findAll(userQuery);//查询数据库，返回结果
+		if(userQuerys!=null&&userQuerys.size()>0){
 			JSONArray jsonArray=new JSONArray();//将查询到的用户名转换成json数据
 			Map<Integer,String> map=new HashMap<Integer,String>();
-			for(User u:users){
-				map.put(u.getId(), u.getName());
+			for(UserQuery uq:userQuerys){
+				map.put(uq.getUser().getId(), uq.getUser().getName());
 			}
 			jsonArray.put(map);
 			response.getWriter().write(jsonArray.toString());

@@ -22,6 +22,7 @@ import com.awsports.pojo.SinglematchQueryVo;
 import com.awsports.pojo.Singlematchscore;
 import com.awsports.pojo.TournamentQuery;
 import com.awsports.pojo.User;
+import com.awsports.pojo.UserQuery;
 import com.awsports.service.ArenaService;
 import com.awsports.service.IndividualpointService;
 import com.awsports.service.PointruleService;
@@ -128,8 +129,8 @@ public class SinglematchController {
 		}
 		model.addAttribute("singlematchQuerys", singlematchQuerys);
 		//选手
-		List<User> users=userService.findAll(null);
-		model.addAttribute("users", users);
+		List<UserQuery> userQuerys=userService.findAll(null);
+		model.addAttribute("userQuerys", userQuerys);
 		return "singlematch/record";
 	}
 	
@@ -162,8 +163,8 @@ public class SinglematchController {
 		singlematchQuery.setSinglematchscores(singlematchscores);
 		model.addAttribute("singlematchQuery", singlematchQuery);
 		//选手
-		List<User> users=userService.findAll(null);
-		model.addAttribute("users", users);
+		List<UserQuery> userQuerys=userService.findAll(null);
+		model.addAttribute("userQuerys", userQuerys);
 		//比赛场地
 		List<Arena> arenas=arenaService.findAll(null);
 		model.addAttribute("arenas", arenas);

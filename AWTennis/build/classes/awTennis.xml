@@ -84,4 +84,17 @@
 	
 	<!-- 配置自定义异常处理器 -->
 	<bean id="handlerExceptionResolver" class="com.awsports.controller.exceptionResolver.CustomExceptionResolver"/>
+	
+	<!-- 配置拦截器 -->
+	<mvc:interceptors>
+<!-- 	<bean class="com.awsports.interceptor.LoginInterceptor"/> -->
+		<!-- 登陆拦截器 -->
+		<mvc:interceptor>
+			<!-- 拦截所有url包括子路径 -->
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/login"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<bean class="com.awsports.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans>

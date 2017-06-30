@@ -5,74 +5,103 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!-- spring自带的form表单 -->
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>个人积分</title>
-<!-- 引入bootstrap，由于bootstrap依赖jQuery,jquery.js必须在bootstrap.js之前引用 -->
-<link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
+<title>组合积分</title>
 </head>
-<body>
-<div class="container-fluid">
-	<form:form class="form-inline" action="list" method="post" modelAttribute="teampointQuery">
-		<div class="form-group">
-			<label for="teamName">用户名</label>
-			<form:input type="text" path="team.name" id="teamName" class="form-control"/>
-		</div>
-		<div class="form-group">
-			<label for="entry">参赛类型</label>
-			<select name="teampoint.entry" id="entry" class="form-control">
-				<option value="0">-请选择-</option>
-				<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
-					<option value="${ teamEntryType.key }">${ teamEntryType.value }</option>
-				</c:forEach>
-			</select>
-		</div>
-		<div class="form-group">
-			<label for="year">年份</label>
-			<form:input type="number" path="teampoint.year" id="year" class="form-control"/>
-		</div>
-		<div class="form-group">
-			<label for="week">周</label>
-			<form:input type="number" path="teampoint.week" id="week" class="form-control"/>
-		</div>
-		<button type="submit" class="btn btn-default">查询</button>
-	</form:form>
-<%-- 	<a href="<%=request.getContextPath()%>/teampoint/update">添加活动</a> --%>
- 	<table class="table table-striped table-responsive">
-		<tr>
-		<td>参赛类型</td>
-		<td>选手</td>
-		<td>年份</td>
-		<td>周</td>
-		<td>总场数</td>
-		<td>胜场数</td>
-		<td>净胜局</td>
-		<td>积分</td>
-		<td>注释</td>
-		<td>操作</td>
-		</tr>
-		<c:forEach items="${teampointQuerys}" var="teampointQuery">
-			<tr>
-			<td>${ teamEntryTypes.get(teampointQuery.teampoint.entry) }</td>
-			<td>${ teampointQuery.team.name }</td>
-			<td>${ teampointQuery.teampoint.year }</td>
-			<td>${ teampointQuery.teampoint.week }</td>
-			<td>${ teampointQuery.teampoint.matchs }</td>
-			<td>${ teampointQuery.teampoint.wins }</td>
-			<td>${ teampointQuery.teampoint.marginbureau }</td>
-			<td>${ teampointQuery.teampoint.points }</td>
-			<td>${ teampointQuery.teampoint.note }</td>
-			<td>
-				<a href="<%=request.getContextPath()%>/teampoint/update?id=${teampointQuery.teampoint.id}">修改</a>
-				<a href="<%=request.getContextPath()%>/teampoint/delete?id=${teampointQuery.teampoint.id}">删除</a>
-			</td>
-			</tr>
-		</c:forEach>
-	</table>
+<jsp:include page="../header.jsp"/>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+	  <h1>组合积分</h1>
+	  <!-- 面包屑 -->
+	  <ol class="breadcrumb">
+        <li><a href="<%=request.getContextPath()%>"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">组合积分</li>
+      </ol>
+	</section>
+	
+	<!-- Main content -->
+	<section class="content">
+	<div class="container-fluid">
+		<form:form class="form-inline" action="list" method="post" modelAttribute="teampointQuery">
+			<div class="form-group">
+				<label for="teamName">用户名</label>
+				<form:input type="text" path="team.name" id="teamName" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label for="entry">参赛类型</label>
+				<select name="teampoint.entry" id="entry" class="form-control">
+					<option value="0">-请选择-</option>
+					<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
+						<option value="${ teamEntryType.key }">${ teamEntryType.value }</option>
+					</c:forEach>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="year">年份</label>
+				<form:input type="number" path="teampoint.year" id="year" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label for="week">周</label>
+				<form:input type="number" path="teampoint.week" id="week" class="form-control"/>
+			</div>
+			<button type="submit" class="btn btn-default">查询</button>
+		</form:form>
+		<hr class="hrStyle">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">组合积分列表</h3>
+			</div>
+			<div class="box-body">
+		 	<table id="teampoint_list" class="table table-striped table-bordered">
+		 		<thead>
+				<tr>
+				<th>#</th>
+				<th>参赛类型</th>
+				<th>选手</th>
+				<th>年份</th>
+				<th>周</th>
+				<th>总场数</th>
+				<th>胜场数</th>
+				<th>净胜局</th>
+				<th>积分</th>
+				<th>注释</th>
+				<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:if test="${ teampointQuerys.size()>0 }">
+					<c:forEach var="i" begin="0" end="${ teampointQuerys.size()-1 }" step="0">
+						<tr>
+						<td>${ i+1 }</td>
+						<td>${ teamEntryTypes.get(teampointQuerys[i].teampoint.entry) }</td>
+						<td>${ teampointQuerys[i].team.name }</td>
+						<td>${ teampointQuerys[i].teampoint.year }</td>
+						<td>${ teampointQuerys[i].teampoint.week }</td>
+						<td>${ teampointQuerys[i].teampoint.matchs }</td>
+						<td>${ teampointQuerys[i].teampoint.wins }</td>
+						<td>${ teampointQuerys[i].teampoint.marginbureau }</td>
+						<td>${ teampointQuerys[i].teampoint.points }</td>
+						<td>${ teampointQuerys[i].teampoint.note }</td>
+						<td>
+							<a href="<%=request.getContextPath()%>/teampoint/update?id=${teampointQuerys[i].teampoint.id}" title="修改"><i class="fa fa-edit"></i></a>
+							<a href="<%=request.getContextPath()%>/teampoint/delete?id=${teampointQuerys[i].teampoint.id}" title="删除"><i class="fa fa-trash"></i></a>
+						</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				</tbody>
+			</table>
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
+	</div>
+	</section>
 </div>
-</body>
-</html>
+<script>
+	$(function(){
+		$("table#teampoint_list").DataTable();
+	});
+</script>
+<jsp:include page="../footer.jsp"/>

@@ -72,7 +72,12 @@
 				
 				<div class="form-group">
 					<label for="matchtime">比赛时间</label>
-					<input type="date" name="matchtime" id="matchtime" value="<fmt:formatDate value="${ punishment.matchtime }" pattern="yyyy-MM-dd"/>" class="form-control"/>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-clock-o"></i>
+						</div>
+						<input type="date" name="matchtime" id="matchtime" value="<fmt:formatDate value="${ punishment.matchtime }" pattern="yyyy-MM-dd"/>" class="form-control date" readonly data-date-format="yyyy-mm-dd"/>
+					</div>
 				</div>
 				
 				<div class="form-group">
@@ -122,4 +127,32 @@
 	</div>
 	</section>
 </div>
+<script>
+	var date=new Date();
+	$("input.date").datepicker({
+		/* 当选择一个日期之后是否立即关闭此日期时间选择器 */
+		autoclose:true,
+		/* 日期时间选择器打开之后首先显示的视图。 可接受的值：
+	    0 or 'hour' for the hour view
+	    1 or 'day' for the day view
+	    2 or 'month' for month view (the default)
+	    3 or 'year' for the 12-month overview
+	    4 or 'decade' for the 10-year overview. Useful for date-of-birth datetimepickers. */
+		startView:2,
+		/* 一周从哪天开始0（星期日）到6（星期六） */
+		weekStart:1,
+		/* 是否允许通过方向键改变日期 */
+		keyboardNavigation:true,
+		/* 时间格式 */
+		format:'yyyy-mm-dd',
+		/* 开始时间，该时间前的所有时间不能选择 */
+		/* startDate:date, */
+		/* 当前日期按钮 */
+		todayBtn: true,
+		/* 当天日期高亮 */
+		todayHighlight: true,
+		/* 显示语言 */
+		language: 'zh-CN'
+	});
+</script>
 <jsp:include page="../footer.jsp"/>

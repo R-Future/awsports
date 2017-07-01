@@ -27,7 +27,7 @@
 	    <result column="updatedAt" jdbcType="TIMESTAMP" property="user.updatedat" />
 	    <result column="invalid" jdbcType="BIT" property="user.invalid" />
 	    <result column="grade" jdbcType="INTEGER" property="user.grade" />
-	    <result column="privilege" jdbcType="INTEGER" property="privilege" />
+	    <result column="privilege" jdbcType="INTEGER" property="user.privilege" />
 	    <result column="note" jdbcType="CHAR" property="user.note" />
 	    <association property="level" javaType="com.awsports.pojo.Level">
 	    	<id column="grade" property="id"/>

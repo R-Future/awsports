@@ -44,4 +44,10 @@ public class PunishmentServiceImpl implements PunishmentService {
 		punishmentMapper.deleteById(id);
 	}
 
+	@Override
+	public Integer findSumByUseridEntry(Punishment punishment) throws Exception {
+		// TODO Auto-generated method stub
+		return punishmentMapper.findSumByUseridEntry(punishment);
+	}
+
 }

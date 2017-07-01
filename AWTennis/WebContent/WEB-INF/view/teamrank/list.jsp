@@ -87,7 +87,7 @@
 					</thead>
 					<tbody>
 					<c:if test="${teamrankQuerys.size()>0}">
-						<c:forEach var="i" begin="0" end="${ teamrankQuerys.size()-1 }" step="0">
+						<c:forEach var="i" begin="0" end="${ teamrankQuerys.size()-1 }" step="1">
 							<tr>
 							<td>${ i+1 }</td>
 							<td>${ teamEntryTypes.get(teamrankQuerys[i].teamrank.entry) }</td>

@@ -17,10 +17,12 @@ import com.awsports.pojo.Individualpoint;
 import com.awsports.pojo.Individualrank;
 import com.awsports.pojo.IndividualrankQuery;
 import com.awsports.pojo.Individualrankest;
+import com.awsports.pojo.Punishment;
 import com.awsports.pojo.UserQuery;
 import com.awsports.service.IndividualpointService;
 import com.awsports.service.IndividualrankService;
 import com.awsports.service.IndividualrankestService;
+import com.awsports.service.PunishmentService;
 import com.awsports.service.UserService;
 import com.awsports.util.CustomDate;
 import com.awsports.util.CustomException;
@@ -39,6 +41,8 @@ public class IndividualrankController {
 	private UserService userService;
 	@Autowired
 	private IndividualpointService individualpointService;
+	@Autowired
+	private PunishmentService punishmentService;
 	
 	private Map<Integer,String> individualEntryTypes=TypeMap.individualEntryType();
 	private double totalPoints;
@@ -213,6 +217,18 @@ public class IndividualrankController {
 									individualrank=new Individualrank();
 									individualrank.setUserid(userid);
 									individualrank.setEntry(entry);			
+								}
+								//扣除个人退赛扣分
+								Punishment punishment=new Punishment();
+								punishment.setUserid(userid);
+								punishment.setEntry(entry);
+								punishment.setInvalid(false);
+								Integer punishmentPoints=punishmentService.findSumByUseridEntry(punishment);
+								if(punishmentPoints!=null){
+									//存在退赛记录
+									totalPoints-=punishmentPoints.intValue();
+								}else{
+									//...
 								}
 								individualrank.setTotalpoint(totalPoints);
 								individualrank.setTotalmatchs(totalMatchs);

@@ -8,6 +8,7 @@ import java.util.List;
 public interface PunishmentMapper {
     public List<PunishmentQuery> findAll(PunishmentQuery punishmentQuery) throws Exception;
     public Punishment findById(Integer id) throws Exception;
+    public Integer findSumByUseridEntry(Punishment punishment) throws Exception;
     public void updateById(Punishment punishment) throws Exception;
     public void insertOne(Punishment punishment) throws Exception;
     public void deleteById(Integer id) throws Exception;

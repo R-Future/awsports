@@ -8,7 +8,7 @@
 <!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <!-- Bootstrap 3.3.6 -->
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/css/bootstrap.min.css">
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 <!-- Ionicons -->
@@ -35,10 +35,10 @@
 <!-- customized css -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/base.css">
 
-<!-- jQuery 3.2.1 -->
-<script src="<%=request.getContextPath()%>/resources/js/jquery-3.2.1.min.js"></script>
+<!-- jQuery 3.1.1 -->
+<script src="<%=request.getContextPath()%>/resources/plugins/jQuery/jquery-3.1.1.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath()%>/resources/bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script src="<%=request.getContextPath()%>/resources/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/plugins/datatables/dataTables.bootstrap.min.js"></script>

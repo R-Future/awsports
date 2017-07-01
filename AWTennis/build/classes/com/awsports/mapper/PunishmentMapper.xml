@@ -50,6 +50,10 @@
     select * from aw_punishment where id = #{id,jdbcType=INTEGER}
   </select>
   
+  <select id="findSumByUseridEntry" parameterType="com.awsports.pojo.Punishment" resultType="java.lang.Integer">
+  	select SUM(aw_punishment.points) from aw_punishment where userId=#{userid} and entry=#{entry} and invalid=#{invalid}
+  </select>
+  
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from aw_punishment where id = #{id,jdbcType=INTEGER}
   </delete>

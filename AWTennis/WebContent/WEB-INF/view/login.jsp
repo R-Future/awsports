@@ -32,11 +32,15 @@
     <form action="<%= request.getContextPath() %>/login" method="post">
       <div class="form-group has-feedback">
         <input type="text" name="username" class="form-control" placeholder="Username">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
         <input type="password" name="password" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" name="validateCode" class="form-control" placeholder="validate code">
+        <i id="vcImage" style="background-image:${vcImage}"></i>
       </div>
       <div class="row">
         <div class="col-xs-8">
@@ -54,16 +58,18 @@
       </div>
     </form>
 
-<!--     <div class="social-auth-links text-center"> -->
-<!--       <p>- OR -</p> -->
-<!--       <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using -->
-<!--         Facebook</a> -->
-<!--       <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using -->
-<!--         Google+</a> -->
-<!--     </div> -->
+    <div class="social-auth-links text-center">
+      <p>- OR -</p>
+      <a href="#" class="btn btn-qq btn-flat bg-light-blue" title="QQ登陆">
+      	<i class="fa fa-qq"></i>
+      </a>
+      <a href="#" class="btn btn-weixin btn-flat bg-green" title="微信登陆">
+      	<i class="fa fa-weixin"></i>
+      </a>
+    </div>
     <!-- /.social-auth-links -->
 
-    <a href="#">忘记密码</a><br>
+    <a href="#">忘记密码?</a><br>
     <a href="register.html" class="text-center">注册</a>
 
   </div>

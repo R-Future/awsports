@@ -24,6 +24,7 @@ import com.awsports.service.TeamrankService;
 import com.awsports.service.TeamrankestService;
 import com.awsports.util.CustomDate;
 import com.awsports.util.CustomException;
+import com.awsports.util.EntryEnum;
 import com.awsports.util.TeamrankComparator;
 import com.awsports.util.TypeMap;
 
@@ -142,6 +143,18 @@ public class TeamrankController {
 		if(id==null){
 			throw new CustomException("非法操作！");
 		}else{
+			//删除teamrankest表中数据
+			Teamrank teamrank=teamrankService.findById(id);
+			Teamrankest teamrankest=new Teamrankest();
+			teamrankest.setTeamid(teamrank.getTeamid());
+			teamrankest.setEntry(teamrank.getEntry());
+			Integer teamrankestId=teamrankestService.findByTeamidEntry(teamrankest).getId();
+			if(teamrankestId!=null){
+				//如果存在相应数据，则删除
+				teamrankestService.deleteById(teamrankestId);
+			}else{
+				//...
+			}		
 			teamrankService.deleteById(id);
 			return "redirect:list";
 		}
@@ -172,6 +185,15 @@ public class TeamrankController {
 			teampoint.setWeek(customDate.getWeek());
 			for(Integer entry:entrys){
 				teampoint.setEntry(entry);
+				if(entry.equals(EntryEnum.MIXEDDOUBLE.getValue())){
+					//如果更新的混双比赛的排名，则同时统计男双和女双
+					teampoint.setManDoubleEntry(EntryEnum.MANDOUBLE.getValue());
+					teampoint.setWomanDoubleEntry(EntryEnum.WOMANDOUBLE.getValue());
+				}else{
+					//否则，只统计单项
+					teampoint.setManDoubleEntry(0);
+					teampoint.setWomanDoubleEntry(0);
+				}
 				//获取查询结果
 				teampoints=teampointService.findByEntryYearWeek(teampoint);
 				if(teampoints==null||teampoints.size()<=0){
@@ -230,7 +252,7 @@ public class TeamrankController {
 					finalTeam.setTeamid(teamid);
 					finalTeam.setEntry(entry);
 					finalTeam=teamrankService.findByTeamidEntry(finalTeam);
-					if(finalTeam!=null&&!finalTeam.getInvalid().booleanValue()){//无记录
+					if(finalTeam==null||finalTeam.getInvalid().booleanValue()){//无记录
 						finalTeam=new Teamrank();
 						finalTeam.setTeamid(teamid);
 						finalTeam.setEntry(entry);							

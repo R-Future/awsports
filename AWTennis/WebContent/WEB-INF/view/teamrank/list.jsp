@@ -52,7 +52,7 @@
 			<fieldset>
 				<legend><font>更新排名</font></legend>
 				<c:forEach items="${ teamEntryTypes }" var="teamEntryType">
-					<input type="checkbox" name="entrys" value="${ teamEntryType.key }">${ teamEntryType.value }
+					<input type="checkbox" name="entrys" value="${ teamEntryType.key }" checked>${ teamEntryType.value }
 				</c:forEach>
 				<a href="javascript:void(0)" id="update" title="更新排名" class="btn btn-primary"><i class="fa fa-refresh"></i></a>
 			</fieldset>

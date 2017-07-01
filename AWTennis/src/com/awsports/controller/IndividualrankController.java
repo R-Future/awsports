@@ -148,6 +148,18 @@ public class IndividualrankController {
 		if(id==null){
 			throw new CustomException("非法操作！");
 		}else{
+			//删除individualrankest表中数据
+			Individualrank individualrank=individualrankService.findById(id);
+			Individualrankest individualrankest=new Individualrankest();
+			individualrankest.setUserid(individualrank.getUserid());
+			individualrankest.setEntry(individualrank.getEntry());
+			Integer individualrankestId=individualrankestService.findByUseridEntry(individualrankest).getId();
+			if(individualrankestId!=null){
+				//如果存在相应数据，则删除
+				individualrankestService.deleteById(individualrankestId);
+			}else{
+				//...
+			}		
 			individualrankService.deleteById(id);
 			return "redirect:list";
 		}
@@ -259,6 +271,18 @@ public class IndividualrankController {
 						finalUser.setUserid(userid);
 						finalUser.setEntry(entry);						
 //						individualrank.setRankingchange(0);						
+					}else{
+						//...
+					}
+					//扣除个人退赛扣分
+					Punishment punishment=new Punishment();
+					punishment.setUserid(userid);
+					punishment.setEntry(entry);
+					punishment.setInvalid(false);
+					Integer punishmentPoints=punishmentService.findSumByUseridEntry(punishment);
+					if(punishmentPoints!=null){
+						//存在退赛记录
+						totalPoints-=punishmentPoints.intValue();
 					}else{
 						//...
 					}

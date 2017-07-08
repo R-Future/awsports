@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.awsports.mapper.DoublematchMapper;
 import com.awsports.pojo.Doublematch;
 import com.awsports.pojo.DoublematchQuery;
+import com.awsports.pojo.User;
 import com.awsports.service.DoublematchService;
 
 public class DoublematchServiceImpl implements DoublematchService {
@@ -47,6 +48,12 @@ public class DoublematchServiceImpl implements DoublematchService {
 	public void deleteById(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		doublematchMapper.deleteById(id);
+	}
+
+	@Override
+	public List<DoublematchQuery> findByUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return doublematchMapper.findByUser(user);
 	}
 
 }

@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.awsports.pojo.Doublematch;
 import com.awsports.pojo.DoublematchQuery;
+import com.awsports.pojo.User;
 
 public interface DoublematchMapper {
 	public List<DoublematchQuery> findAll(DoublematchQuery doublematchQuery) throws Exception;
+	public List<DoublematchQuery> findByUser(User user) throws Exception;
 	public Doublematch findById(Integer id) throws Exception;
 	public Doublematch findMirrorByOrigin(Doublematch doublematch) throws Exception;
 	public void insertOne(Doublematch doublematch) throws Exception;

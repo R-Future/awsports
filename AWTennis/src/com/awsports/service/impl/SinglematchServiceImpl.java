@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.awsports.mapper.SinglematchMapper;
 import com.awsports.pojo.Singlematch;
 import com.awsports.pojo.SinglematchQuery;
+import com.awsports.pojo.User;
 import com.awsports.service.SinglematchService;
 
 @Service
@@ -50,6 +51,12 @@ public class SinglematchServiceImpl implements SinglematchService {
 	public Singlematch findMirrorByOrigin(Singlematch singlematch) throws Exception {
 		// TODO Auto-generated method stub
 		return singlematchMapper.findMirrorByOrigin(singlematch);
+	}
+
+	@Override
+	public List<SinglematchQuery> findByUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return singlematchMapper.findByUser(user);
 	}
 
 }

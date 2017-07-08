@@ -15,10 +15,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.awsports.pojo.DoublematchQuery;
 import com.awsports.pojo.Level;
+import com.awsports.pojo.SinglematchQuery;
 import com.awsports.pojo.User;
 import com.awsports.pojo.UserQuery;
+import com.awsports.service.DoublematchService;
 import com.awsports.service.LevelService;
+import com.awsports.service.SinglematchService;
 import com.awsports.service.UserService;
 import com.awsports.util.CustomException;
 import com.awsports.util.MD5;
@@ -43,9 +47,14 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private LevelService levelService;
+	@Autowired
+	private SinglematchService singlematchService;
+	@Autowired
+	private DoublematchService doublematchService;
 	
 	private Map<Boolean, String> sexTypes=TypeMap.sexType();
 	private Map<Integer, String> forehandTypes=TypeMap.forehandType();
+	private Map<Integer, String> entryTypes=TypeMap.entryType();
 	private Map<Boolean, String> backhandTypes=TypeMap.backhandType();
 
 	private final int STATUS_OK=1;
@@ -173,11 +182,19 @@ public class UserController {
 		}else{
 			User user=userService.findById(id);
 			model.addAttribute("user", user);
+			//俱乐部等级
 			Level level=levelService.findById(user.getGrade());
 			model.addAttribute("level", level);
+			//单打比赛记录
+			List<SinglematchQuery> sinlematchQuerys=singlematchService.findByUser(user); 
+			model.addAttribute("singlematchQuerys", sinlematchQuerys);
+			//双打比赛记录
+			List<DoublematchQuery> doublematchQuerys=doublematchService.findByUser(user);
+			model.addAttribute("doublematchQuerys", doublematchQuerys);
 			model.addAttribute("sexTypes", sexTypes);
 			model.addAttribute("forehandTypes", forehandTypes);
 			model.addAttribute("backhandTypes", backhandTypes);
+			model.addAttribute("entryTypes", entryTypes);
 			return "user/profile";
 		}
 	}

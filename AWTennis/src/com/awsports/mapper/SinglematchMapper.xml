@@ -100,7 +100,28 @@
 		<include refid="singlematch_query_where"/>
 	</where>
   </select>
-  
+  <select id="findByUser" parameterType="com.awsports.pojo.User" resultMap="singlematchMap">
+	select
+	aw_singlematch.*,
+	aw_singlematchscore.matchId,
+	aw_singlematchscore.setTH,
+	aw_singlematchscore.HCScore,
+	aw_singlematchscore.HCTieScore,
+	aw_singlematchscore.APScore,
+	aw_singlematchscore.APTieScore,
+	aw_arena.name as arena_name,
+	aw_tournament.name as tournament_name,
+	user1.name as user1_name,
+	user2.name as user2_name
+	from aw_singlematch
+	join aw_arena on aw_singlematch.matchPlace=aw_arena.id
+	join aw_tournament on aw_singlematch.tournamentId=aw_tournament.id
+	join aw_user as user1 on aw_singlematch.homeContestant=user1.id
+	join aw_user as user2 on aw_singlematch.awayPlayer=user2.id
+	join aw_singlematchscore on aw_singlematch.id=aw_singlematchscore.matchId
+	where aw_singlematch.homeContestant=#{id}
+	ORDER BY aw_singlematch.matchTime DESC
+  </select>
   <select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Singlematch">
   	select * from aw_singlematch where id=#{id}
   </select>

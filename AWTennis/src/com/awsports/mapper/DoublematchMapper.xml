@@ -33,27 +33,29 @@
   	</association>
   	<association property="hcTeamQuery" javaType="com.awsports.pojo.TeamQuery">
   		<id column="homeContestant" property="team.id"/>
-  		<result column="user1Id" property="team.user1id"/>
-  		<result column="user2Id" property="team.user2id"/>
+  		<result column="hcTeam_name" property="team.name"/>
+  		<result column="hcteam_user1id" property="team.user1id"/>
+  		<result column="hcteam_user2id" property="team.user2id"/>
   		<association property="user1" javaType="com.awsports.pojo.User">
-  			<id column="user1Id" property="id"/>
+  			<id column="hcteam_user1id" property="id"/>
   			<result column="hcteam_user1_name" property="name"/>
   		</association>
   		<association property="user2" javaType="com.awsports.pojo.User">
-  			<id column="user2Id" property="id"/>
+  			<id column="hcteam_user2id" property="id"/>
   			<result column="hcteam_user2_name" property="name"/>
   		</association>
   	</association>
   	<association property="apTeamQuery" javaType="com.awsports.pojo.TeamQuery">
   		<id column="awayPlayer" property="team.id"/>
-  		<result column="user1Id" property="team.user1id"/>
-  		<result column="user2Id" property="team.user2id"/>
+  		<result column="apTeam_name" property="team.name"/>
+  		<result column="apteam_user1id" property="team.user1id"/>
+  		<result column="apteam_user2id" property="team.user2id"/>
   		<association property="user1" javaType="com.awsports.pojo.User">
-  			<id column="user1Id" property="id"/>
+  			<id column="apteam_user1id" property="id"/>
   			<result column="apteam_user1_name" property="name"/>
   		</association>
   		<association property="user2" javaType="com.awsports.pojo.User">
-  			<id column="user2Id" property="id"/>
+  			<id column="apteam_user2id" property="id"/>
   			<result column="apteam_user2_name" property="name"/>
   		</association>
   	</association>
@@ -112,6 +114,10 @@
 	aw_tournament.name as tournament_name,
 	hcteam.name as hcteam_name,
 	apteam.name as apteam_name,
+	hcteam_user1.id as hcteam_user1id,
+	hcteam_user2.id as hcteam_user2id,
+	apteam_user1.id as apteam_user1id,
+	apteam_user2.id as apteam_user2id,
 	hcteam_user1.name as hcteam_user1_name,
 	hcteam_user2.name as hcteam_user2_name,
 	apteam_user1.name as apteam_user1_name,
@@ -129,6 +135,40 @@
 	<where>
 		<include refid="doublematchQuery_where"/>
 	</where> 
+  </select>
+  <select id="findByUser" parameterType="com.awsports.pojo.User" resultMap="doublematchQueryMap">
+    select 
+	aw_doublematch.*,
+	aw_doublematchscore.matchId,
+	aw_doublematchscore.setTH,
+	aw_doublematchscore.HCScore,
+	aw_doublematchscore.HCTieScore,
+	aw_doublematchscore.APScore,
+	aw_doublematchscore.APTieScore,
+	aw_arena.name as arena_name,
+	aw_tournament.name as tournament_name,
+	hcteam.name as hcteam_name,
+	apteam.name as apteam_name,
+	hcteam_user1.id as hcteam_user1id,
+	hcteam_user2.id as hcteam_user2id,
+	apteam_user1.id as apteam_user1id,
+	apteam_user2.id as apteam_user2id,
+	hcteam_user1.name as hcteam_user1_name,
+	hcteam_user2.name as hcteam_user2_name,
+	apteam_user1.name as apteam_user1_name,
+	apteam_user2.name as apteam_user2_name
+	from aw_doublematch
+	join aw_doublematchscore on aw_doublematch.id=aw_doublematchscore.matchId
+	join aw_arena on aw_doublematch.matchPlace=aw_arena.id
+	join aw_tournament on aw_doublematch.tournamentId=aw_tournament.id
+	join aw_team as hcteam on aw_doublematch.homeContestant=hcteam.id
+	join aw_team as apteam on aw_doublematch.awayPlayer=apteam.id
+	join aw_user as hcteam_user1 on hcteam.user1Id=hcteam_user1.id
+	join aw_user as hcteam_user2 on hcteam.user2Id=hcteam_user2.id
+	join aw_user as apteam_user1 on apteam.user1Id=apteam_user1.id
+	join aw_user as apteam_user2 on apteam.user2Id=apteam_user2.id
+	where hcteam_user1.id=#{id} or apteam_user2.id=#{id}
+	order by aw_doublematch.matchTime DESC
   </select>
   <select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Doublematch">
   	select * from aw_doublematch where id=#{id}

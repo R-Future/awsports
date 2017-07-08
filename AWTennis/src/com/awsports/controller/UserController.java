@@ -1,7 +1,11 @@
 package com.awsports.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
 //import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +43,14 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private LevelService levelService;
+	
+	private Map<Boolean, String> sexTypes=TypeMap.sexType();
+	private Map<Integer, String> forehandTypes=TypeMap.forehandType();
+	private Map<Boolean, String> backhandTypes=TypeMap.backhandType();
+
+	private final int STATUS_OK=1;
+	private final int STATUS_ERROR=0;
+	
 	/**
 	 * 
 	 * @Author: peRFect
@@ -54,9 +66,9 @@ public class UserController {
 	public String list(Model model,UserQuery userQuery) throws Exception{
 		List<UserQuery> userQuerys=userService.findAll(userQuery);
 		model.addAttribute("userQuerys", userQuerys);
-		model.addAttribute("sexTypes", TypeMap.sexType());
-		model.addAttribute("forehandTypes",TypeMap.forehandType());
-		model.addAttribute("backhandTypes", TypeMap.backhandType());
+		model.addAttribute("sexTypes", sexTypes);
+		model.addAttribute("forehandTypes", forehandTypes);
+		model.addAttribute("backhandTypes", backhandTypes);
 		return "user/list";
 	}
 	
@@ -140,6 +152,71 @@ public class UserController {
 		}else{
 			userService.deleteById(id);
 			return "redirect:list";
+		}
+	}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年7月7日 下午10:06:36
+	 * @param model
+	 * @param id
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 用户简介
+	 *
+	 */
+	@RequestMapping("/profile")
+	public String profile(Model model, Integer id) throws Exception{
+		if(id==null){
+			throw new CustomException("非法操作！");
+		}else{
+			User user=userService.findById(id);
+			model.addAttribute("user", user);
+			Level level=levelService.findById(user.getGrade());
+			model.addAttribute("level", level);
+			model.addAttribute("sexTypes", sexTypes);
+			model.addAttribute("forehandTypes", forehandTypes);
+			model.addAttribute("backhandTypes", backhandTypes);
+			return "user/profile";
+		}
+	}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年7月7日 下午11:26:00
+	 * @param model
+	 * @param user
+	 * @throws Exception
+	 * @Return: void
+	 * @Description: 修改密码
+	 *
+	 */
+	@RequestMapping("/changePassword")
+	public String changePassword(Integer id, String oldPassword, String newPassword, String newPasswordConfirmation, HttpServletResponse response) throws Exception{
+		if(id==null){
+			throw new CustomException("非法操作！");
+		}else{
+			User user=userService.findById(id);
+			JSONArray jsonArray=new JSONArray();
+			if(oldPassword!=null&&user!=null){
+				if(oldPassword.equals(user.getPassword())){
+					if(newPassword.equals(newPasswordConfirmation)){
+						user.setPassword(newPassword);
+						userService.updateById(user);
+						jsonArray.put(STATUS_OK, "密码修改成功");	
+					}else{
+						jsonArray.put(STATUS_ERROR, "新密码输入不一致");
+					}
+				}else{
+					jsonArray.put(STATUS_ERROR, "原密码输入错误");
+				}
+			}else{
+				jsonArray.put(STATUS_ERROR, "用户不存在");
+			}
+			response.getWriter().append(jsonArray.toString());
+			return null;
 		}
 	}
 }

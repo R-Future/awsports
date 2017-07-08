@@ -206,15 +206,15 @@ public class TeamrankController {
 					//临时存储计算后的用户排名记录，用于排序
 					List<Teamrank> rawRanks=new ArrayList<Teamrank>();
 					
-					for(Teampoint ip:teampoints){
-						if(ip.getInvalid().booleanValue()){//数据无效
+					for(Teampoint tp:teampoints){
+						if(tp.getInvalid().booleanValue()){//数据无效
 							continue;
 						}else{
-							if(ip.getTeamid().intValue()==teamid){//同一个用户
-								totalPoints+=ip.getPoints().doubleValue();
-								totalMatchs+=ip.getMatchs().intValue();
-								totalWins+=ip.getWins().intValue();
-								totalMarginBureaus+=ip.getMarginbureau().intValue();
+							if(tp.getTeamid().intValue()==teamid){//同一个用户
+								totalPoints+=tp.getPoints().doubleValue();
+								totalMatchs+=tp.getMatchs().intValue();
+								totalWins+=tp.getWins().intValue();
+								totalMarginBureaus+=tp.getMarginbureau().intValue();
 							}else{//下一个用户
 								//保存上一个用户的最新排名记录
 								Teamrank teamrank=new Teamrank();
@@ -239,11 +239,11 @@ public class TeamrankController {
 								//初始化变量
 								initializer();
 								//统计下一个用户
-								teamid=ip.getTeamid().intValue();
-								totalPoints+=ip.getPoints().doubleValue();
-								totalMatchs+=ip.getMatchs().intValue();
-								totalWins+=ip.getWins().intValue();
-								totalMarginBureaus+=ip.getMarginbureau().intValue();
+								teamid=tp.getTeamid().intValue();
+								totalPoints+=tp.getPoints().doubleValue();
+								totalMatchs+=tp.getMatchs().intValue();
+								totalWins+=tp.getWins().intValue();
+								totalMarginBureaus+=tp.getMarginbureau().intValue();
 							}
 						}
 					}

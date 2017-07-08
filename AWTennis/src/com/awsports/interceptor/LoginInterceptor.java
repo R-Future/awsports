@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.awsports.pojo.User;
+
 public class LoginInterceptor implements HandlerInterceptor {
 
 	@Override
@@ -28,8 +30,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 		// TODO Auto-generated method stub
 		//获取session,检查用户是否已经登陆
 		HttpSession session=request.getSession();
-		String username=(String)session.getAttribute("username");
-		if(username!=null){
+		User currentUser=(User)session.getAttribute("currentUser");
+		if(currentUser!=null){
 			return true;
 		}else{
 			//用户未登录，跳转到登陆页面

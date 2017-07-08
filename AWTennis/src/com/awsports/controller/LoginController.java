@@ -33,7 +33,7 @@ public class LoginController {
 							//...
 						}
 						//存入session
-						session.setAttribute("username", username);
+						session.setAttribute("currentUser", user);
 						return "redirect:/user/list";
 					}else{
 						model.addAttribute("username", username);

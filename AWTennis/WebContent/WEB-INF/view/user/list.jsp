@@ -68,7 +68,7 @@
 									<c:forEach var="i" begin="0" end="${ userQuerys.size()-1 }" step="1">
 										<tr>
 											<td>${ i+1 }</td>
-											<td>${ userQuerys[i].user.name }</td>
+											<td><a href="<%= request.getContextPath()%>/user/profile?id=${userQuerys[i].user.id}">${ userQuerys[i].user.name }</a></td>
 											<td>${ userQuerys[i].level.chinese }</td>
 											<td>${ sexTypes.get(userQuerys[i].user.sex) }</td>
 											<td>${ userQuerys[i].user.phone }</td>

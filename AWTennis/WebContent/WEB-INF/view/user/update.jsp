@@ -39,10 +39,10 @@
 							<label for="name">用户名</label>
 							<input type="text" name="name" id="name" value="${user.name}" class="form-control"/>
 						</div>
-						<div class="form-group col-md-3">
-							<label for="password">密码</label>
-							<input type="text" name="password" id="password" value="${user.password}" class="form-control"/>
-						</div>
+<!-- 						<div class="form-group col-md-3"> -->
+<!-- 							<label for="password">密码</label> -->
+<%-- 							<input type="text" name="password" id="password" value="${user.password}" class="form-control"/> --%>
+<!-- 						</div> -->
 						<div class="form-group col-md-3">
 							<label for="nickname">昵称</label>
 							<input type="text" name="nickname" id="nickname" value="${user.nickname}" class="form-control"/>

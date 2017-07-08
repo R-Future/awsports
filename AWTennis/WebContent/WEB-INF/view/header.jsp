@@ -35,6 +35,8 @@
 <!-- customized css -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/base.css">
 
+
+
 <!-- jQuery 3.1.1 -->
 <script src="<%=request.getContextPath()%>/resources/plugins/jQuery/jquery-3.1.1.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -78,7 +80,7 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <%-- <script src="<%=request.getContextPath()%>/resources/dist/js/pages/dashboard.js"></script> --%>
 <!-- AdminLTE for demo purposes -->
-<%-- <script src="<%=request.getContextPath()%>/resources/dist/js/demo.js"></script> --%>
+<script src="<%=request.getContextPath()%>/resources/dist/js/demo.js"></script>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -112,21 +114,21 @@
 		        <li class="dropdown user user-menu">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 		            <img src="<%=request.getContextPath()%>/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-		            <span class="hidden-xs">${ username }</span>
+		            <span class="hidden-xs">${ currentUser.name }</span>
 		          </a>
 		          <ul class="dropdown-menu">
 					<!-- User image -->
 		            <li class="user-header">
 		              <img src="<%=request.getContextPath()%>/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 		              <p>
-		                ${ username } - 俱乐部管理
+		                ${ currentUser.name } - 俱乐部管理
 		                <small>Member since Nov. 2014</small>
 		              </p>
 		            </li>
 		            <!-- Menu Footer-->
 		            <li class="user-footer">
 		              <div class="pull-left">
-		                <a href="#" class="btn btn-default btn-flat">个人资料</a>
+		                <a href="<%=request.getContextPath()%>/user/profile?id=${currentUser.id}" class="btn btn-default btn-flat">个人资料</a>
 		              </div>
 		              <div class="pull-right">
 		                <a href="<%= request.getContextPath() %>/logout" class="btn btn-default btn-flat">退出</a>

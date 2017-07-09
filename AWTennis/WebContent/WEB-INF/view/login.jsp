@@ -26,20 +26,22 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-  	<c:if test="${ error!=null }">
-    	<p class="login-box-msg">${ error }</p>
-    </c:if>
+  	
+   	<p id="errorHint" class="login-box-msg">
+   	<c:if test="${ error!=null }">${ error }</c:if>
+   	</p>
+    
     <form action="<%= request.getContextPath() %>/login" method="post">
       <div class="form-group has-feedback">
-        <input type="text" name="username" class="form-control" placeholder="Username">
+        <input type="text" name="username" id="username" class="form-control" placeholder="Username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" name="password" class="form-control" placeholder="Password">
+        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="text" name="validationCode" class="form-control" style="width:216px;height:34px;display:inline;" placeholder="validation code">
+        <input type="text" name="validationCode" id="validationCode" class="form-control" style="width:216px;height:34px;display:inline;" placeholder="validation code">
         <img id="vcImage" style="margin-top:-3px" width="100" height="34" alt="点击更换" title="点击更换" src="getValidationPicture" onclick="changeValidationCode(this)"/>
       </div>
       <div class="row">
@@ -52,7 +54,7 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">登陆</button>
+          <button type="submit" id="btnSubmit" class="btn btn-primary btn-block btn-flat">登陆</button>
         </div>
         <!-- /.col -->
       </div>
@@ -90,6 +92,31 @@
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' // optional
+    });
+    
+    $("input#username").blur(function(){
+    	var username = $("input#username").val();
+    	if(username==''){
+    		$("p#errorHint").html("用户名不能空");
+    	}else{
+    		$("p#errorHint").html("");
+    	}
+    });
+    $("input#password").blur(function(){
+    	var password = $("input#password").val();
+    	if(password==''){
+    		$("p#errorHint").html("密码不能空");
+    	}else{
+    		$("p#errorHint").html("");
+    	}
+    });
+    $("input#validationCode").blur(function(){
+    	var validationCode = $("input#validationCode").val();
+    	if(validationCode==''){
+    		$("p#errorHint").html("验证码不能空");
+    	}else{
+    		$("p#errorHint").html("");
+    	}
     });
   });
   function changeValidationCode(obj){

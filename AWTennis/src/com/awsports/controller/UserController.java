@@ -56,6 +56,7 @@ public class UserController {
 	private Map<Integer, String> forehandTypes=TypeMap.forehandType();
 	private Map<Integer, String> entryTypes=TypeMap.entryType();
 	private Map<Boolean, String> backhandTypes=TypeMap.backhandType();
+	private Map<Integer, String> roundTypes=TypeMap.roundType();
 
 	private final int STATUS_OK=1;
 	private final int STATUS_ERROR=0;
@@ -195,6 +196,7 @@ public class UserController {
 			model.addAttribute("forehandTypes", forehandTypes);
 			model.addAttribute("backhandTypes", backhandTypes);
 			model.addAttribute("entryTypes", entryTypes);
+			model.addAttribute("roundTypes", roundTypes);
 			return "user/profile";
 		}
 	}

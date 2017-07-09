@@ -81,7 +81,7 @@
 	                  <b>正手</b> <a class="pull-right">${ forehandTypes.get(user.forehand) }</a>
 	                </li>
 	                <li class="list-group-item">
-	                  <b>反手</b> <a class="pull-right">${ forehandTypes.get(userQuerys.user.backhand) }</a>
+	                  <b>反手</b> <a class="pull-right">${ backhandTypes.get(user.backhand) }</a>
 	                </li>
 	              </ul>
 	
@@ -288,11 +288,11 @@
 <!-- 									            <div class="box-body no-padding"> -->
 									              <table class="table table-condensed">
 									                <tr>
-									                  <th style="width:40px;">对手</th>
-									                  <th style="width:80px;">参赛类型</th>
-									                  <th style="width:200px;">比赛地点</th>
-									                  <th style="width:40px;">轮次</th>
-									                  <th style="width:40px;">盘数</th>
+									                  <th>对手</th>
+									                  <th>参赛类型</th>
+									                  <th>比赛地点</th>
+									                  <th>轮次</th>
+									                  <th>盘数</th>
 									                  <th>比分</th>
 									                  <th>比赛结果</th>
 									                </tr>
@@ -300,7 +300,7 @@
 									                  <td>${ singlematchQuery.user2.name }</td>
 									                  <td>${ entryTypes.get(singlematchQuery.singlematch.entry) }</td>
 									                  <td>${ singlematchQuery.arena.name }</td>
-									                  <td>${ singlematchQuery.singlematch.round }</td>
+									                  <td>${ roundTypes.get(singlematchQuery.singlematch.round) }</td>
 									                  <td>${ singlematchQuery.singlematch.sets }</td>
 									                  <td>
 														<c:forEach items="${ singlematchQuery.singlematchscores }" var="singlematchscore">
@@ -311,7 +311,7 @@
 																<c:otherwise>
 																	${ singlematchscore.hcscore }:${ singlematchscore.apscore }
 																</c:otherwise>
-															</c:choose>
+															</c:choose>&nbsp;
 														</c:forEach>
 													  </td>
 													  <td>${ singlematchQuery.singlematch.outcome.toUpperCase() }</td>
@@ -367,12 +367,12 @@
 <!-- 									            <div class="box-body no-padding"> -->
 									              <table class="table table-condensed">
 									                <tr>
-									                  <th style="width:40px;">队友</th>
-									                  <th style="width:80px;">对手</th>
-									                  <th style="width:80px;">参赛类型</th>
-									                  <th style="width:200px;">比赛地点</th>
-									                  <th style="width:40px;">轮次</th>
-									                  <th style="width:40px;">盘数</th>
+									                  <th>队友</th>
+									                  <th>对手</th>
+									                  <th>参赛类型</th>
+									                  <th>比赛地点</th>
+									                  <th>轮次</th>
+									                  <th>盘数</th>
 									                  <th>比分</th>
 									                  <th>比赛结果</th>
 									                </tr>
@@ -393,7 +393,7 @@
 									                  </c:choose>
 									                  <td>${ entryTypes.get(doublematchQuery.doublematch.entry) }</td>
 									                  <td>${ doublematchQuery.arena.name }</td>
-									                  <td>${ doublematchQuery.doublematch.round }</td>
+									                  <td>${ roundTypes.get(doublematchQuery.doublematch.round) }</td>
 									                  <td>${ doublematchQuery.doublematch.sets }</td>
 									                  <td>
 														<c:forEach items="${ doublematchQuery.doublematchscores }" var="doublematchscore">
@@ -404,7 +404,7 @@
 																<c:otherwise>
 																	${ doublematchscore.hcscore }:${ doublematchscore.apscore }
 																</c:otherwise>
-															</c:choose>
+															</c:choose>&nbsp;
 														</c:forEach>
 													  </td>
 													  <td>${doublematchQuery.doublematch.outcome.toUpperCase()}</td>

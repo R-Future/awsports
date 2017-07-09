@@ -39,8 +39,8 @@
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="text" name="validateCode" class="form-control" placeholder="validate code">
-        <i id="vcImage" style="background-image:${vcImage}"></i>
+        <input type="text" name="validationCode" class="form-control" style="width:216px;height:34px;display:inline;" placeholder="validation code">
+        <img id="vcImage" style="margin-top:-3px" width="100" height="34" alt="点击更换" title="点击更换" src="getValidationPicture" onclick="changeValidationCode(this)"/>
       </div>
       <div class="row">
         <div class="col-xs-8">
@@ -92,6 +92,10 @@
       increaseArea: '20%' // optional
     });
   });
+  function changeValidationCode(obj){
+	  var now = new Date().getTime();
+	  obj.src="getValidationPicture?t="+now;
+  }
 </script>
 </body>
 </html>

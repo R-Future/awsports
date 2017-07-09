@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,13 +114,41 @@
 		        <!-- User Account: style can be found in dropdown.less -->
 		        <li class="dropdown user user-menu">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		            <img src="<%=request.getContextPath()%>/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+		            <c:choose>
+		           		<c:when test="${ currentUser.portrait!=null  and !currentUser.portrait.isEmpty() }">
+		           			<img src="/pic/${ currentUser.portrait }" class="user-image" alt="User Image">
+		           		</c:when>
+		           		<c:otherwise>
+		           			<c:choose>
+			           			<c:when test="${ currentUser.sex.booleanValue() }">
+			           				<img src="/pic/femaleDefault.jpg" class="user-image" alt="User Image">
+			           			</c:when>
+			           			<c:otherwise>
+			           				<img src="/pic/maleDefault.jpg" class="user-image" alt="User Image">
+			           			</c:otherwise>
+		           			</c:choose>
+		           		</c:otherwise>
+		           	</c:choose>
 		            <span class="hidden-xs">${ currentUser.name }</span>
 		          </a>
 		          <ul class="dropdown-menu">
 					<!-- User image -->
 		            <li class="user-header">
-		              <img src="<%=request.getContextPath()%>/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+			          <c:choose>
+		         		<c:when test="${ currentUser.portrait!=null  and !currentUser.portrait.isEmpty() }">
+		         			<img src="/pic/${ currentUser.portrait }" class="img-circle" alt="User Image">
+		         		</c:when>
+		         		<c:otherwise>
+		         			<c:choose>
+			         			<c:when test="${ currentUser.sex.booleanValue() }">
+			         				<img src="/pic/femaleDefault.jpg" class="img-circle" alt="User Image">
+			         			</c:when>
+			         			<c:otherwise>
+			         				<img src="/pic/maleDefault.jpg" class="img-circle" alt="User Image">
+			         			</c:otherwise>
+		         			</c:choose>
+		         		</c:otherwise>
+			          </c:choose>
 		              <p>
 		                ${ currentUser.name } - 俱乐部管理
 		                <small>Member since Nov. 2014</small>

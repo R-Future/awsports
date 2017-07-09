@@ -31,16 +31,31 @@
 	          <!-- Profile Image -->
 	          <div class="box box-primary">
 	            <div class="box-body box-profile">
-	              <img class="profile-user-img img-responsive img-circle" src="<%=request.getContextPath()%>/resources/dist/img/user4-128x128.jpg" alt="User profile picture">
+ 	            	<c:choose>
+	            		<c:when test="${ user.portrait!=null and !user.portrait.isEmpty() }">
+	            			<img class="profile-user-img img-responsive img-circle" src="/pic/${ user.portrait }" alt="User profile picture">
+	            		</c:when>
+	            		<c:otherwise>
+	            			<c:choose>
+		            			<c:when test="${ user.sex.booleanValue() }">
+		            				<img class="profile-user-img img-responsive img-circle" src="/pic/femaleDefault.jpg" alt="User profile picture">
+		            			</c:when>
+		            			<c:otherwise>
+	 	            				<img class="profile-user-img img-responsive img-circle" src="/pic/maleDefault.jpg" alt="User profile picture">
+		            			</c:otherwise>
+	            			</c:choose>
+	            		</c:otherwise>
+	            	</c:choose>
+	              
 	
 	              <h3 class="profile-username text-center">
 	              	${ user.name }
 	              	<c:choose>
-	              		<c:when test="${ user.sex.booleanValue()==false }">
-	              			<i class="fa fa-mars"></i>
+	              		<c:when test="${ user.sex.booleanValue() }">
+	              			<i class="fa fa-venus"></i>
 	              		</c:when>
 	              		<c:otherwise>
-	              			<i class="fa  fa-venus"></i>
+	              			<i class="fa fa-mars"></i>
 	              		</c:otherwise>
 	              	</c:choose>
 	              </h3>
@@ -436,13 +451,13 @@
 	                <form class="form-horizontal" action="<%= request.getContextPath() %>/user/save" method="post">
 	                  <input type="hidden" name="id" id="id" value="${user.id}" class="form-control"/>
 	                  <div class="form-group">
-	                    <label for="name" class="col-sm-2 control-label">Name</label>
+	                    <label for="name" class="col-sm-2 control-label">用户名</label>
 	                    <div class="col-sm-10">
 	                      <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="${user.name}">
 	                    </div>
 	                  </div>
 	                  <div class="form-group">
-	                    <label for="nickname" class="col-sm-2 control-label">Nickname</label>
+	                    <label for="nickname" class="col-sm-2 control-label">昵称</label>
 	                    <div class="col-sm-10">
 	                      <input type="text" class="form-control" name="nickname" id="nickname" placeholder="Nickname" value="${user.nickname}">
 	                    </div>
@@ -460,20 +475,25 @@
 	                    </div>
 	                  </div>
 	                  <div class="form-group">
-	                    <label for="realname" class="col-sm-2 control-label">Real Name</label>
+	                    <label for="realname" class="col-sm-2 control-label">真实姓名</label>
 	                    <div class="col-sm-10">
 	                      <input type="text" class="form-control" name="realname" id="realname" placeholder="Real Name" value="${user.realname}">
 	                    </div>
 	                  </div>
 	                  <div class="form-group">
-	                    <label for="idcard" class="col-sm-2 control-label">ID Card</label>
+	                    <label for="idcard" class="col-sm-2 control-label">身份证号</label>
 	                    <div class="col-sm-10">
 	                      <input type="text" class="form-control" name="idcard" id="idcard" placeholder="ID Card" value="${user.idcard}">
 	                    </div>
 	                  </div>
 	                  <div class="form-group">
+							<label for="userPic" class="col-sm-2 control-label">头像</label>
+							<input type="file" style="padding-left:14px" name="userPic" id="userPic"/>
+							<c:if test="${ user.portrait!=null and !user.portrait.isEmpty() }"><img src="/pic/${ user.portrait }" width="128" height="128"/></c:if>
+						</div>
+	                  <div class="form-group">
 	                    <div class="col-sm-offset-2 col-sm-10">
-	                      <button type="submit" class="btn btn-danger">Submit</button>
+	                      <button type="submit" class="btn btn-danger">提交</button>
 	                    </div>
 	                  </div>
 	                </form>

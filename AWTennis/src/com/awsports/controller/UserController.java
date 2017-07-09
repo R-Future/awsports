@@ -1,7 +1,9 @@
 package com.awsports.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.awsports.pojo.DoublematchQuery;
 import com.awsports.pojo.Level;
@@ -126,21 +129,39 @@ public class UserController {
 	 *
 	 */
 	@RequestMapping(value="/save")
-	public String save(@Validated User user, BindingResult validationResult, Model model) throws Exception{
-		if(validationResult.hasErrors()){
-			model.addAttribute("errors", validationResult);
+	public String save(@Validated User user, BindingResult br, MultipartFile userPic, Model model) throws Exception{
+		if(br.hasErrors()){
+			model.addAttribute("errors", br);
 			return "redirect:update";
 		}else{
 			//对密钥进行MD5加密
 			String password=user.getPassword();
-			user.setPassword(MD5.Encode(password));
+			if(password!=null&&!password.isEmpty()){
+				user.setPassword(MD5.Encode(password));
+			}
+			//上传用户头像
+			if(userPic!=null){
+				//图片原名称
+				String originalFileName = userPic.getOriginalFilename();
+				if(originalFileName!=null&&originalFileName.length()>0){				
+					//图片存储的物理路径
+					String path = "F:\\workspace\\java\\pictures\\";
+					//图片的新名称
+					String newFileName = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
+					//生成一个新的文件
+					File file = new File(path+newFileName);
+					//将内存中的数据写入磁盘
+					userPic.transferTo(file);
+					user.setPortrait(newFileName);
+				}
+			}
 			if(user.getId()!=null){//更新用户
 				userService.updateById(user);
 			}else{//添加用户
 				userService.insertOne(user);
 			}
 			//用户信息修改或添加成功后跳转到用户列表页面
-			return "redirect:list";
+			return "redirect:profile";
 		}
 		
 	}

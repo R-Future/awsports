@@ -30,7 +30,7 @@
 					</c:forEach>
 				</c:if>
 			</div>
-			<form:form action="save" method="post" modelAttribute="user">
+			<form:form action="save" method="post" modelAttribute="user" enctype="multipart/form-data">
 				<input type="hidden" name="id" id="id" value="${user.id}" class="form-control"/>
 				<fieldset>
 					<legend><font>基本信息</font></legend>
@@ -39,10 +39,10 @@
 							<label for="name">用户名</label>
 							<input type="text" name="name" id="name" value="${user.name}" class="form-control"/>
 						</div>
-<!-- 						<div class="form-group col-md-3"> -->
-<!-- 							<label for="password">密码</label> -->
-<%-- 							<input type="text" name="password" id="password" value="${user.password}" class="form-control"/> --%>
-<!-- 						</div> -->
+						<div class="form-group col-md-3">
+							<label for="password">密码(重置)</label>
+							<input type="text" name="password" id="password" class="form-control"/>
+						</div>
 						<div class="form-group col-md-3">
 							<label for="nickname">昵称</label>
 							<input type="text" name="nickname" id="nickname" value="${user.nickname}" class="form-control"/>
@@ -70,11 +70,7 @@
 						<div class="form-group col-md-3">
 							<label for="address">住址</label>
 							<input type="text" name="address" id="address" value="${user.address}" class="form-control"/>
-						</div>
-						<div class="form-group col-md-3">
-							<label for="portrait">头像</label>
-							<input type="text" name="portrait" id="portrait" value="${user.portrait}" class="form-control"/>
-						</div>
+						</div>		
 					</div>
 					<div class="row">
 						<div class="form-group col-md-3">
@@ -90,6 +86,11 @@
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
+						</div>
+						<div class="form-group col-md-3">
+							<label for="userPic">头像</label>
+							<input type="file" name="userPic" id="userPic"/>
+							<c:if test="${ user.portrait!=null }"><img src="/pic/${ user.portrait }" width="128" height="128"/></c:if>
 						</div>
 					</div>
 				</fieldset>
@@ -180,7 +181,7 @@
 						</div>
 					</div>
 				</fieldset>
-				<button type="submit" class="btn btn-default">提交</button>
+				<button type="submit" class="btn btn-danger">提交</button>
 			</form:form>
 		</div>
 		</section>

@@ -17,7 +17,6 @@ public class AwUser {
     @NotBlank(message="{user.name.null}")
     private String name;
 
-    @NotBlank(message="{user.password.null}")
     private String password;
 
     private String nickname;

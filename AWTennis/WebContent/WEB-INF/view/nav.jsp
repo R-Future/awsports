@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	  <!-- Left side column. contains the logo and sidebar -->
 	  <aside class="main-sidebar">
 	  
@@ -10,7 +10,21 @@
 	      <!-- Sidebar user panel -->
 	      <div class="user-panel">
 	        <div class="pull-left image">
-	          <img src="<%= request.getContextPath() %>/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+	          <c:choose>
+         		<c:when test="${ currentUser.portrait!=null and !currentUser.portrait.isEmpty() }">
+         			<img src="/pic/${ currentUser.portrait }" class="img-circle" alt="User Image">
+         		</c:when>
+         		<c:otherwise>
+         			<c:choose>
+	         			<c:when test="${ currentUser.sex.booleanValue() }">
+	         				<img src="/pic/femaleDefault.jpg" class="img-circle" alt="User Image">
+	         			</c:when>
+	         			<c:otherwise>
+	         				<img src="/pic/maleDefault.jpg" class="img-circle" alt="User Image">
+	         			</c:otherwise>
+         			</c:choose>
+         		</c:otherwise>
+	          </c:choose>
 	        </div>
 	        <div class="pull-left info">
 	          <p>${ currentUser.name }</p>
@@ -21,7 +35,7 @@
 	      <!-- sidebar menu: : style can be found in sidebar.less -->
 	      <ul class="sidebar-menu" data-widget="tree">  
 	          
-			<li class="treeview">
+			<li class="treeview">s
 			  <a href="#" onclick="activeMenu(this)">
 			    <i class="fa fa-users"></i> <span>用户信息</span>
 			    <span class="pull-right-container">

@@ -87,7 +87,7 @@
 				</div>
 				
 				<div id="matchRecord"></div>
-				<button type="submit" id="submit" class="btn btn-default">提交</button>
+				<button type="submit" id="submit" class="btn btn-danger">提交</button>
 			</form>
 		</div>
 	</div>

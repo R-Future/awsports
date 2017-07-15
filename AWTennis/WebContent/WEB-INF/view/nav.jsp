@@ -111,6 +111,7 @@
 			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/arena/list"><i class="fa fa-circle-o"></i> 场馆信息</a></li>
 			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/level/list"><i class="fa fa-circle-o"></i> 俱乐部等级</a></li>
 			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/punishment/list"><i class="fa fa-circle-o"></i> 退赛扣分</a></li>
+			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/adjustment/adjust"><i class="fa fa-circle-o"></i> 级别升降</a></li>
 			  </ul>
 			</li>
 			    

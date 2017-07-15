@@ -59,7 +59,7 @@ public class LoginController {
 							}
 							//存入session
 							session.setAttribute("currentUser", user);
-							return "redirect:/user/list";
+							return "redirect:/index";
 						}else{
 							model.addAttribute("error", "密码错误");
 							return "login";

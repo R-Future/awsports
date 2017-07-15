@@ -87,7 +87,7 @@
 <!-- iCheck -->
 <script src="<%= request.getContextPath() %>/resources/plugins/iCheck/icheck.min.js"></script>
 <script>
-  $(function () {
+  $(function() {
     $('input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',

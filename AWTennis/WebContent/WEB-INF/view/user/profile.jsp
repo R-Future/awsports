@@ -516,14 +516,14 @@
 	                    </div>
 	                  </div>
 	                  <div class="form-group">
-	                    <label for="newPasswordConfirmation" class="col-sm-2 control-label">确认</label>
+	                    <label for="newPasswordConfirmation" class="col-sm-2 control-label">新密码确认</label>
 	                    <div class="col-sm-10">
 	                      <input type="password" class="form-control" name="newPasswordConfirmation" id="newPasswordConfirmation" placeholder="New Password">
 	                    </div>
 	                  </div>
 	                  <div class="form-group">
 	                    <div class="col-sm-offset-2 col-sm-10">
-	                      <a href="javascript:void(0)" class="btn btn-danger" id="pwchangingSubmit">submit</a>
+	                      <a href="javascript:void(0)" class="btn btn-danger" id="pwchangingSubmit">提交</a>
 	                    </div>
 	                  </div>
 	              </div>

@@ -4,7 +4,7 @@
 		<!-- footer -->
 		<footer class="main-footer">
 		  <div class="pull-right hidden-xs">
-		    <b>Version</b> 1.0.0
+		    <b>Version</b> 0.1.4
 		  </div>
 		  <strong>Copyright &copy; 2014-<%= new java.text.SimpleDateFormat("yyyy").format(new java.util.Date()) %> <a href="<%=request.getContextPath() %>">爱网体育</a>.</strong> All rights
 		  reserved.

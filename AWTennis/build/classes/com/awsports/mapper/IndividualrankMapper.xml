@@ -34,6 +34,11 @@
 	  			and aw_user.name like "%${userQuery.user.name}%"
 	  		</if>
   		</if>
+  		<if test="userQuery.level!=null">
+  			<if test="userQuery.level.id!=null">
+  				and aw_level.id=#{userQuery.level.id}
+  			</if>
+  		</if>
   	</if>
   	
   	<if test="individualrank!=null">
@@ -41,6 +46,7 @@
   			and aw_individualrank.entry=#{individualrank.entry}
   		</if>
   	</if>
+
   </sql>
   <select id="findAll" parameterType="com.awsports.pojo.IndividualrankQuery" resultMap="individualrankQueryMap">
     SELECT

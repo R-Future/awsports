@@ -96,6 +96,7 @@ public class CalculatePoint{
 			individualpoint.setYear(year);
 			individualpoint.setWeek(week);
 			individualpoint.setEntry(singlematch.getEntry());
+			individualpoint.setTournamentid(singlematch.getTournamentid());
 			for(int i=0;i<playerids.length;i++){
 				individualpoint.setUserid(playerids[i]);
 				Individualpoint playerpoint=individualpointService.findByUseridYearWeekEntry(individualpoint);
@@ -143,7 +144,8 @@ public class CalculatePoint{
 		if(doublematch!=null&&(doublematch.getInvalid()==null||!doublematch.getInvalid().booleanValue())){
 			Individualpoint individualpoint=new Individualpoint();
 			individualpoint.setYear(year);
-			individualpoint.setWeek(week);			
+			individualpoint.setWeek(week);
+			individualpoint.setTournamentid(doublematch.getTournamentid());
 			for(int i=0;i<teamMembers.length;i++){
 				for(int j=0;j<teamMembers[i].length;j++){
 					individualpoint.setUserid(teamMembers[i][j]);
@@ -202,6 +204,7 @@ public class CalculatePoint{
 			individualpoint.setYear(year);
 			individualpoint.setWeek(week);
 			individualpoint.setEntry(singlematch.getEntry());
+			individualpoint.setTournamentid(singlematch.getTournamentid());
 			for(int i=0;i<playerids.length;i++){
 				individualpoint.setUserid(playerids[i]);
 				Individualpoint playerpoint=individualpointService.findByUseridYearWeekEntry(individualpoint);
@@ -253,6 +256,7 @@ public class CalculatePoint{
 			Individualpoint individualpoint=new Individualpoint();
 			individualpoint.setYear(year);
 			individualpoint.setWeek(week);
+			individualpoint.setTournamentid(doublematch.getTournamentid());
 			for(int i=0;i<teamMembers.length;i++){
 				for(int j=0;j<teamMembers[i].length;j++){
 					individualpoint.setUserid(teamMembers[i][j]);
@@ -314,6 +318,7 @@ public class CalculatePoint{
 		    teampoint.setYear(year);
 		    teampoint.setWeek(week);
 		    teampoint.setEntry(doublematch.getEntry());
+		    teampoint.setTournamentid(doublematch.getTournamentid());
 			for(int i=0;i<playerids.length;i++){
 				teampoint.setTeamid(playerids[i]);
 				Teampoint old=teampointService.findByTeamidYearWeekEntry(teampoint);
@@ -363,6 +368,7 @@ public class CalculatePoint{
 			teampoint.setYear(year);
 			teampoint.setWeek(week);
 			teampoint.setEntry(doublematch.getEntry());
+			teampoint.setTournamentid(doublematch.getTournamentid());
 			for(int i=0;i<playerids.length;i++){
 				teampoint.setTeamid(playerids[i]);
 				Teampoint old=teampointService.findByTeamidYearWeekEntry(teampoint);

@@ -13,4 +13,6 @@ public interface TeampointMapper {
     public void updateById(Teampoint teampoint) throws Exception;
     public void deleteById(Integer id) throws Exception;
     public List<Teampoint> findByEntryYearWeek(Teampoint teampoint) throws Exception;
+    public List<Teampoint> findByTournamentid(Teampoint teampoint) throws Exception;
+    
 }

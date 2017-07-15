@@ -97,6 +97,7 @@
 			  <ul class="treeview-menu">
 			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/individualrank/list"><i class="fa fa-circle-o"></i> 个人排名</a></li>
 			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/teamrank/list"><i class="fa fa-circle-o"></i> 组合排名</a></li>
+			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/qualificationrank/list"><i class="fa fa-circle-o"></i> 资格赛个人排名</a></li>
 			  </ul>
 			</li>
 			

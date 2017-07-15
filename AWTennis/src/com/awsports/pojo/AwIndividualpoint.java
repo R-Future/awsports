@@ -27,6 +27,8 @@ public class AwIndividualpoint {
 
     private Boolean invalid;
 
+    private Integer tournamentid;
+
     private String note;
 
     public Integer getId() {
@@ -123,6 +125,14 @@ public class AwIndividualpoint {
 
     public void setInvalid(Boolean invalid) {
         this.invalid = invalid;
+    }
+
+    public Integer getTournamentid() {
+        return tournamentid;
+    }
+
+    public void setTournamentid(Integer tournamentid) {
+        this.tournamentid = tournamentid;
     }
 
     public String getNote() {

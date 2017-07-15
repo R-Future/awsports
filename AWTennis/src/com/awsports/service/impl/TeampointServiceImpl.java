@@ -55,4 +55,10 @@ public class TeampointServiceImpl implements TeampointService {
 		return teampointMapper.findByEntryYearWeek(teampoint);
 	}
 
+	@Override
+	public List<Teampoint> findByTournamentid(Teampoint teampoint) throws Exception {
+		// TODO Auto-generated method stub
+		return teampointMapper.findByTournamentid(teampoint);
+	}
+
 }

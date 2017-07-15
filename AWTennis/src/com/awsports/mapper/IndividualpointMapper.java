@@ -14,4 +14,5 @@ public interface IndividualpointMapper {
 	public void deleteById(Integer id) throws Exception;
 	public Individualpoint findByUseridYearWeekEntry(Individualpoint individualpoint) throws Exception;
 	public List<Individualpoint> findByEntryYearWeek(Individualpoint individualpoint) throws Exception;
+	public List<Individualpoint> findByTournamentidYearWeek(Individualpoint individualpoint) throws Exception;
 }

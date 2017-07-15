@@ -56,10 +56,76 @@
 						</select>
 						<span class="help-block" id="nullLowLevel"></span>
 					</div>
-					
+					<div class="form-group col-md-3" style="padding-top:25px">
+						<a href="javascript:void(0)" id="routine" class="btn btn-danger">确定</a>
+					</div>
 				</fieldset>
-				<a href="javascript:void(0)" id="routine" class="btn btn-danger">确定</a>
-<!-- 				<button type="submit" class="btn btn-danger">提交</button> -->
+				
+				<fieldset><legend>资格赛调整</legend></fieldset>
+				<fieldset>
+					<legend>降级</legend>
+					<div class="form-group has-warning col-md-3">
+                 	 	<label class="control-label" for="qh_down_number"><i class="fa fa-warning"></i>降级人数</label>
+						<input type="number" name="qh_down_number" id="qh_down_number" class="form-control"/>
+						<span class="help-block" id="null_qh_down_number"></span>
+					</div>
+					<div class="form-group has-warning col-md-3">
+                 	 	<label class="control-label" for="qh_highLevel"><i class="fa fa-warning"></i>降级前的组别</label>
+						<select id="qh_highLevel" name="qh_highLevel" class="form-control">
+							<option>-请选择-</option>
+							<c:forEach items="${levels}" var="level">
+								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
+							</c:forEach>
+						</select>
+						<span class="help-block" id="null_qh_highLevel"></span>
+					</div>
+					<div class="form-group has-warning col-md-3">
+                 	 	<label class="control-label" for="qh_lowLevel"><i class="fa fa-warning"></i>降级后的组别</label>
+						<select id="qh_lowLevel" name="qh_lowLevel" class="form-control">
+							<option>-请选择-</option>
+							<c:forEach items="${levels}" var="level">
+								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
+							</c:forEach>
+						</select>
+						<span class="help-block" id="null_qh_lowLevel"></span>
+					</div>
+					<div class="form-group col-md-3" style="padding-top:25px">
+						<a href="javascript:void(0)" id="qh_down" class="btn btn-danger">确定</a>
+					</div>
+				</fieldset>
+				
+				
+				<fieldset>
+					<legend>资格赛选手升级</legend>
+					<div class="form-group has-warning col-md-3">
+                 	 	<label class="control-label" for="qh_up_number"><i class="fa fa-warning"></i>升级人数</label>
+						<input type="number" name="qh_up_number" id="qh_up_number" class="form-control"/>
+						<span class="help-block" id="null_qh_up_number"></span>
+					</div>
+					<div class="form-group has-warning col-md-3">
+                 	 	<label class="control-label" for="qh_tournament"><i class="fa fa-warning"></i>赛事类型</label>
+						<select id="qh_tournament" name="qh_tournament" class="form-control">
+							<option>-请选择-</option>
+							<c:forEach items="${tournamentQuerys}" var="tournamentQuery">
+								<option value="${tournamentQuery.tournament.id}">${tournamentQuery.tournament.name}</option>
+							</c:forEach>
+						</select>
+						<span class="help-block" id="null_qh_tournament"></span>
+					</div>
+					<div class="form-group has-warning col-md-3">
+                 	 	<label class="control-label" for="qh_upto_Level"><i class="fa fa-warning"></i>升级后的组别</label>
+						<select id="qh_upto_Level" name="qh_upto_Level" class="form-control">
+							<option>-请选择-</option>
+							<c:forEach items="${levels}" var="level">
+								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
+							</c:forEach>
+						</select>
+						<span class="help-block" id="null_qh_upto_Level"></span>
+					</div>
+					<div class="form-group col-md-3" style="padding-top:25px">
+						<a href="javascript:void(0)" id="qh_up" class="btn btn-danger">确定</a>
+					</div>
+				</fieldset>
 			</form>
 		</div>
 	</section><!-- /.Main content -->
@@ -109,7 +175,46 @@
 					}
 				});
 			}
-		})
+		});
+		/* 资格赛前金组降级的人员 */
+		$("a#qh_down").click(function(){
+			var qh_down_number = $("input#qh_down_number").val();
+			var qh_highlevel = $("select#qh_highlevel").val();
+			var qh_lowLevel = $("selelct#qh_lowLevel").val();
+			if(qh_down_number == null || qh_highlevel == null){
+				alert("请输入调整信息");
+			}else{
+				$.ajax({
+					type: "post",
+					url: "qualificationDowngrade",
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					data: {qhDownNumber:qh_down_number,qhHighLevel:qh_highlevel,qhLowLevel:qh_lowLevel},
+					dataType: "html",
+					success:function(data){
+						$("div#hint").html(data);
+					}
+				});
+			}
+		});
+		$("a#qh_up").click(function(){
+			var qh_up_number = $("input#qh_up_number").val();
+			var qh_tournament = $("select#qh_tournament").val();
+			var qh_upto_Level = $("select#qh_upto_Level").val();
+			if(qh_up_number == null || qh_tournament == null){
+				alert("请输入调整信息");
+			}else{
+				$.ajax({
+					type: "post",
+					url: "qualificationUpgrade",
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					data: {qhUpNumber:qh_up_number,qhTournament:qh_tournament,qhUptoLevel:qh_upto_Level},
+					dataType: "html",
+					success:function(data){
+						$("div#hint").html(data);
+					}
+				});
+			}
+		});
 	});
 </script>
 <jsp:include page="../footer.jsp"/>

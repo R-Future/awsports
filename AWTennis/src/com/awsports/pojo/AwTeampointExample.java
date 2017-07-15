@@ -824,6 +824,66 @@ public class AwTeampointExample {
             addCriterion("invalid not between", value1, value2, "invalid");
             return (Criteria) this;
         }
+
+        public Criteria andTournamentidIsNull() {
+            addCriterion("tournamentId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidIsNotNull() {
+            addCriterion("tournamentId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidEqualTo(Integer value) {
+            addCriterion("tournamentId =", value, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidNotEqualTo(Integer value) {
+            addCriterion("tournamentId <>", value, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidGreaterThan(Integer value) {
+            addCriterion("tournamentId >", value, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("tournamentId >=", value, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidLessThan(Integer value) {
+            addCriterion("tournamentId <", value, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidLessThanOrEqualTo(Integer value) {
+            addCriterion("tournamentId <=", value, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidIn(List<Integer> values) {
+            addCriterion("tournamentId in", values, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidNotIn(List<Integer> values) {
+            addCriterion("tournamentId not in", values, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidBetween(Integer value1, Integer value2) {
+            addCriterion("tournamentId between", value1, value2, "tournamentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTournamentidNotBetween(Integer value1, Integer value2) {
+            addCriterion("tournamentId not between", value1, value2, "tournamentid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

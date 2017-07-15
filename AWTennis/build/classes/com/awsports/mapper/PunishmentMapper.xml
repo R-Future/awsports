@@ -54,6 +54,11 @@
   	select SUM(aw_punishment.points) from aw_punishment where userId=#{userid} and entry=#{entry} and invalid=#{invalid}
   </select>
   
+  <select id="findSumByUseridTournamentidYear">
+  	select SUM(aw_punishment.points) from aw_punishment 
+  	where userId=#{userid} and tournamentId=#{tournamentid} and YEAR(matchtime)=#{currentYear} and invalid=#{invalid}
+  </select>
+  
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from aw_punishment where id = #{id,jdbcType=INTEGER}
   </delete>

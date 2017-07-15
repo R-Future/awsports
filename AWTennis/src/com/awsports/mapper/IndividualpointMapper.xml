@@ -6,6 +6,7 @@
   	<id column="id" property="individualpoint.id"/>
   	<result column="userId" property="individualpoint.userid"/>
   	<result column="entry" property="individualpoint.entry"/>
+  	<result column="tournamentId" property="individualpoint.tournamentid"/>
   	<result column="year" property="individualpoint.year"/>
   	<result column="week" property="individualpoint.week"/>
 	<result column="matchs" property="individualpoint.matchs"/>
@@ -49,10 +50,10 @@
 		<include refid="individualpointQuery_where"></include>
 	</where>
   </select>
-  
+  <!-- 找出某个用户某年某周参加的某项赛事 -->
   <select id="findByUseridYearWeekEntry" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
   	select * from aw_individualpoint
-	where userid=#{userid} and entry=#{entry} and year=#{year} and week=#{week}
+	where userId=#{userid} and entry=#{entry} and tournamentId=#{tournamentid} and year=#{year} and week=#{week}
   </select>
   <!-- 用户计算个人排名 -->
   <select id="findByEntryYearWeek" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
@@ -60,7 +61,11 @@
 	where entry in (#{manSingleEntry},#{womanSingleEntry},#{entry}) and (year=#{year} or (year=#{lastYear} and (week between #{week} and 55)))
 	order by aw_individualpoint.userId ASC
   </select>
-  
+  <select id="findByTournamentidYearWeek" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
+  	select * from aw_individualpoint
+	where tounamentId=#{tournamentid} and (year=#{year} or (year=#{lastYear} and (week between #{week} and 55)))
+	order by aw_individualpoint.userId ASC
+  </select>
   <select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Individualpoint">
   	select * from aw_individualpoint where id=#{id}
   </select>
@@ -82,6 +87,9 @@
       </if>
       <if test="entry != null">
         entry,
+      </if>
+      <if test="tournamentid != null">
+      	tournamentId,
       </if>
       <if test="year != null">
         year,
@@ -123,6 +131,9 @@
       </if>
       <if test="entry != null">
         #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
       </if>
       <if test="year != null">
         #{year,jdbcType=INTEGER},
@@ -172,6 +183,9 @@
       </if>
       <if test="entry != null">
         entry = #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
       </if>
       <if test="year != null">
         year = #{year,jdbcType=INTEGER},

@@ -50,4 +50,10 @@ public class PunishmentServiceImpl implements PunishmentService {
 		return punishmentMapper.findSumByUseridEntry(punishment);
 	}
 
+	@Override
+	public Integer findSumByUseridTournamentidYear(Punishment punishment) throws Exception {
+		// TODO Auto-generated method stub
+		return punishmentMapper.findSumByUseridTournamentidYear(punishment);
+	}
+
 }

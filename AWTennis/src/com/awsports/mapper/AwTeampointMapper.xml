@@ -14,6 +14,7 @@
     <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
     <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
     <result column="invalid" jdbcType="BIT" property="invalid" />
+    <result column="tournamentId" jdbcType="INTEGER" property="tournamentid" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwTeampoint">
     <result column="note" jdbcType="LONGVARCHAR" property="note" />
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, teamId, entry, year, week, matchs, wins, marginBureau, points, createdAt, updatedAt, 
-    invalid
+    invalid, tournamentId
   </sql>
   <sql id="Blob_Column_List">
     note
@@ -136,12 +137,12 @@
       year, week, matchs, 
       wins, marginBureau, points, 
       createdAt, updatedAt, invalid, 
-      note)
+      tournamentId, note)
     values (#{id,jdbcType=INTEGER}, #{teamid,jdbcType=INTEGER}, #{entry,jdbcType=INTEGER}, 
       #{year,jdbcType=INTEGER}, #{week,jdbcType=INTEGER}, #{matchs,jdbcType=INTEGER}, 
       #{wins,jdbcType=INTEGER}, #{marginbureau,jdbcType=INTEGER}, #{points,jdbcType=INTEGER}, 
       #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
-      #{note,jdbcType=LONGVARCHAR})
+      #{tournamentid,jdbcType=INTEGER}, #{note,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwTeampoint">
     insert into aw_teampoint
@@ -181,6 +182,9 @@
       </if>
       <if test="invalid != null">
         invalid,
+      </if>
+      <if test="tournamentid != null">
+        tournamentId,
       </if>
       <if test="note != null">
         note,
@@ -222,6 +226,9 @@
       </if>
       <if test="invalid != null">
         #{invalid,jdbcType=BIT},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
       </if>
       <if test="note != null">
         #{note,jdbcType=LONGVARCHAR},
@@ -273,6 +280,9 @@
       <if test="record.invalid != null">
         invalid = #{record.invalid,jdbcType=BIT},
       </if>
+      <if test="record.tournamentid != null">
+        tournamentId = #{record.tournamentid,jdbcType=INTEGER},
+      </if>
       <if test="record.note != null">
         note = #{record.note,jdbcType=LONGVARCHAR},
       </if>
@@ -295,6 +305,7 @@
       createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
       invalid = #{record.invalid,jdbcType=BIT},
+      tournamentId = #{record.tournamentid,jdbcType=INTEGER},
       note = #{record.note,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -313,7 +324,8 @@
       points = #{record.points,jdbcType=INTEGER},
       createdAt = #{record.createdat,jdbcType=TIMESTAMP},
       updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
-      invalid = #{record.invalid,jdbcType=BIT}
+      invalid = #{record.invalid,jdbcType=BIT},
+      tournamentId = #{record.tournamentid,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -354,6 +366,9 @@
       <if test="invalid != null">
         invalid = #{invalid,jdbcType=BIT},
       </if>
+      <if test="tournamentid != null">
+        tournamentId = #{tournamentid,jdbcType=INTEGER},
+      </if>
       <if test="note != null">
         note = #{note,jdbcType=LONGVARCHAR},
       </if>
@@ -373,6 +388,7 @@
       createdAt = #{createdat,jdbcType=TIMESTAMP},
       updatedAt = #{updatedat,jdbcType=TIMESTAMP},
       invalid = #{invalid,jdbcType=BIT},
+      tournamentId = #{tournamentid,jdbcType=INTEGER},
       note = #{note,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -388,7 +404,8 @@
       points = #{points,jdbcType=INTEGER},
       createdAt = #{createdat,jdbcType=TIMESTAMP},
       updatedAt = #{updatedat,jdbcType=TIMESTAMP},
-      invalid = #{invalid,jdbcType=BIT}
+      invalid = #{invalid,jdbcType=BIT},
+      tournamentId = #{tournamentid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

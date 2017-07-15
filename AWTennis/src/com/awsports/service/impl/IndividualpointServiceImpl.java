@@ -56,4 +56,10 @@ public class IndividualpointServiceImpl implements IndividualpointService {
 		return individualpointMapper.findByEntryYearWeek(individualpoint);
 	}
 
+	@Override
+	public List<Individualpoint> findByTournamentidYearWeek(Individualpoint individualpoint) throws Exception {
+		// TODO Auto-generated method stub
+		return individualpointMapper.findByTournamentidYearWeek(individualpoint);
+	}
+
 }

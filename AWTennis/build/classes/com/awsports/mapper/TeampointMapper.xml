@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="teampoint.id" />
     <result column="teamId" jdbcType="INTEGER" property="teampoint.teamid" />
     <result column="entry" jdbcType="INTEGER" property="teampoint.entry" />
+    <result column="tournamentId" jdbcType="INTEGER" property="teampoint.tournamentid" />
     <result column="year" jdbcType="INTEGER" property="teampoint.year" />
     <result column="week" jdbcType="INTEGER" property="teampoint.week" />
     <result column="matchs" jdbcType="INTEGER" property="teampoint.matchs" />
@@ -54,14 +55,18 @@
   </select>
   <select id="findByTeamidYearWeekEntry" parameterType="com.awsports.pojo.Teampoint" resultType="com.awsports.pojo.Teampoint">
   	select * from aw_teampoint
-  	where teamId=#{teamid} and year=#{year} and week=#{week} and entry=#{entry}
+  	where teamId=#{teamid} and year=#{year} and week=#{week} and entry=#{entry} and tournamentId=#{tournamentid}
   </select>
   <select id="findByEntryYearWeek" parameterType="com.awsports.pojo.Teampoint" resultType="com.awsports.pojo.Teampoint">
   	select * from aw_teampoint
   	where entry in (#{manDoubleEntry},#{womanDoubleEntry},#{entry}) and (year=#{year} or (year=#{lastYear} and (week between #{week} and 55)))
 	order by aw_teampoint.teamId ASC
   </select>
-  
+  <select id="findByTournamentid" parameterType="com.awsports.pojo.Teampoint" resultType="com.awsports.pojo.Teampoint">
+  	select * from aw_teampoint
+  	where tournamentId=#{tournamentid} and (year=#{year} or (year=#{lastYear} and (week between #{week} and 55)))
+	order by aw_teampoint.teamId ASC
+  </select>
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from aw_teampoint
     where id = #{id,jdbcType=INTEGER}
@@ -79,6 +84,9 @@
       </if>
       <if test="entry != null">
         entry,
+      </if>
+      <if test="tournamentid != null">
+        tournamentId,
       </if>
       <if test="year != null">
         year,
@@ -120,6 +128,9 @@
       </if>
       <if test="entry != null">
         #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
       </if>
       <if test="year != null">
         #{year,jdbcType=INTEGER},
@@ -166,6 +177,9 @@
       </if>
       <if test="entry != null">
         entry = #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
       </if>
       <if test="year != null">
         year = #{year,jdbcType=INTEGER},

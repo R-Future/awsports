@@ -64,8 +64,8 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="year">当前排名</label>
-				<input type="number" name="year" id="year" value="${individualrank.currentrank}" class="form-control"/>
+				<label for="currentrank">当前排名</label>
+				<input type="number" name="currentrank" id="currentrank" value="${individualrank.currentrank}" class="form-control"/>
 			</div>
 	<!-- 		<div class="form-group"> -->
 	<!-- 			<label for="year">年份</label> -->
@@ -76,20 +76,20 @@
 	<%-- 			<input type="number" name="week" id="week" value="${individualrank.week}" class="form-control"/> --%>
 	<!-- 		</div> -->
 			<div class="form-group">
-				<label for="matchs">总场数</label>
-				<input type="number" name="matchs" id="matchs" value="${individualrank.totalmatchs}" class="form-control"/>
+				<label for="totalmatchs">总场数</label>
+				<input type="number" name="totalmatchs" id="totalmatchs" value="${individualrank.totalmatchs}" class="form-control"/>
 			</div>
 			<div class="form-group">
 				<label for="wins">胜场数</label>
 				<input type="number" name="wins" id="wins" value="${individualrank.wins}" class="form-control"/>
 			</div>
 			<div class="form-group">
-				<label for="marginbureau">总净胜局</label>
-				<input type="number" name="marginbureau" id="marginbureau" value="${individualrank.totalmarginbureau}" class="form-control"/>
+				<label for="totalmarginbureau">总净胜局</label>
+				<input type="number" name="totalmarginbureau" id="totalmarginbureau" value="${individualrank.totalmarginbureau}" class="form-control"/>
 			</div>
 			<div class="form-group">
-				<label for="points">总积分</label>
-				<input type="number" name="points" id="points" value="${individualrank.totalpoint}" class="form-control"/>
+				<label for="totalpoint">总积分</label>
+				<input type="number" name="totalpoint" id="totalpoint" value="${individualrank.totalpoint}" class="form-control"/>
 			</div>
 			<div class="form-group">
 				<label for="invalid">记录是否无效</label>

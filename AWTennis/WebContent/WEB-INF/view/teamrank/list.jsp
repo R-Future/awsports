@@ -55,6 +55,7 @@
 					<input type="checkbox" name="entrys" value="${ teamEntryType.key }" checked>${ teamEntryType.value }
 				</c:forEach>
 				<a href="javascript:void(0)" id="update" title="更新排名" class="btn btn-primary"><i class="fa fa-refresh"></i></a>
+				<span style="color:red">(每周更新一次)</span>
 			</fieldset>
 		</div>
 		<hr class="hrStyle"/>

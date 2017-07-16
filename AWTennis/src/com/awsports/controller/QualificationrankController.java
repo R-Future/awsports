@@ -176,8 +176,8 @@ public class QualificationrankController {
 			//用于查询数据库的查询条件
 			Individualpoint individualpoint=new Individualpoint();
 			individualpoint.setYear(customDate.getYear());
-			individualpoint.setLastYear(customDate.getYear()-1);
-			individualpoint.setWeek(customDate.getWeek());
+			//individualpoint.setLastYear(customDate.getYear()-1);
+			//individualpoint.setWeek(customDate.getWeek());
 			//更新排名
 			for(Integer tournamentid:tournamentids){
 				individualpoint.setTournamentid(tournamentid);
@@ -230,6 +230,7 @@ public class QualificationrankController {
 								qualificationrank.setTotalmarginbureau(totalMarginBureaus);
 								qualificationrank.setTotalwins(totalWins);
 //								qualificationrank.setRankingchange(0);
+								//更新年份和周，即每项赛事每个用户在数据库中只有一条记录
 								qualificationrank.setYear(customDate.getYear());
 								qualificationrank.setWeek(customDate.getWeek());
 								rawRanks.add(qualificationrank);

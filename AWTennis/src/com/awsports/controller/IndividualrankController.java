@@ -117,7 +117,7 @@ public class IndividualrankController {
 	public String save(@Validated Individualrank individualrank, BindingResult br,Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "redirect:update";
+			return "forward:update";
 		}else{
 			CustomDate customDate=new CustomDate();
 			individualrank.setYear(customDate.getYear());

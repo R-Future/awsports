@@ -2,13 +2,20 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 public class AwLevel {
     private Integer id;
 
+    @NotNull(message="{level.parent.null}")
     private Integer parent;
 
+    @NotBlank(message="{level.english.null}")
     private String english;
 
+    @NotBlank(message="{level.chinese.null}")
     private String chinese;
 
     private Date createdat;

@@ -2,17 +2,24 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class AwSinglematchscore {
     private Integer id;
 
+    @NotNull(message="{singlematchscore.mathchid.null}")
     private Integer matchid;
 
+    @Min(value=1, message="{singlematchscore.setth.range}")
     private Integer setth;
 
+    @Min(value=0, message="{singlematchscore.hcscore.range}")
     private Integer hcscore;
 
+    @Min(value=0, message="{singlematchscore.apscore.range}")
     private Integer apscore;
 
     private Integer hctiescore;

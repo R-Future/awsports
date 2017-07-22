@@ -95,7 +95,7 @@ public class TeamController {
 	public String save(@Validated Team team, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "team/update";
+			return "forward:update";
 		}else{
 			User user1=userService.findById(team.getUser1id());
 			User user2=userService.findById(team.getUser2id());

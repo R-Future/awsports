@@ -2,17 +2,23 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class AwTeam {
     private Integer id;
 
+    @NotNull(message="{team.user1id.null}")
     private Integer user1id;
 
+    @NotNull(message="{team.user2id.null}")
     private Integer user2id;
 
     private Integer entry;
 
+    @Past(message="{team.startedat.range}")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date startedat;
 

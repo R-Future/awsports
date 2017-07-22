@@ -2,20 +2,29 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class AwPunishment {
     private Integer id;
 
+    @NotNull(message="{punishment.userid.null}")
     private Integer userid;
 
+    @NotNull(message="{punishment.tournamentid.null}")
     private Integer tournamentid;
 
+    @Past(message="{punishment.matchtime.range}")
     @DateTimeFormat(pattern="yyyy-MM-dd") 
     private Date matchtime;
 
+    @NotNull(message="{punishment.entry.null}")
     private Integer entry;
 
+    @Min(value=1, message="{punishment.points.range}")
     private Integer points;
 
     private Date createdat;

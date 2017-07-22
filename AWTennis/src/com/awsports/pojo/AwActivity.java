@@ -2,6 +2,11 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -9,16 +14,21 @@ import org.springframework.format.annotation.NumberFormat.Style;
 public class AwActivity {
     private Integer id;
 
+    @NotBlank(message="{activity.name.null}")
     private String name;
 
+    @Future(message="activity.startedat.range")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date startedat;
     
+    @Future(message="activity.endedat.range")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date endedat;
 
+    @NotNull(message="activity.arenaid.null")
     private Integer arenaid;
 
+    @Min(value=0, message="activity.cost.range")
     @NumberFormat(style=Style.CURRENCY)
     private Double cost;
 

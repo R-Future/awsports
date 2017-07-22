@@ -92,7 +92,7 @@ public class PunishmentController {
 	public String save(@Validated Punishment punishment,BindingResult br,Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "redirect:udpate";
+			return "forward:udpate";
 		}else{
 			if(punishment.getId()!=null){
 				//更新数据

@@ -81,7 +81,7 @@ public class ArenaController {
 	public String save(@Validated Arena arena, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "arena/update";
+			return "forward:update";
 		}else{
 			try{
 				if(arena.getId()!=null){//更新数据

@@ -163,7 +163,7 @@ public class DoublematchController {
 			List<DoublematchQuery> doublematchQuerys=doublematchQueryVo.getDoublematchQuerys();
 			if(br.hasErrors()){
 				model.addAttribute("errors", br);
-				return "doublematch/add";
+				return "forward:add";
 			}else{
 				if(doublematchQuerys==null){
 					throw new CustomException("比赛信息为空，无法保存！");
@@ -278,7 +278,7 @@ public class DoublematchController {
 	public String saveOld(@Validated DoublematchQuery doublematchQuery,BindingResult br,Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "redirect:update";
+			return "forward:update";
 		}else{
 			Doublematch originMatch=doublematchQuery.getDoublematch();
 			List<Doublematchscore> originMatchscores=doublematchQuery.getDoublematchscores();

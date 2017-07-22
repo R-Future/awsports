@@ -489,7 +489,7 @@
 	                  <div class="form-group">
 							<label for="userPic" class="col-sm-2 control-label">头像</label>
 							<input type="file" style="padding-left:14px" name="userPic" id="userPic"/>
-							<c:if test="${ user.portrait!=null and !user.portrait.isEmpty() }"><img src="/pic/${ user.portrait }" width="128" height="128"/></c:if>
+							<c:if test="${ user.portrait!=null and !user.portrait.isEmpty() }"><img src="/pic/${ user.portrait }" width="128" height="128" style="padding-left:14px"/></c:if>
 						</div>
 	                  <div class="form-group">
 	                    <div class="col-sm-offset-2 col-sm-10">

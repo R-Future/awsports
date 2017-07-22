@@ -2,26 +2,37 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class AwDoublematch {
     private Integer id;
 
+    @NotNull(message="{doublematch.homecontestant.null}")
     private Integer homecontestant;
 
+    @NotNull(message="{doublematch.awayplayer.null}")
     private Integer awayplayer;
 
+    @Past(message="{doublematch.matchtime.range}")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date matchtime;
 
+    @NotNull(message="{doublematch.matchplace.null}")
     private Integer matchplace;
 
+    @NotNull(message="{doublematch.tournamentid.null}")
     private Integer tournamentid;
 
     private Integer entry;
 
+    @NotNull(message="{doublematch.round.null}")
     private Integer round;
 
+    @Min(value=1, message="{doublematch.sets.range}")
     private Integer sets;
 
     private String outcome;

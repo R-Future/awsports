@@ -2,15 +2,22 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class AwDoublematchscore {
     private Integer id;
 
+    @NotNull(message="{doublematchscore.matchid.null}")
     private Integer matchid;
 
+    @Min(value=1, message="{doublematchscore.setth.range}")
     private Integer setth;
 
+    @Min(value=0, message="{doublematchscore.hcscore.range}")
     private Integer hcscore;
 
+    @Min(value=0, message="{doublematchscore.apscore.range}")
     private Integer apscore;
 
     private Integer hctiescore;

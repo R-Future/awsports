@@ -2,6 +2,10 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -9,6 +13,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 public class AwTournament {
     private Integer id;
 
+    @NotBlank(message="{tournament.name.null}")
     private String name;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -17,6 +22,7 @@ public class AwTournament {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date endedat;
 
+    @NotNull(message="{tournament.areaid.null}")
     private Integer arenaid;
 
     private String level;
@@ -24,6 +30,7 @@ public class AwTournament {
     @NumberFormat(style=Style.CURRENCY)
     private Integer prize;
 
+    @Min(value=0,message="{tournament.cost.range}")
     @NumberFormat(style=Style.CURRENCY)
     private Double cost;
 

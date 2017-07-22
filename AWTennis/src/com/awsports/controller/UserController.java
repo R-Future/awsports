@@ -132,7 +132,7 @@ public class UserController {
 	public String save(@Validated User user, BindingResult br, MultipartFile userPic, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "redirect:update";
+			return "forward:update";
 		}else{
 			//对密钥进行MD5加密
 			String password=user.getPassword();
@@ -144,8 +144,10 @@ public class UserController {
 				//图片原名称
 				String originalFileName = userPic.getOriginalFilename();
 				if(originalFileName!=null&&originalFileName.length()>0){				
-					//图片存储的物理路径
+					//图片存储的物理路径local
 					String path = "F:\\workspace\\java\\pictures\\";
+					//server
+					//String path = "/usr/upload/pic";
 					//图片的新名称
 					String newFileName = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
 					//生成一个新的文件

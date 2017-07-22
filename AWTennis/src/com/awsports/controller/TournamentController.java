@@ -119,7 +119,7 @@ public class TournamentController {
 	public String save(@Validated Tournament tournament, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "tournament/update";
+			return "forward:update";
 		}else{
 			if(tournament.getId()!=null){//更新数据
 				tournamentService.updateById(tournament);

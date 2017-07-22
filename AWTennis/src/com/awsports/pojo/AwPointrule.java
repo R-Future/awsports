@@ -2,17 +2,25 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class AwPointrule {
     private Integer id;
 
+    @NotNull(message="{pointrule.tournamentid.null}")
     private Integer tournamentid;
 
+    @NotNull(message="{pointrule.round.null}")
     private Integer round;
 
+    @Min(value=0,message="{pointrule.winner.range}")
     private Integer winner;
 
+    @Min(value=0, message="{pointrule.loser.range}")
     private Integer loser;
 
+    @Min(value=0, message="{pointrule.penalty.range}")
     private Integer penalty;
 
     private Date createdat;

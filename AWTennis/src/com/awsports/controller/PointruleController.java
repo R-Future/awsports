@@ -61,7 +61,7 @@ public class PointruleController {
 	public String save(@Validated Pointrule pointrule, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "pointrule/update";
+			return "forward:update";
 		}else{
 			if(pointrule.getId()!=null){//更新数据
 				pointruleService.updateById(pointrule);

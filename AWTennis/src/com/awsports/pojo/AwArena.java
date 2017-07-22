@@ -2,17 +2,27 @@ package com.awsports.pojo;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 public class AwArena {
     private Integer id;
 
+    @NotBlank(message="{arena.name.null}")
     private String name;
 
+    @NotBlank(message="{arena.address.null}")
     private String address;
 
+    @NotNull(message="arena.type.null")
     private Integer type;
 
+    @Min(value=0, message="{arena.indoornumber.range}")
     private Integer indoornumber;
 
+    @Min(value=0, message="{arena.outdoornumber.range}")
     private Integer outdoornumber;
 
     private Date createdat;

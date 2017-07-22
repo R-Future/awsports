@@ -197,7 +197,7 @@ public class SinglematchController {
 			List<SinglematchQuery> singlematchQuerys=singlematchQueryVo.getSinglematchQuerys();
 			if(br.hasErrors()){
 				model.addAttribute("errors", br);
-				return "singlematch/add";
+				return "forward:add";
 			}else{
 				if(singlematchQuerys==null){
 					throw new CustomException("比赛信息为空，无法保存！");
@@ -267,7 +267,7 @@ public class SinglematchController {
 	public String saveOld(@Validated SinglematchQuery singlematchQuery,BindingResult br,Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
-			return "singlematch/update";
+			return "forward:update";
 		}else{
 			Singlematch originMatch=singlematchQuery.getSinglematch();
 			List<Singlematchscore> originMatchscores=singlematchQuery.getSinglematchscores();

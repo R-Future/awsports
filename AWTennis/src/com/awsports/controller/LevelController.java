@@ -82,6 +82,7 @@ public class LevelController {
 	public String save(@Validated Level level,BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", level.getId());
 			return "forward:update";
 		}else{
 			if(level.getId()!=null){

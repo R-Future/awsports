@@ -37,8 +37,12 @@ public class PointruleController {
 		if(id!=null){//更新数据
 			pointrule=pointruleService.findById(id);
 		}else{//新增数据
-			pointrule=new Pointrule();
-			pointrule.setTournamentid(tournamentid);
+			if(tournamentid == null){
+				throw new CustomException("无法指定积分规则所属赛事");
+			}else{
+				pointrule=new Pointrule();
+				pointrule.setTournamentid(tournamentid);
+			}
 		}
 		model.addAttribute("pointrule", pointrule);
 		model.addAttribute("roundTypes", TypeMap.roundType());
@@ -61,6 +65,8 @@ public class PointruleController {
 	public String save(@Validated Pointrule pointrule, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", pointrule.getId());
+			model.addAttribute("tournamentid", pointrule.getTournamentid());
 			return "forward:update";
 		}else{
 			if(pointrule.getId()!=null){//更新数据

@@ -84,6 +84,7 @@ public class ActivityController {
 	public String save(@Validated Activity activity, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", activity.getId());
 			return "forward:update";
 		}else{
 			if(activity.getId()!=null){//更新

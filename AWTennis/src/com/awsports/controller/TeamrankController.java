@@ -112,6 +112,7 @@ public class TeamrankController {
 	public String save(@Validated Teamrank teamrank, BindingResult br,Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", teamrank.getId());
 			return "forward:update";
 		}else{
 			CustomDate customDate=new CustomDate();

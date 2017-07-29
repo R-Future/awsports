@@ -92,6 +92,7 @@ public class PunishmentController {
 	public String save(@Validated Punishment punishment,BindingResult br,Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", punishment.getId());
 			return "forward:udpate";
 		}else{
 			if(punishment.getId()!=null){

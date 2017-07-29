@@ -230,7 +230,7 @@ public class DoublematchController {
 	 *
 	 */
 	@RequestMapping("/update")
-	public String update(Model model,Integer id) throws Exception{
+	public String update(Model model,@RequestParam(required=true) Integer id) throws Exception{
 		if(id==null){
 			throw new CustomException("非法操作！");
 		}else{

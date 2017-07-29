@@ -132,6 +132,7 @@ public class UserController {
 	public String save(@Validated User user, BindingResult br, MultipartFile userPic, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", user.getId());
 			return "forward:update";
 		}else{
 			//对密钥进行MD5加密
@@ -163,7 +164,7 @@ public class UserController {
 				userService.insertOne(user);
 			}
 			//用户信息修改或添加成功后跳转到用户列表页面
-			return "redirect:profile";
+			return "redirect:list";
 		}
 		
 	}
@@ -202,7 +203,7 @@ public class UserController {
 	@RequestMapping("/profile")
 	public String profile(Model model, Integer id) throws Exception{
 		if(id==null){
-			throw new CustomException("非法操作！");
+			throw new CustomException("找不到用户");
 		}else{
 			User user=userService.findById(id);
 			model.addAttribute("user", user);

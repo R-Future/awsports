@@ -85,6 +85,7 @@ public class TeampointController {
 	public String save(@Validated Teampoint teampoint,BindingResult br,Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", teampoint.getId());
 			return "forward:update";
 		}else{
 			if(teampoint.getId()!=null){

@@ -81,6 +81,7 @@ public class ArenaController {
 	public String save(@Validated Arena arena, BindingResult br, Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", arena.getId());
 			return "forward:update";
 		}else{
 			try{

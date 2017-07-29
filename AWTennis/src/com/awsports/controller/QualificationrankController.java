@@ -128,6 +128,7 @@ public class QualificationrankController {
 	public String save(@Validated Qualificationrank qualificationrank, BindingResult br,Model model) throws Exception{
 		if(br.hasErrors()){
 			model.addAttribute("errors", br);
+			model.addAttribute("id", qualificationrank.getId());
 			return "forward:update";
 		}else{
 			CustomDate customDate=new CustomDate();

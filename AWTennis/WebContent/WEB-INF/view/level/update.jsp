@@ -68,20 +68,19 @@
 				<input type="text" name="note" id="note" value="${level.note}" class="form-control"/>
 			</div>
 			<div class="form-group">
-				<label for="invalid">是否有效</label>
+				<label for="invalid">是否有效:</label>
 				<c:choose>
 					<c:when test="${ !level.invalid.booleanValue() }">
-						<input type="radio" name="invalid" id="F" value="false" checked class="form-control"/>有效
-						<input type="radio" name="invalid" id="T" value="true" class="form-control"/>无效
+						<input type="radio" name="invalid" id="F" value="false" checked/>有效
+						<input type="radio" name="invalid" id="T" value="true"/>无效
 					</c:when>
 					<c:otherwise>
-						<input type="radio" name="invalid" id="F" value="false" class="form-control"/>有效
-						<input type="radio" name="invalid" id="T" value="true" checked class="form-control"/>无效
+						<input type="radio" name="invalid" id="F" value="false"/>有效
+						<input type="radio" name="invalid" id="T" value="true" checked/>无效
 					</c:otherwise>
 				</c:choose>
-				
 			</div>
-			<button type="submit" class="btn btn-default">提交</button>
+			<button type="submit" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">提交</button>
 		</form>
 	</div>
 	</section>

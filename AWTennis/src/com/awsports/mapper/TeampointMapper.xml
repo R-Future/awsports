@@ -67,6 +67,7 @@
   	where tournamentId=#{tournamentid} and (year=#{year} or (year=#{lastYear} and (week between #{week} and 55)))
 	order by aw_teampoint.teamId ASC
   </select>
+  
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from aw_teampoint
     where id = #{id,jdbcType=INTEGER}
@@ -179,7 +180,7 @@
         entry = #{entry,jdbcType=INTEGER},
       </if>
       <if test="tournamentid != null">
-        #{tournamentid,jdbcType=INTEGER},
+        tournamentId = #{tournamentid,jdbcType=INTEGER},
       </if>
       <if test="year != null">
         year = #{year,jdbcType=INTEGER},

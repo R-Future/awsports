@@ -45,9 +45,15 @@ public class TeamrankServiceImpl implements TeamrankService {
 	}
 
 	@Override
-	public Teamrank findByTeamidEntry(Teamrank teamrank) throws Exception {
+	public List<Teamrank> findByTeamidEntry(Teamrank teamrank) throws Exception {
 		// TODO Auto-generated method stub
 		return teamrankMapper.findByTeamidEntry(teamrank);
+	}
+
+	@Override
+	public Teamrank findByTeamidEntryYear(Teamrank teamrank) throws Exception {
+		// TODO Auto-generated method stub
+		return teamrankMapper.findByTeamidEntryYear(teamrank);
 	}
 
 }

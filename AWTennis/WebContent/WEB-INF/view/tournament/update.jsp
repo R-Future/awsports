@@ -108,7 +108,7 @@
 				<input type="text" name="note" id="note" value="${tournament.note}" class="form-control"/>
 			</div>
 			
-			<button type="submit" class="btn btn-default">提交</button>
+			<button type="submit" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">提交</button>
 		</form>
 		
 	</div>

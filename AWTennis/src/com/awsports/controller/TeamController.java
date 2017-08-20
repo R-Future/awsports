@@ -98,14 +98,22 @@ public class TeamController {
 			model.addAttribute("id", team.getId());
 			return "forward:update";
 		}else{
+			//cannot insert two teams that are same into one table
+			if(team.getId() == null){
+				Team origin = teamService.findByUsers(team);
+				if(origin != null){
+					model.addAttribute("teamExisted", "组合已存在");
+					return "forward:update";
+				}
+			}
 			User user1=userService.findById(team.getUser1id());
 			User user2=userService.findById(team.getUser2id());
 			//设置组合名称
 			if(team.getName()==null||team.getName()==""){
 				StringBuffer teamName=new StringBuffer();
-				teamName.append(user1.getName());
+				teamName.append(user1.getName().trim());
 				teamName.append("&");
-				teamName.append(user2.getName());
+				teamName.append(user2.getName().trim());
 				team.setName(teamName.toString());
 			}else{
 				//..

@@ -249,8 +249,7 @@
 						</c:otherwise>
 					</c:choose>
 			 	</div>
-				
-				<button type="submit" id="submit" class="btn btn-default">提交</button>
+				<button type="submit" id="submit" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">提交</button>
 			</form>
 		</div>
 	</div>

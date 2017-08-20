@@ -1,9 +1,11 @@
 package com.awsports.controller;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,19 +15,26 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.awsports.pojo.Arena;
+import com.awsports.pojo.Level;
 import com.awsports.pojo.Pointrule;
 import com.awsports.pojo.Singlematch;
 import com.awsports.pojo.SinglematchQuery;
 import com.awsports.pojo.SinglematchQueryVo;
 import com.awsports.pojo.Singlematchscore;
+import com.awsports.pojo.Tournament;
 import com.awsports.pojo.TournamentQuery;
 import com.awsports.pojo.User;
 import com.awsports.pojo.UserQuery;
 import com.awsports.service.ArenaService;
 import com.awsports.service.IndividualpointService;
+import com.awsports.service.IndividualrankService;
+import com.awsports.service.IndividualrankestService;
+import com.awsports.service.LevelService;
 import com.awsports.service.PointruleService;
+import com.awsports.service.PunishmentService;
 import com.awsports.service.SinglematchService;
 import com.awsports.service.SinglematchscoreService;
 import com.awsports.service.TournamentService;
@@ -33,10 +42,19 @@ import com.awsports.service.UserService;
 import com.awsports.util.CalculatePoint;
 import com.awsports.util.CustomException;
 import com.awsports.util.EntryEnum;
+import com.awsports.util.ExcelUtil;
 import com.awsports.util.RoundEnum;
 import com.awsports.util.SexEnum;
 import com.awsports.util.TypeMap;
+import com.awsports.util.UpdateRankUtil;
 import com.awsports.util.WinLoseEnum;
+
+import jxl.Cell;
+import jxl.CellType;
+import jxl.DateCell;
+import jxl.NumberCell;
+import jxl.Sheet;
+import jxl.Workbook;
 
 @Controller
 @RequestMapping("/singlematch")
@@ -56,6 +74,14 @@ public class SinglematchController {
 	private PointruleService pointruleService;
 	@Autowired
 	private IndividualpointService individualpointService;
+	@Autowired
+	private LevelService levelService;
+	@Autowired
+	private IndividualrankService individualrankService;
+	@Autowired
+	private IndividualrankestService individualrankestService;
+	@Autowired
+	private PunishmentService punishmentService;
 	
 	private Map<Integer,String> roundTypes=TypeMap.roundType();
 	
@@ -63,6 +89,11 @@ public class SinglematchController {
 	private int loserPoint;
 	private int penalty;
 	private int hcMarginBureau;
+	private Integer[] individualEntrys = { 1, 2, 3 };
+	
+	private String GOLD_GROUP_QUALIFICATION = "金组资格赛";
+	private String GROUP_GOLD = "金组";
+	private String GROUP_SILVER = "银组";
 	
 	/**
 	 * 
@@ -426,6 +457,18 @@ public class SinglematchController {
 	 *
 	 */
 	private void setOriginMatch(Singlematch originMatch,List<Singlematchscore> originMatchscores) throws Exception{
+		//id of tournament gold group qualification
+		Tournament conditionTournament = new Tournament();
+		conditionTournament.setName(GOLD_GROUP_QUALIFICATION);
+		Integer goldQualificationId = tournamentService.findByName(conditionTournament).getId();
+		//id of group gold
+		Level conditionLevel = new Level();
+		conditionLevel.setChinese(GROUP_GOLD);
+		Integer goldId = levelService.findByChineseName(conditionLevel).getId();
+		//id of group silver
+		conditionLevel.setChinese(GROUP_SILVER);
+		Integer silverId = levelService.findByChineseName(conditionLevel).getId();
+		
 		//根据选手性别记录参赛类型
 		User homeContestant=userService.findById(originMatch.getHomecontestant());
 		User awayPlayer=userService.findById(originMatch.getAwayplayer());
@@ -464,6 +507,14 @@ public class SinglematchController {
 		}
 		if(hcSets>apSets){//主场选手胜
 			originMatch.setOutcome(WinLoseEnum.WIN.getValue());
+			//if the player of group silver won the player of group gold in the gold group qualification,
+			//then the player of group silver get points that are the sum of winnerPoint and loserPoint 
+			if(goldQualificationId.equals(originMatch.getTournamentid())
+					&&silverId.equals(homeContestant.getId())
+					&&goldId.equals(awayPlayer.getId())){
+				winnerPoint += loserPoint;
+				loserPoint = 0;
+			}
 			//主场选手
 			if(originMatch.getHcretired()){//退赛扣分
 				originMatch.setHcpoint(winnerPoint-penalty);
@@ -489,6 +540,14 @@ public class SinglematchController {
 			
 		}else if(hcSets<apSets){//客场选手胜
 			originMatch.setOutcome(WinLoseEnum.LOSE.getValue());
+			//if the player of group silver won the player of group gold in the gold group qualification,
+			//then the player of group silver get points that are the sum of winnerPoint and loserPoint 
+			if(goldQualificationId.equals(originMatch.getTournamentid())
+					&&goldId.equals(homeContestant.getId())
+					&&silverId.equals(awayPlayer.getId())){
+				winnerPoint += loserPoint;
+				loserPoint = 0;
+			}
 			//主场选手
 			if(originMatch.getHcretired()){//退赛扣分
 				if(originMatch.getIshcchallenger().booleanValue()){
@@ -643,10 +702,10 @@ public class SinglematchController {
 	 */
 	private boolean getPointrule(Integer tournamentid,Integer round) throws Exception{
 		//对修改后的比赛重新计算个人积分
-		Pointrule pointrule=new Pointrule();
-		pointrule.setTournamentid(tournamentid);
-		pointrule.setRound(round);
-		pointrule=pointruleService.findByTournamentIdAndRound(pointrule);
+		Pointrule condition=new Pointrule();
+		condition.setTournamentid(tournamentid);
+		condition.setRound(round);
+		Pointrule pointrule=pointruleService.findByTournamentIdAndRound(condition);
 		if(pointrule!=null&&!pointrule.getInvalid().booleanValue()){
 			winnerPoint=pointrule.getWinner().intValue();
 			loserPoint=pointrule.getLoser().intValue();
@@ -656,4 +715,249 @@ public class SinglematchController {
 			return false;
 		}
 	}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年7月30日 上午12:14:33
+	 * @param singlematchQuery
+	 * @param tournamentid
+	 * @param round
+	 * @throws Exception
+	 * @Return: void
+	 * @Description: save match record from file
+	 *
+	 */
+	private void saveFromExcel(SinglematchQuery singlematchQuery, Integer tournamentid, Integer round) throws Exception{
+		if(singlematchQuery==null){
+			throw new CustomException("比赛信息为空，无法保存！");
+		}else{
+			if(getPointrule(tournamentid,round)){
+				Singlematch originMatch=singlematchQuery.getSinglematch();
+				List<Singlematchscore> originMatchscores=singlematchQuery.getSinglematchscores();
+//				originMatch.setMatchtime(matchtime);//比赛时间
+//				originMatch.setMatchplace(matchplace);//比赛地点
+//				originMatch.setTournamentid(tournamentid);//赛事类型
+//				originMatch.setRound(round);//比赛轮次
+//				originMatch.setSets(sets);//比赛盘数
+				setOriginMatch(originMatch,originMatchscores);//设置比赛记录保存项
+				//save single match record
+				singlematchService.insertOne(originMatch);
+				//exchange the home contestant and away player, then save another match record
+				Singlematch mirrorMatch=new Singlematch();
+				setMirrorMatch(originMatch,mirrorMatch);//设置镜像比赛保存项
+				singlematchService.insertOne(mirrorMatch);
+				//save match scores
+				Integer originMatchid=originMatch.getId();
+				Integer mirrorMatchid=mirrorMatch.getId();
+				Singlematchscore mirrorMatchscore=null;
+				for(Singlematchscore originMatchscore:originMatchscores){
+					//origin match score
+					originMatchscore.setMatchid(originMatchid);
+					singlematchscoreService.insertOne(originMatchscore);
+					//mirror match score
+					mirrorMatchscore=new Singlematchscore();
+					setMirrorMatchscore(originMatchscore,mirrorMatchscore,mirrorMatchid);
+					singlematchscoreService.insertOne(mirrorMatchscore);
+					
+				}
+				//比赛有效才可更新积分
+				if(originMatch.getInvalid()==null||!originMatch.getInvalid().booleanValue()){
+					//更新个人积分
+					//获取年终赛事的id
+					CalculatePoint calculatePoint=new CalculatePoint(originMatch,hcMarginBureau,tournamentService);
+					if(!calculatePoint.individual(individualpointService,originMatch)){
+						throw new CustomException("积分保存失败");
+					}			
+				}
+			}else{
+				throw new CustomException("未匹配到当前赛事本轮次的积分");
+			}
+		}//end if(singlematchQuery==null)
+	}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年8月13日 下午7:01:53
+	 * @param request
+	 * @param file
+	 * @throws Exception
+	 * @Return: void
+	 * @Description: import match records from excel 
+	 *
+	 */
+	@RequestMapping("/importFromExcel")
+	public String importFromExcel(Model model, MultipartFile file) throws Exception{
+		if (file != null) {
+			InputStream inputStream = file.getInputStream();
+			Workbook workbook = Workbook.getWorkbook(inputStream);
+			// get sheet
+			Sheet sheet = workbook.getSheet(0);
+			// get the number of rows
+			int rows = sheet.getRows();
+			// get the number of columns
+			int cols = sheet.getColumns();
+			// search the sheet
+			// System.out.println(rows+"行 * "+cols+"列");
+			SinglematchQuery singlematchQuery = null;
+			Singlematch singlematch = null;
+			List<Singlematchscore> singlematchscores = null;
+			Singlematchscore singlematchscore = null;
+
+			String matchtime = "";
+			String matchtimeFlag = "";
+
+			for (int i = 1; i < rows; i++) {
+
+				singlematchQuery = new SinglematchQuery();
+				singlematch = new Singlematch();
+				singlematchscores = new ArrayList<Singlematchscore>();
+				int tournamentid = 0;
+				int round = 0;
+
+				System.out.println("开始录入单打比赛...");
+
+				for (int j = 0; j < cols; j++) {
+					// get data in the cell per one row
+					Cell cell = sheet.getCell(j, i);
+					switch (j) {
+					case 0:
+						// home contestant
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell hcId = (NumberCell) cell;
+							singlematch.setHomecontestant((int) hcId.getValue());
+						}
+						break;
+					case 1:
+						// away player
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell apId = (NumberCell) cell;
+							singlematch.setAwayplayer((int) apId.getValue());
+						}
+						break;
+					case 2:
+						// match time
+						matchtime = cell.getContents().toString().trim();
+						if (cell.getType() == CellType.DATE) {
+							DateCell dateCell = (DateCell) cell;
+							singlematch.setMatchtime(dateCell.getDate());
+						}
+						break;
+					case 3:
+						// match place
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell placeId = (NumberCell) cell;
+							singlematch.setMatchplace((int) placeId.getValue());
+						}
+						break;
+					case 4:
+						// tournament
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell tournamentId = (NumberCell) cell;
+							tournamentid = (int) tournamentId.getValue();
+							singlematch.setTournamentid((int) tournamentId.getValue());
+						}
+						break;
+					case 5:
+						// round
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell round0 = (NumberCell) cell;
+							round = (int) round0.getValue();
+							singlematch.setRound((int) round0.getValue());
+						}
+						break;
+					case 6:
+						// sets
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell sets = (NumberCell) cell;
+							singlematch.setSets((int) sets.getValue());
+						}
+						break;
+					case 7:
+						// HC challenger
+						if ("false".equals(cell.getContents().toString().trim().toLowerCase())) {
+							singlematch.setIshcchallenger(Boolean.FALSE);
+						} else {
+							singlematch.setIshcchallenger(Boolean.TRUE);
+						}
+						break;
+					case 8:
+						// AP challenger
+						if ("false".equals(cell.getContents().toString().trim().toLowerCase())) {
+							singlematch.setIsapchallenger(Boolean.FALSE);
+						} else {
+							singlematch.setIsapchallenger(Boolean.TRUE);
+						}
+						break;
+					case 9:
+						// HC retired
+						if ("false".equals(cell.getContents().toString().trim().toLowerCase())) {
+							singlematch.setHcretired(Boolean.FALSE);
+						} else {
+							singlematch.setHcretired(Boolean.TRUE);
+						}
+						break;
+					case 10:
+						// AP retired
+						if ("false".equals(cell.getContents().toString().trim().toLowerCase())) {
+							singlematch.setApretired(Boolean.FALSE);
+						} else {
+							singlematch.setApretired(Boolean.TRUE);
+						}
+						break;
+					case 11:
+						// match score
+						// matchscoreStr = cell.getContents();
+						singlematchscore = new Singlematchscore();
+						int[] results = ExcelUtil.getMatchScore(cell.getContents().toString(), 0, 0, 0, 0);
+						singlematchscore.setSetth(1);
+						singlematchscore.setHcscore(results[0]);// apScore
+						singlematchscore.setHctiescore(results[1]);// apTieScore
+						singlematchscore.setApscore(results[2]);// hcScore
+						singlematchscore.setAptiescore(results[3]);// hcTieScore
+						singlematchscores.add(singlematchscore);
+						// System.out.print(hcScore+"-"+hcTieScore+":");
+						// System.out.print(apScore+"-"+apTieScore+" ");
+						break;
+					case 12:
+						// note
+						singlematch.setNote(cell.getContents().toString().trim());
+					}
+				}
+				singlematchQuery.setSinglematch(singlematch);
+				singlematchQuery.setSinglematchscores(singlematchscores);
+				try {
+					// 更新排名
+					if (!matchtime.equals(matchtimeFlag)) {
+						if (i > 1) {
+							System.out.println("更新" + matchtimeFlag + "的比赛，下次比赛日期" + matchtime);
+							System.out.println("正在更新排名...");
+							UpdateRankUtil.updateRank(matchtimeFlag,individualEntrys,individualrankService,individualrankestService,punishmentService,individualpointService);
+							System.out.println("排名更新完成");
+						}
+						matchtimeFlag = matchtime;
+					}
+					System.out.println("正在录入第" + i + "场比赛...");
+					//delay 1s
+					Thread.currentThread();
+					Thread.sleep(1000);
+					// 将比赛记录录入数据库
+					saveFromExcel(singlematchQuery, tournamentid, round);
+					System.out.println("第" + i + "场比赛录入完成");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			//update the match at last week
+			System.out.println("更新" + matchtime + "的比赛");
+			System.out.println("正在更新排名...");
+			UpdateRankUtil.updateRank(matchtime,individualEntrys,individualrankService,individualrankestService,punishmentService,individualpointService);
+			System.out.println("排名更新完成");
+			model.addAttribute("success", "导入完成");
+		}
+		return "singlematch/import";
+	}
+	
 }

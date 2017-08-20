@@ -1,132 +1,86 @@
 package com.awsports.util;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.awsports.pojo.Singlematch;
-import com.awsports.pojo.SinglematchQuery;
-import com.awsports.pojo.Singlematchscore;
-import com.awsports.pojo.User;
-
-import jxl.Cell;
-import jxl.CellType;
-import jxl.DateCell;
-import jxl.NumberCell;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ExcelUtil {
-	List<SinglematchQuery> siglematchQuerys;
-	public static void ExcelHandle(String filePath) throws BiffException, IOException{
-		InputStream inputStream = new FileInputStream(filePath);
-		Workbook workbook = Workbook.getWorkbook(inputStream);
-		//获取sheet
-		Sheet sheet = workbook.getSheet(0);
-		//获取行数
-		int rows = sheet.getRows();
-		//获取列数
-		int cols = sheet.getColumns();
-		//遍历表格
-		//System.out.println(rows+"行 * "+cols+"列");
-		User user = null;
-		SinglematchQuery singlematchQuery = null;
-		Singlematch singlematch = null;
-		for(int i= 1;i<rows;i++){
-			singlematchQuery = new SinglematchQuery();
-			List<Singlematchscore> singlematchscores = new ArrayList<Singlematchscore>();
-			String matchscoreStr = "";
-			singlematch = new Singlematch();
-			for(int j=0;j<cols;j++){
-				//按行读取表格
-				Cell cell = sheet.getCell(j, i);
-				switch(j){
-				case 0:
-					//主场选手
-					user = new User();
-					user.setName(cell.getContents().toString().trim());
-					singlematchQuery.setUser1(user);
-					break;
-				case 1:
-					//客场选手
-					user = new User();
-					user.setName(cell.getContents().toString().trim());
-					singlematchQuery.setUser2(user);
-					break;
-				case 2:
-					//比赛时间
-					if(cell.getType() == CellType.DATE){
-						DateCell dateCell = (DateCell) cell;
-						singlematch.setMatchtime(dateCell.getDate());
-					}
-					break;
-				case 3:
-					//比赛地点
-					if(cell.getType() == CellType.NUMBER){
-						NumberCell placeId = (NumberCell)cell;
-						singlematch.setMatchplace((int)placeId.getValue());
-					}
-					break;
-				case 4:
-					//tournament
-					if(cell.getType() == CellType.NUMBER){
-						NumberCell tournamentId = (NumberCell)cell;
-						singlematch.setTournamentid((int)tournamentId.getValue());
-					}
-					break;
-				case 5:
-					//sets
-					if(cell.getType() == CellType.NUMBER){
-						NumberCell sets = (NumberCell)cell;
-						singlematch.setSets((int)sets.getValue());
-					}
-					break;
-				case 6:
-					//HC challenger
-					if("false".equals(cell.getContents().toString().trim().toLowerCase())){
-						singlematch.setIshcchallenger(Boolean.FALSE);
-					}else{
-						singlematch.setIshcchallenger(Boolean.TRUE);
-					}
-					break;
-				case 7:
-					//AP challenger
-					if("false".equals(cell.getContents().toString().trim().toLowerCase())){
-						singlematch.setIsapchallenger(Boolean.FALSE);
-					}else{
-						singlematch.setIsapchallenger(Boolean.TRUE);
-					}
-					break;
-				case 8:
-					//HC retired
-					if("false".equals(cell.getContents().toString().trim().toLowerCase())){
-						singlematch.setHcretired(Boolean.FALSE);
-					}else{
-						singlematch.setHcretired(Boolean.TRUE);
-					}
-					break;
-				case 9:
-					//AP retired
-					if("false".equals(cell.getContents().toString().trim().toLowerCase())){
-						singlematch.setApretired(Boolean.FALSE);
-					}else{
-						singlematch.setApretired(Boolean.TRUE);
-					}
-					break;
-				case 10:
-					//match score
-					matchscoreStr = cell.getContents();
-					//使用正则表达式处理比分
-					//。。。
-					//。。。
+
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年7月30日 上午10:42:00
+	 * @param matchScoreStr
+	 * @param apScore
+	 * @param apTieScore
+	 * @param hcScore
+	 * @param hcTieScore
+	 * @Return: int[]
+	 * @Description: parsing the match score string
+	 *
+	 */
+	public static int[] getMatchScore(String matchScoreStr, int apScore, int apTieScore, int hcScore, int hcTieScore) {
+		int[] result = new int[4];
+		// 使用正则表达式处理比分
+		String patternPlayer1 = "(\\(\\d+\\))?\\d+(?=:)";
+		String patternPlayer2 = ":\\d+(\\(\\d+\\))?";
+		Pattern pattern1 = Pattern.compile(patternPlayer1);
+		Pattern pattern2 = Pattern.compile(patternPlayer2);
+		int flag1 = 0;
+		int flag2 = 0;
+		Matcher matcher1 = pattern1.matcher(matchScoreStr);
+		Matcher matcher2 = pattern2.matcher(matchScoreStr);
+		if (matcher1.find()) {
+			Matcher mPlayer1 = Pattern.compile("\\d+").matcher(matcher1.group(0).toString());
+			while (mPlayer1.find()) {
+				if (flag1 == 0) {
+					hcTieScore = Integer.parseInt(mPlayer1.group());
+					flag1++;
+				} else {
+					hcScore = Integer.parseInt(mPlayer1.group());
+					flag1++;
 				}
-				System.out.print(cell.getContents() + " ");
 			}
-			System.out.println();
+			if (flag1 == 1) {
+				// the match did not play tie break
+				hcScore = hcTieScore;
+				hcTieScore = 0;
+			}
+
 		}
+		if (matcher2.find()) {
+			Matcher mPlayer2 = Pattern.compile("\\d+").matcher(matcher2.group(0).toString());
+			while (mPlayer2.find()) {
+				if (flag2 == 0) {
+					apScore = Integer.parseInt(mPlayer2.group());
+					flag2++;
+				} else {
+					apTieScore = Integer.parseInt(mPlayer2.group());
+					flag2++;
+				}
+			}
+
+		}
+		// the match played tie break
+		if (flag1 == 2) {
+			if (hcTieScore < 6) {
+				apTieScore = 7;
+			} else {
+				apTieScore = hcTieScore + 2;
+			}
+		}
+		if (flag2 == 2) {
+			if (apTieScore < 6) {
+				hcTieScore = 7;
+			} else {
+				hcTieScore = apTieScore + 2;
+			}
+		}
+		// return result
+		result[0] = hcScore;
+		result[1] = hcTieScore;
+		result[2] = apScore;
+		result[3] = apTieScore;
+		return result;
 	}
-	
+
 }

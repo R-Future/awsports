@@ -1,5 +1,6 @@
 package com.awsports.controller;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.awsports.pojo.Arena;
 import com.awsports.pojo.Doublematch;
@@ -28,18 +30,32 @@ import com.awsports.service.ArenaService;
 import com.awsports.service.DoublematchService;
 import com.awsports.service.DoublematchscoreService;
 import com.awsports.service.IndividualpointService;
+import com.awsports.service.IndividualrankService;
+import com.awsports.service.IndividualrankestService;
 import com.awsports.service.PointruleService;
+import com.awsports.service.PunishmentService;
 import com.awsports.service.TeamService;
 import com.awsports.service.TeampointService;
+import com.awsports.service.TeamrankService;
+import com.awsports.service.TeamrankestService;
 import com.awsports.service.TournamentService;
 import com.awsports.service.UserService;
 import com.awsports.util.CalculatePoint;
 import com.awsports.util.CustomException;
 import com.awsports.util.EntryEnum;
+import com.awsports.util.ExcelUtil;
 import com.awsports.util.RoundEnum;
 import com.awsports.util.SexEnum;
 import com.awsports.util.TypeMap;
+import com.awsports.util.UpdateRankUtil;
 import com.awsports.util.WinLoseEnum;
+
+import jxl.Cell;
+import jxl.CellType;
+import jxl.DateCell;
+import jxl.NumberCell;
+import jxl.Sheet;
+import jxl.Workbook;
 
 @Controller
 @RequestMapping("/doublematch")
@@ -63,6 +79,16 @@ public class DoublematchController {
 	private IndividualpointService individualpointService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private TeamrankService teamrankService;
+	@Autowired
+	private TeamrankestService teamrankestService;
+	@Autowired
+	private IndividualrankService individualrankService;
+	@Autowired
+	private IndividualrankestService individualrankestService;
+	@Autowired
+	private PunishmentService punishmentService;
 	
 	private Map<Integer,String> entryTypes=TypeMap.entryType();
 	private Map<Integer,String> roundTypes=TypeMap.roundType();
@@ -72,6 +98,8 @@ public class DoublematchController {
 	private int hcMarginBureau;
 	private Integer[][] teamMembers=new Integer[2][2];
 	private Boolean[][] memberSex=new Boolean[2][2];
+	private Integer[] teamEntrys = {6,7,8};
+	private Integer[] individualEntrys = {4,5};
 	
 	/**
 	 * 
@@ -735,6 +763,328 @@ public class DoublematchController {
 		}else{
 			return false;
 		}
+	}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年7月30日 上午10:57:49
+	 * @param doublematchQuery
+	 * @param tournamentid
+	 * @param round
+	 * @throws Exception
+	 * @Return: void
+	 * @Description: save double matches from excel file
+	 *
+	 */
+	private void saveFromExcel(DoublematchQuery doublematchQuery, Integer tournamentid, Integer round) throws Exception {
+		if (doublematchQuery == null) {
+			throw new CustomException("比赛信息为空，无法保存！");
+		} else {
+			if (getPointrule(tournamentid, round)) {
+				Doublematch originMatch = doublematchQuery.getDoublematch();
+				List<Doublematchscore> originMatchscores = doublematchQuery.getDoublematchscores();
+				// originMatch.setMatchtime(matchtime);// 比赛时间
+				// originMatch.setMatchplace(matchplace);// 比赛地点
+				// originMatch.setTournamentid(tournamentid);// 赛事类型
+				// originMatch.setRound(round);// 比赛轮次
+				// originMatch.setSets(sets);// 比赛盘数
+				setOriginMatch(originMatch, originMatchscores);
+				// 设置镜像比赛记录保存项
+				Doublematch mirrorMatch = new Doublematch();
+				setMirrorMatch(originMatch, mirrorMatch);
+				// 保存比赛记录
+				doublematchService.insertOne(originMatch);
+				doublematchService.insertOne(mirrorMatch);
+				// 保存比赛比分
+				Integer originMatchid = originMatch.getId();
+				Integer mirrorMatchid = mirrorMatch.getId();
+				Doublematchscore mirrorMatchscore = null;
+				for (Doublematchscore originMatchscore : originMatchscores) {
+					// 保存原比赛比分
+					originMatchscore.setMatchid(originMatchid);
+					doublematchscoreService.insertOne(originMatchscore);
+					// 保存镜像比赛比分
+					mirrorMatchscore = new Doublematchscore();
+					setMirrorMatchscore(originMatchscore, mirrorMatchscore, mirrorMatchid);
+					doublematchscoreService.insertOne(mirrorMatchscore);
+				}
+				// 有效比赛才可更新积分
+				if (originMatch.getInvalid() == null || !originMatch.getInvalid().booleanValue()) {
+					// 计算组合积分和个人积分
+					getTeamMemberSex(originMatch);
+					CalculatePoint calculatePoint = new CalculatePoint(originMatch, hcMarginBureau, tournamentService);
+					if (!calculatePoint.team(teampointService, originMatch) || !calculatePoint.individual(individualpointService, originMatch, teamMembers, memberSex)) {
+						throw new CustomException("组合积分或个人积分保存失败！");
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年8月14日 下午11:22:36
+	 * @param team
+	 * @throws Exception
+	 * @Return: void
+	 * @Description: insert team into database
+	 *
+	 */
+	private void insertTeam(Team team) throws Exception{
+		User user1 = userService.findById(team.getUser1id());
+		User user2 = userService.findById(team.getUser2id());
+		team.setName(user1.getName().trim()+"&"+user2.getName().trim());
+		if (user1.getSex().booleanValue() == user2.getSex().booleanValue()
+				&& user2.getSex().booleanValue() == SexEnum.MALE.getValue().booleanValue()) {
+			team.setEntry(EntryEnum.MANDOUBLE.getValue());
+		} else if (user1.getSex().booleanValue() == user2.getSex().booleanValue()
+				&& user2.getSex().booleanValue() == SexEnum.FEMALE.getValue().booleanValue()) {
+			team.setEntry(EntryEnum.WOMANDOUBLE.getValue());
+		} else {
+			team.setEntry(EntryEnum.MIXEDDOUBLE.getValue());
+		}
+		teamService.insertOne(team);
+	}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年8月14日 下午11:20:27
+	 * @param model
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: import double match records from excel 
+	 *
+	 */
+	@RequestMapping("/importFromExcel")
+	public String importFromExcel(Model model, MultipartFile file) throws Exception{
+		if (file != null) {
+			InputStream inputStream = file.getInputStream();
+			Workbook workbook = Workbook.getWorkbook(inputStream);
+			// get sheet
+			Sheet sheet = workbook.getSheet(0);
+			// get the number of rows
+			int rows = sheet.getRows();
+			// get the number of columns
+			int cols = sheet.getColumns();
+			// search the sheet
+			// System.out.println(rows+"行 * "+cols+"列");
+			// save double matches
+			// update team rank
+			DoublematchQuery doublematchQuery = null;
+			Doublematch doublematch = null;
+			List<Doublematchscore> doublematchscores = null;
+			Doublematchscore doublematchscore = null;
+			String matchtime = "";
+			String matchtimeFlag = "";
+			Team team1 = null;
+			Team team2 = null;
+			for (int i = 1; i < rows; i++) {
+
+				doublematchQuery = new DoublematchQuery();
+				doublematch = new Doublematch();
+				doublematchscores = new ArrayList<Doublematchscore>();
+				team1 = new Team();
+				team2 = new Team();
+				int tournamentid = 0;
+				int round = 0;
+
+				System.out.println("开始录入双打比赛...");
+
+				for (int j = 0; j < cols; j++) {
+					// get data in the cell per one row
+					Cell cell = sheet.getCell(j, i);
+					switch (j) {
+					case 0:
+						// player 1 in team 1
+						if(cell.getType() == CellType.NUMBER){
+							NumberCell player = (NumberCell) cell;
+							team1.setUser1id((int) player.getValue());
+						}
+						break;
+					case 1:
+						// player 2 in team 1
+						if(cell.getType() == CellType.NUMBER){
+							NumberCell player = (NumberCell) cell;
+							team1.setUser2id((int) player.getValue());
+						}
+						break;
+					case 2:
+						// player 1 in team 2
+						if(cell.getType() == CellType.NUMBER){
+							NumberCell player = (NumberCell) cell;
+							team2.setUser1id((int) player.getValue());
+						}
+						break;
+					case 3:
+						// player 2 in team 2
+						if(cell.getType() == CellType.NUMBER){
+							NumberCell player = (NumberCell) cell;
+							team2.setUser2id((int) player.getValue());
+						}
+						break;
+					case 4:
+						// match time
+						matchtime = cell.getContents().toString().trim();
+						if (cell.getType() == CellType.DATE) {
+							DateCell dateCell = (DateCell) cell;
+							doublematch.setMatchtime(dateCell.getDate());
+						}
+						break;
+					case 5:
+						// match place
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell placeId = (NumberCell) cell;
+							doublematch.setMatchplace((int) placeId.getValue());
+						}
+						break;
+					case 6:
+						// tournament
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell tournamentId = (NumberCell) cell;
+							tournamentid = (int) tournamentId.getValue();
+							doublematch.setTournamentid(tournamentid);
+						}
+						break;
+					case 7:
+						// round
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell round0 = (NumberCell) cell;
+							round = (int) round0.getValue();
+							doublematch.setRound((int) round0.getValue());
+						}
+						break;
+					case 8:
+						// sets
+						if (cell.getType() == CellType.NUMBER) {
+							NumberCell sets = (NumberCell) cell;
+							doublematch.setSets((int) sets.getValue());
+						}
+						break;
+					case 9:
+						// HC challenger
+						if ("false".equals(cell.getContents().toString().trim().toLowerCase())) {
+							doublematch.setIshcchallenger(Boolean.FALSE);
+						} else {
+							doublematch.setIshcchallenger(Boolean.TRUE);
+						}
+						break;
+					case 10:
+						// AP challenger
+						if ("false".equals(cell.getContents().toString().trim().toLowerCase())) {
+							doublematch.setIsapchallenger(Boolean.FALSE);
+						} else {
+							doublematch.setIsapchallenger(Boolean.TRUE);
+						}
+						break;
+					case 11:
+						// HC retired
+						if ("false".equals(cell.getContents().toString().trim().toLowerCase())) {
+							doublematch.setHcretired(Boolean.FALSE);
+						} else {
+							doublematch.setHcretired(Boolean.TRUE);
+						}
+						break;
+					case 12:
+						// AP retired
+						if ("false".equals(cell.getContents().toString().trim().toLowerCase())) {
+							doublematch.setApretired(Boolean.FALSE);
+						} else {
+							doublematch.setApretired(Boolean.TRUE);
+						}
+						break;
+					case 13:
+						// match score
+						doublematchscore = new Doublematchscore();
+						int[] results = ExcelUtil.getMatchScore(cell.getContents().toString(), 0, 0, 0, 0);
+						doublematchscore.setSetth(1);
+						doublematchscore.setHcscore(results[0]);// HcScore
+						doublematchscore.setHctiescore(results[1]);// HcTieScore
+						doublematchscore.setApscore(results[2]);// ApScore
+						doublematchscore.setAptiescore(results[3]);// ApTieScore
+						doublematchscores.add(doublematchscore);
+						break;
+					case 14:
+						// note
+						doublematch.setNote(cell.getContents().toString().trim());
+					}
+				}
+				//get team id
+				Team hc = teamService.findByUsers(team1);
+				Team ap = teamService.findByUsers(team2);
+				if(hc != null){
+					doublematch.setHomecontestant(hc.getId());
+				}else{
+					team1.setStartedat(doublematch.getMatchtime());
+					insertTeam(team1);
+					doublematch.setHomecontestant(team1.getId());
+				}
+				if(ap != null){
+					doublematch.setAwayplayer(ap.getId());
+				}else{
+					team2.setStartedat(doublematch.getMatchtime());
+					insertTeam(team2);
+					doublematch.setAwayplayer(team2.getId());
+				}
+				doublematchQuery.setDoublematch(doublematch);
+				doublematchQuery.setDoublematchscores(doublematchscores);
+				try {
+					// 更新排名
+					if (!matchtime.equals(matchtimeFlag)) {
+						if (i > 1) {
+							System.out.println("更新" + matchtimeFlag + "的比赛，下次比赛日期" + matchtime);
+							System.out.println("正在更新组合排名...");
+							UpdateRankUtil.updateRank(matchtimeFlag,teamEntrys,teamrankService,teamrankestService,teampointService);
+							System.out.println("组合排名更新完成");
+							System.out.println("正在更新个人排名...");
+							UpdateRankUtil.updateRank(matchtimeFlag,individualEntrys,individualrankService,individualrankestService,punishmentService,individualpointService);
+							System.out.println("个人排名更新完成");
+							//the rank must be updated at the last week of each year. If not, the weeks of NO.1 won't be correct.
+							if("2015-11-22".equals(matchtimeFlag)){
+								System.out.println("正在更新2015年末组合排名...");
+								UpdateRankUtil.updateRank("2015-12-27",teamEntrys,teamrankService,teamrankestService,teampointService);
+								System.out.println("组合排名更新完成");
+								System.out.println("正在更新2015年末个人排名...");
+								UpdateRankUtil.updateRank("2015-12-27",individualEntrys,individualrankService,individualrankestService,punishmentService,individualpointService);
+								System.out.println("个人排名更新完成");
+							}
+							if("2016-11-19".equals(matchtimeFlag)){
+								System.out.println("正在更新2016年末组合排名...");
+								UpdateRankUtil.updateRank("2016-12-25",teamEntrys,teamrankService,teamrankestService,teampointService);
+								System.out.println("组合排名更新完成");
+								System.out.println("正在更新2016年末个人排名...");
+								UpdateRankUtil.updateRank("2016-12-25",individualEntrys,individualrankService,individualrankestService,punishmentService,individualpointService);
+								System.out.println("个人排名更新完成");
+							}
+						}
+						matchtimeFlag = matchtime;
+					}
+					System.out.println("正在录入第" + i + "场比赛...");
+					//delay 1s
+					Thread.currentThread();
+					Thread.sleep(1000);
+					// 将比赛记录录入数据库
+					saveFromExcel(doublematchQuery, tournamentid, round);
+					System.out.println("第" + i + "场比赛录入完成");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.out.println("更新" + matchtime + "的比赛");
+			System.out.println("正在更新组合排名...");
+			UpdateRankUtil.updateRank(matchtime,teamEntrys,teamrankService,teamrankestService,teampointService);
+			System.out.println("组合排名更新完成");
+			System.out.println("正在更新个人排名...");
+			UpdateRankUtil.updateRank(matchtimeFlag,individualEntrys,individualrankService,individualrankestService,punishmentService,individualpointService);
+			System.out.println("个人排名更新完成");
+			model.addAttribute("success", "导入成功");
+		}
+		return "doublematch/import";
 	}
 }
 

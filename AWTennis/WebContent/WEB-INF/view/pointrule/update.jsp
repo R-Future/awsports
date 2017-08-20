@@ -43,7 +43,7 @@
 						<option value="default">-请选择-</option>
 						<c:forEach items="${ roundTypes }" var="roundType">
 							<c:choose>
-								<c:when test="${ roungType.key.equals(pointrule.round) }">
+								<c:when test="${ roundType.key.equals(pointrule.round) }">
 									<option value="${ roundType.key }" selected>${ roundType.value }</option>
 								</c:when>
 								<c:otherwise>
@@ -74,7 +74,7 @@
 					<input type="text" name="note" id="note" value="${pointrule.note}" class="form-control"/>
 				</div>
 				
-				<button type="submit" class="btn btn-default">提交</button>
+				<button type="submit" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">提交</button>
 			</form>
 		</div>
 	</div>

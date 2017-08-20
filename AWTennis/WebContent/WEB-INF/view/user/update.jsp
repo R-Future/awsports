@@ -36,8 +36,9 @@
 					<legend><font>基本信息</font></legend>
 					<div class="row">
 						<div class="form-group col-md-3">
-							<label for="name">用户名</label>
+							<label for="name"><i style="color:red">*</i> 用户名</label>
 							<input type="text" name="name" id="name" value="${user.name}" class="form-control"/>
+							<span class="help-block"></span>
 						</div>
 						<div class="form-group col-md-3">
 							<label for="password">密码(重置)</label>
@@ -74,7 +75,7 @@
 					</div>
 					<div class="row">
 						<div class="form-group col-md-3">
-							<label for="sex">性别</label>
+							<label for="sex"><i style="color:red">*</i> 性别</label>
 							<!-- Boolean比较用compareTo()方法，相等则返回0，不想等若参数为false则返回1，参数为true则返回-1 -->
 							<c:forEach items="${ sexTypes }" var="sexType">
 								<c:choose>
@@ -114,12 +115,12 @@
 					
 					<div class="row">
 						<div class="form-group col-md-3">
-							<label for="level">网球水平</label>
+							<label for="level"><i style="color:red">*</i> 网球水平</label>
 							<input type="text" name="level" id="level" value="${user.level}" class="form-control"/>
 						</div>
 						
 						<div class="form-group col-md-3">
-							<label for="forehand">正手</label>
+							<label for="forehand"><i style="color:red">*</i> 正手</label>
 							<select id="forehand" name="forehand" class="form-control">
 								<option value="default">-请选择-</option>
 								<c:forEach items="${ forehandTypes }" var="forehandType">
@@ -135,7 +136,7 @@
 							</select>
 						</div>
 						<div class="form-group col-md-3">
-							<label for="backhand">反手</label>
+							<label for="backhand"><i style="color:red">*</i> 反手</label>
 							<select id="backhand" name="backhand" class="form-control">
 								<option value="default">-请选择-</option>
 								<c:forEach items="${ backhandTypes }" var="backhandType">
@@ -156,7 +157,7 @@
 					
 					<div class="row">
 						<div class="form-group col-md-3">
-							<label for="grade">俱乐部等级</label>
+							<label for="grade"><i style="color:red">*</i> 俱乐部等级</label>
 							<select name="grade" id="grade" class="form-control">
 								<option value="default">-请选择-</option>
 								<c:forEach items="${ levels }" var="level">
@@ -173,17 +174,88 @@
 						</div>
 						<div class="form-group col-md-3">
 							<label for="singletitles">单打冠军数</label>
-							<input type="number" name="singletitles" id="singletitles" value="${user.singletitles}" class="form-control"/>
+							<input type="number" name="singletitles" id="singletitles" value="<c:out value="${user.singletitles}" default="0" escapeXml="false"/>" class="form-control"/>
 						</div>
 						<div class="form-group col-md-3">
 							<label for="doubletitles">双打冠军数</label>
-							<input type="number" name="doubletitles" id="doubletitles" value="${user.doubletitles}" class="form-control"/>
+							<input type="number" name="doubletitles" id="doubletitles" value="<c:out value="${user.doubletitles}" default="0" escapeXml="false"/>" class="form-control"/>
 						</div>
 					</div>
 				</fieldset>
-				<button type="submit" class="btn btn-danger">提交</button>
+				<button type="submit" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">提交</button>
 			</form:form>
 		</div>
 		</section>
 	</div>
+<script>
+	$(function(){
+
+		function in_array(needle, haystack) {
+		    var i = 0, n = haystack.length;
+		  
+		    for (;i < n;++i)
+		      if (haystack[i] === needle)
+		        return true;
+		  
+		    return false;
+		}
+		
+		$("input#name").focus(function(){
+			$(this).parent().removeClass("has-error");
+			$(this).siblings("span").html("");
+			$(this).siblings("span").css("color","");
+		}).blur(function(){
+			var name = $(this).val();
+			var error = $(this).siblings("span");
+			var parent = $(this).parent();
+			var length = name.length;
+			if(name == ""){
+				parent.addClass("has-error");
+// 				$(this).siblings("label").after("用户名不能为空");
+				error.html("用户名不能为空");
+			}else{
+				if(length > 15){
+					parent.addClass("has-error");
+					error.html("用户名长度不能超过15个字符");
+				}else{
+					parent.removeClass("has-error");
+					error.html("");
+				}
+			}
+		}).change(function(){
+			var name = $(this).val();
+			var error = $(this).siblings("span");
+			var parent = $(this).parent();
+			var length = name.length;
+			if(name != ""){
+				if(length > 15){
+					parent.addClass("has-error");
+					error.html("用户名长度不能超过15个字符");
+				}else{
+					$.ajax({
+						type:"post",
+						url:"verifyUsername",
+						contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+						data:{currentName:name},
+						dataType:"json",
+						success:function(data){
+							if(data == 0){
+								parent.addClass("has-error");
+								error.html("用户名已存在");
+							}else if(data == 1){
+								error.css("color","green");
+								error.html("此用户名可用");
+							}
+							
+						}
+					});
+				}
+			}else{
+				parent.addClass("has-error");
+				error.html("用户名不能为空");
+			}
+			
+		});
+	})
+</script>
 <jsp:include page="../footer.jsp"/>

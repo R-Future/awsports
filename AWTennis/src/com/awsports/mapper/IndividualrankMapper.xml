@@ -68,6 +68,10 @@
 	where id = #{id,jdbcType=INTEGER}
   </select>
   <!-- 用于更新用户排名信息 -->
+  <select id="findByUseridEntryYear" parameterType="com.awsports.pojo.Individualrank" resultType="com.awsports.pojo.Individualrank">
+  	select * from aw_individualrank where userId=#{userid} and entry=#{entry} and year=#{year}
+  </select>
+  
   <select id="findByUseridEntry" parameterType="com.awsports.pojo.Individualrank" resultType="com.awsports.pojo.Individualrank">
   	select * from aw_individualrank where userId=#{userid} and entry=#{entry}
   </select>

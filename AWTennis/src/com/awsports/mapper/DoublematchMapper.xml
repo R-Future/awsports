@@ -274,10 +274,10 @@
         #{outcome,jdbcType=CHAR},
       </if>
       <if test="hcpoint != null">
-        #{hcpoint,jdbcType=INTEGER},
+        #{hcpoint,jdbcType=DOUBLE},
       </if>
       <if test="appoint != null">
-        #{appoint,jdbcType=INTEGER},
+        #{appoint,jdbcType=DOUBLE},
       </if>
       <if test="createdat != null">
         #{createdat,jdbcType=TIMESTAMP},
@@ -344,10 +344,10 @@
         outcome = #{outcome,jdbcType=CHAR},
       </if>
       <if test="hcpoint != null">
-        HCPoint = #{hcpoint,jdbcType=INTEGER},
+        HCPoint = #{hcpoint,jdbcType=DOUBLE},
       </if>
       <if test="appoint != null">
-        APPoint = #{appoint,jdbcType=INTEGER},
+        APPoint = #{appoint,jdbcType=DOUBLE},
       </if>
       <if test="createdat != null">
         createdAt = #{createdat,jdbcType=TIMESTAMP},

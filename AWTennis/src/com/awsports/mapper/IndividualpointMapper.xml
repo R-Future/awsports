@@ -186,7 +186,7 @@
         entry = #{entry,jdbcType=INTEGER},
       </if>
       <if test="tournamentid != null">
-        #{tournamentid,jdbcType=INTEGER},
+        tournamentId = #{tournamentid,jdbcType=INTEGER},
       </if>
       <if test="year != null">
         year = #{year,jdbcType=INTEGER},

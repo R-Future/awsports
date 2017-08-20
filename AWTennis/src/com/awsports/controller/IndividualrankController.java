@@ -205,12 +205,14 @@ public class IndividualrankController {
 				if(individualpoints==null||individualpoints.size()<=0){
 					continue;
 				}else{
+					
 					//更新个人排名
 					int userid=individualpoints.get(0).getUserid().intValue();
 					//初始化变量
 					initializer();
 					//临时存储计算后的用户排名记录，用于排序
 					List<Individualrank> rawRanks=new ArrayList<Individualrank>();
+					
 					for(Individualpoint ip:individualpoints){
 						if(ip.getInvalid().booleanValue()){//数据无效
 							continue;
@@ -225,11 +227,12 @@ public class IndividualrankController {
 								Individualrank individualrank=new Individualrank();
 								individualrank.setUserid(userid);
 								individualrank.setEntry(entry);
-								individualrank=individualrankService.findByUseridEntry(individualrank);
+								individualrank.setYear(customDate.getYear());
+								individualrank=individualrankService.findByUseridEntryYear(individualrank);
 								if(individualrank==null||individualrank.getInvalid().booleanValue()){//无记录
 									individualrank=new Individualrank();
 									individualrank.setUserid(userid);
-									individualrank.setEntry(entry);			
+									individualrank.setEntry(entry);
 								}
 								//扣除个人退赛扣分
 								Punishment punishment=new Punishment();
@@ -249,7 +252,7 @@ public class IndividualrankController {
 								individualrank.setWins(totalWins);
 //								individualrank.setRankingchange(0);
 								individualrank.setYear(customDate.getYear());
-								individualrank.setWeek(customDate.getWeek());
+//								individualrank.setWeek(customDate.getWeek());
 								rawRanks.add(individualrank);
 								//初始化变量
 								initializer();
@@ -266,12 +269,13 @@ public class IndividualrankController {
 					Individualrank finalUser=new Individualrank();
 					finalUser.setUserid(userid);
 					finalUser.setEntry(entry);
-					finalUser=individualrankService.findByUseridEntry(finalUser);
+					finalUser.setYear(customDate.getYear());
+					finalUser=individualrankService.findByUseridEntryYear(finalUser);
 					if(finalUser==null||finalUser.getInvalid().booleanValue()){//无记录
 						finalUser=new Individualrank();
 						finalUser.setUserid(userid);
 						finalUser.setEntry(entry);						
-//						individualrank.setRankingchange(0);						
+//						individualrank.setRankingchange(0);
 					}else{
 						//...
 					}
@@ -292,19 +296,24 @@ public class IndividualrankController {
 					finalUser.setTotalmarginbureau(totalMarginBureaus);
 					finalUser.setWins(totalWins);
 					finalUser.setYear(customDate.getYear());
-					finalUser.setWeek(customDate.getWeek());
+//					finalUser.setWeek(customDate.getWeek());
 					rawRanks.add(finalUser);
 					
 					//排序
 					IndividualrankComparator individualrankComparator=new IndividualrankComparator();
 					Collections.sort(rawRanks,individualrankComparator);
+					int intervalWeek = 0;
 					if(rawRanks.size()>0){
 						
 						//排名第一的用户
 						Individualrank first=(Individualrank)rawRanks.get(0);
 						int newRank=1;
 						int oldRank=0;
+						
 						if(first.getId()!=null){
+							//old record
+							intervalWeek = customDate.getWeek() - first.getWeek().intValue();
+							first.setWeek(customDate.getWeek());
 							//更新记录
 							//统计排名变化
 							oldRank=first.getCurrentrank().intValue();
@@ -313,6 +322,9 @@ public class IndividualrankController {
 							first.setCurrentrank(newRank);
 							individualrankService.updateById(first);
 						}else{
+							//new record
+							intervalWeek = customDate.getWeek();
+							first.setWeek(customDate.getWeek());
 							//添加记录
 							oldRank=0;
 							first.setRankingchange(0);
@@ -320,7 +332,7 @@ public class IndividualrankController {
 							individualrankService.insertOne(first);
 						}
 						//更新排名‘最’记录
-						updateRankest(first,newRank,oldRank);
+						updateRankest(first,intervalWeek,newRank,oldRank);
 
 						//重置其它用户排名
 						Individualrank last=null;
@@ -337,12 +349,18 @@ public class IndividualrankController {
 							}
 							//统计排名变化
 							if(next.getId()!=null){
+								//old record
+								intervalWeek = customDate.getWeek() - next.getWeek().intValue();
+								next.setWeek(customDate.getWeek());
 								//之前有排名
 								oldRank=next.getCurrentrank().intValue();
 								next.setRankingchange(oldRank-newRank);
 								next.setCurrentrank(newRank);
 								individualrankService.updateById(next);
 							}else{
+								//new record
+								intervalWeek = customDate.getWeek();
+								next.setWeek(customDate.getWeek());
 								//之前无排名
 								oldRank=0;
 								next.setRankingchange(0);
@@ -350,7 +368,7 @@ public class IndividualrankController {
 								individualrankService.insertOne(next);
 							}
 							//更新排名‘最’记录
-							updateRankest(next,newRank,oldRank);
+							updateRankest(next,intervalWeek,newRank,oldRank);
 						}
 					}else{
 						//...
@@ -389,7 +407,7 @@ public class IndividualrankController {
 	 * @Description: 更新个人排名‘最’记录
 	 *
 	 */
-	private void updateRankest(Individualrank individualrank,int newRank,int oldRank) throws Exception{
+	private void updateRankest(Individualrank individualrank,int intervalWeek,int newRank,int oldRank) throws Exception{
 		Integer userid=individualrank.getUserid();
 		Integer entry=individualrank.getEntry();
 		Individualrankest individualrankest=new Individualrankest();
@@ -409,6 +427,8 @@ public class IndividualrankController {
 				//当前新的排名不是第一
 				if(oldRank==1){
 					//上周排名第一
+					individualrankest.setNo1weeks(individualrankest.getNo1weeks().intValue()+intervalWeek);
+					individualrankest.setNo1continiousweeks(individualrankest.getNo1continiousweeks().intValue()+intervalWeek);
 					if(individualrankest.getNo1continiousweeks().compareTo(individualrankest.getNo1longestcontiniousweeks())>0){
 						//连续第一周数大于最长连续第一周数
 						individualrankest.setNo1longestcontiniousweeks(individualrankest.getNo1continiousweeks());
@@ -421,13 +441,13 @@ public class IndividualrankController {
 				}
 			}else{
 				//当前新的排名是第一
-				individualrankest.setNo1weeks(individualrankest.getNo1weeks().intValue()+1);
 				if(oldRank==1){
-					//上期排名第一
-					individualrankest.setNo1continiousweeks(individualrankest.getNo1continiousweeks().intValue()+1);
+					//上期排名第一]
+					individualrankest.setNo1weeks(individualrankest.getNo1weeks().intValue()+intervalWeek);
+					individualrankest.setNo1continiousweeks(individualrankest.getNo1continiousweeks().intValue()+intervalWeek);
 				}else{
 					//上周排名不是第一
-					individualrankest.setNo1continiousweeks(1);
+					individualrankest.setNo1continiousweeks(0);
 				}
 			}
 			individualrankestService.updateById(individualrankest);
@@ -438,13 +458,8 @@ public class IndividualrankController {
 			individualrankest.setEntry(entry);
 			individualrankest.setHighestranking(newRank);
 			individualrankest.setHrstartedat((new Date()));
-			if(newRank==1){
-				individualrankest.setNo1weeks(1);
-				individualrankest.setNo1continiousweeks(1);
-			}else{
-				individualrankest.setNo1weeks(0);
-				individualrankest.setNo1continiousweeks(0);
-			}
+			individualrankest.setNo1weeks(0);
+			individualrankest.setNo1continiousweeks(0);
 			individualrankest.setNo1longestcontiniousweeks(0);
 			individualrankestService.insertOne(individualrankest);
 		}

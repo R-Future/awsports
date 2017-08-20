@@ -45,9 +45,15 @@ public class IndividualrankServiceImpl implements IndividualrankService {
 	}
 
 	@Override
-	public Individualrank findByUseridEntry(Individualrank individualrank) throws Exception {
+	public List<Individualrank> findByUseridEntry(Individualrank individualrank) throws Exception {
 		// TODO Auto-generated method stub
 		return individualrankMapper.findByUseridEntry(individualrank);
+	}
+
+	@Override
+	public Individualrank findByUseridEntryYear(Individualrank individualrank) throws Exception {
+		// TODO Auto-generated method stub
+		return individualrankMapper.findByUseridEntryYear(individualrank);
 	}
 
 }

@@ -43,4 +43,10 @@ public class TeamServiceImpl implements TeamService {
 		teamMapper.deleteById(id);
 	}
 
+	@Override
+	public Team findByUsers(Team team) throws Exception {
+		// TODO Auto-generated method stub
+		return teamMapper.findByUsers(team);
+	}
+
 }

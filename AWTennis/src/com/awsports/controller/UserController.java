@@ -262,4 +262,30 @@ public class UserController {
 			return null;
 		}
 	}
-}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年8月13日 上午12:37:50
+	 * @param currentName
+	 * @param response
+	 * @throws Exception
+	 * @Return: void
+	 * @Description: 验证用户名输入是否正确
+	 *
+	 */
+	@RequestMapping("/verifyUsername")
+	public void verifyUsername(String currentName, HttpServletResponse response) throws Exception{
+		List<UserQuery> userQuerys = userService.findAll(null);
+		JSONArray jsonArray = new JSONArray();
+		for(UserQuery userQuery:userQuerys){
+			if(userQuery.getUser().getName().equals(currentName)){
+				jsonArray.put(STATUS_ERROR);
+				response.getWriter().append(jsonArray.toString());
+				return;
+			}
+		}
+		jsonArray.put(STATUS_OK);
+		response.getWriter().append(jsonArray.toString());
+	}
+ }

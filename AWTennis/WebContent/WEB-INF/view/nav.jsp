@@ -115,6 +115,19 @@
 			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/adjustment/adjust"><i class="fa fa-circle-o"></i> 级别升降</a></li>
 			  </ul>
 			</li>
+			
+			<li class="treeview">
+			  <a href="#" onclick="activeMenu(this)">
+			    <i class="fa fa-file-excel-o"></i> <span>批量导入比赛</span>
+			    <span class="pull-right-container">
+			      <i class="fa fa-angle-left pull-right"></i>
+			    </span>
+			  </a>
+			  <ul class="treeview-menu">
+			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/singlematch/importFromExcel"><i class="fa fa-circle-o"></i> 单打比赛</a></li>
+			    <li onclick="activeChildMenu(this)"><a href="<%=request.getContextPath()%>/doublematch/importFromExcel"><i class="fa fa-circle-o"></i> 双打比赛</a></li>
+			  </ul>
+			</li>
 			    
 	      </ul>
 	      

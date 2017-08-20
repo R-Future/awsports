@@ -13,24 +13,41 @@ public class CustomDate extends Date {
 	private static final long serialVersionUID = -9221331164991850525L;
 	
 	private int year;
+	private int month;
 	private int week;
-	private Calendar date;
+	private int lastWeek;
+//	private int weeksOfYear;
+	private Calendar calendar;
 	
 	public CustomDate(){
-		date=Calendar.getInstance();
+		calendar=Calendar.getInstance();
 		//设置每周的第一天为周一，默认为周日
-		date.setFirstDayOfWeek(Calendar.MONDAY);
-		year=date.get(Calendar.YEAR);
-		week=date.get(Calendar.WEEK_OF_YEAR);
+		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		year=calendar.get(Calendar.YEAR);
+		week=calendar.get(Calendar.WEEK_OF_YEAR);
+		month=calendar.get(Calendar.MONTH);//[0,11]
+		//the last week
+		calendar.add(Calendar.DAY_OF_MONTH, -7);
+		lastWeek=calendar.get(Calendar.WEEK_OF_YEAR);
+		if(month == 11 && week < lastWeek){
+			year++;
+		}
 	}
 	
 	public CustomDate(Date datetime){
-		date=Calendar.getInstance();
-		date.setTime(datetime);
+		calendar=Calendar.getInstance();
+		calendar.setTime(datetime);
 		//设置每周的第一天为周一，默认为周日
-		date.setFirstDayOfWeek(Calendar.MONDAY);
-		year=date.get(Calendar.YEAR);
-		week=date.get(Calendar.WEEK_OF_YEAR);
+		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		year=calendar.get(Calendar.YEAR);
+		week=calendar.get(Calendar.WEEK_OF_YEAR);
+		month=calendar.get(Calendar.MONTH);//[0,11]
+		//the last week
+		calendar.add(Calendar.DAY_OF_MONTH, -7);
+		lastWeek=calendar.get(Calendar.WEEK_OF_YEAR);
+		if(month == 11 && week < lastWeek){
+			year++;
+		}
 	}
 	
 	public CustomDate(String datetimeStr){
@@ -38,12 +55,19 @@ public class CustomDate extends Date {
 		Date datetime;
 		try {
 			datetime = sdf.parse(datetimeStr);
-			date=Calendar.getInstance();
-			date.setTime(datetime);
+			calendar=Calendar.getInstance();
+			calendar.setTime(datetime);
 			//设置每周的第一天为周一，默认为周日
-			date.setFirstDayOfWeek(Calendar.MONDAY);
-			year=date.get(Calendar.YEAR);
-			week=date.get(Calendar.WEEK_OF_YEAR);
+			calendar.setFirstDayOfWeek(Calendar.MONDAY);
+			year=calendar.get(Calendar.YEAR);
+			week=calendar.get(Calendar.WEEK_OF_YEAR);
+			month=calendar.get(Calendar.MONTH);//[0,11]
+			//the last week
+			calendar.add(Calendar.DAY_OF_MONTH, -7);
+			lastWeek=calendar.get(Calendar.WEEK_OF_YEAR);
+			if(month == 11 && week < lastWeek){
+				year++;
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,6 +89,13 @@ public class CustomDate extends Date {
 	public void setWeek(int week) {
 		this.week = week;
 	}
-	
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
 	
 }

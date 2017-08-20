@@ -14,5 +14,6 @@ public interface IndividualrankService {
     public void insertOne(Individualrank individualrank) throws Exception;
     public void updateById(Individualrank indiviudalrank) throws Exception;
     public void deleteById(Integer id) throws Exception;
-    public Individualrank findByUseridEntry(Individualrank individualrank) throws Exception;
+    public List<Individualrank> findByUseridEntry(Individualrank individualrank) throws Exception;
+    public Individualrank findByUseridEntryYear(Individualrank individualrank) throws Exception;
 }

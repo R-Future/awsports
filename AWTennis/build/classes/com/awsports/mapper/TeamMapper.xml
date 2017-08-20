@@ -54,6 +54,10 @@
   	select * from aw_team where id=#{id}
   </select>
   
+  <select id="findByUsers" parameterType="com.awsports.pojo.Team" resultType="com.awsports.pojo.Team">
+  	select * from aw_team where (user1Id=#{user1id} and user2Id=#{user2id}) or (user1Id=#{user2id} and user2Id=#{user1id})
+  </select>
+  
   <insert id="insertOne" parameterType="com.awsports.pojo.Team">
     insert into aw_team
     <trim prefix="(" suffix=")" suffixOverrides=",">

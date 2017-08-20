@@ -32,6 +32,11 @@
     select * from aw_level
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findByChineseName" parameterType="com.awsports.pojo.Level" resultType="com.awsports.pojo.Level">
+  	select * from aw_level
+  	where aw_level.chinese like "%${chinese}%"
+  </select>
+  
   
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from aw_level

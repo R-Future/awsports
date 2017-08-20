@@ -11,5 +11,6 @@ public interface TeamrankMapper {
     public void insertOne(Teamrank teamrank) throws Exception;
     public void updateById(Teamrank teamrank) throws Exception;
     public void deleteById(Integer id) throws Exception;
-    public Teamrank findByTeamidEntry(Teamrank teamrank) throws Exception;
+    public List<Teamrank> findByTeamidEntry(Teamrank teamrank) throws Exception;
+    public Teamrank findByTeamidEntryYear(Teamrank teamrank) throws Exception;
 }

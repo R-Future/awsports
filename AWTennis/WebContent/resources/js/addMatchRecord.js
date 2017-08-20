@@ -9,6 +9,8 @@ $(document).ready(function(){
 			dataType:"html",
 			success: function(data){
 				$("div#matchRecord").html(data);
+				/* Only you can submit the form after you input the match records */
+				$("button#submit").removeClass("hidden");
 			}
 		});
 	});

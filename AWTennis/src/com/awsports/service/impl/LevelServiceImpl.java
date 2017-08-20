@@ -43,4 +43,10 @@ public class LevelServiceImpl implements LevelService {
 		levelMapper.deleteById(id);
 	}
 
+	@Override
+	public Level findByChineseName(Level level) throws Exception {
+		// TODO Auto-generated method stub
+		return levelMapper.findByChineseName(level);
+	}
+
 }

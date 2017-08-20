@@ -221,7 +221,8 @@ public class TeamrankController {
 								Teamrank teamrank=new Teamrank();
 								teamrank.setTeamid(teamid);
 								teamrank.setEntry(entry);
-								teamrank=teamrankService.findByTeamidEntry(teamrank);
+								teamrank.setYear(customDate.getYear());
+								teamrank=teamrankService.findByTeamidEntryYear(teamrank);
 								if(teamrank==null||teamrank.getInvalid().booleanValue()){//无记录
 									teamrank=new Teamrank();
 									teamrank.setTeamid(teamid);
@@ -235,7 +236,7 @@ public class TeamrankController {
 								teamrank.setWins(totalWins);
 //								teamrank.setRankingchange(0);
 								teamrank.setYear(customDate.getYear());
-								teamrank.setWeek(customDate.getWeek());
+//								teamrank.setWeek(customDate.getWeek());
 								rawRanks.add(teamrank);
 								//初始化变量
 								initializer();
@@ -252,7 +253,8 @@ public class TeamrankController {
 					Teamrank finalTeam=new Teamrank();
 					finalTeam.setTeamid(teamid);
 					finalTeam.setEntry(entry);
-					finalTeam=teamrankService.findByTeamidEntry(finalTeam);
+					finalTeam.setYear(customDate.getYear());
+					finalTeam=teamrankService.findByTeamidEntryYear(finalTeam);
 					if(finalTeam==null||finalTeam.getInvalid().booleanValue()){//无记录
 						finalTeam=new Teamrank();
 						finalTeam.setTeamid(teamid);
@@ -265,26 +267,34 @@ public class TeamrankController {
 					finalTeam.setTotalmarginbureau(totalMarginBureaus);
 					finalTeam.setWins(totalWins);
 					finalTeam.setYear(customDate.getYear());
-					finalTeam.setWeek(customDate.getWeek());
+//					finalTeam.setWeek(customDate.getWeek());
 					rawRanks.add(finalTeam);
 					//排序
 					TeamrankComparator teamrankComparator=new TeamrankComparator();
 					Collections.sort(rawRanks,teamrankComparator);
-					
+					int intervalWeek = 0;
+
 					if(rawRanks.size()>0){
 						
 						//排名第一的用户
 						Teamrank first=(Teamrank)rawRanks.get(0);
 						int newRank=1;
 						int oldRank=0;
+						
 						//统计排名变化
 						if(first.getId()!=null){
+							//old record
+							intervalWeek = customDate.getWeek() - first.getWeek().intValue();
+							first.setWeek(customDate.getWeek());
 							//更新数据
 							oldRank=first.getCurrentrank().intValue();
 							first.setRankingchange(oldRank-newRank);
 							first.setCurrentrank(newRank);
 							teamrankService.updateById(first);
 						}else{
+							//new record
+							intervalWeek = customDate.getWeek();
+							first.setWeek(customDate.getWeek());
 							//新增数据
 							oldRank=0;
 							first.setRankingchange(0);
@@ -292,7 +302,7 @@ public class TeamrankController {
 							teamrankService.insertOne(first);
 						}
 						//更新排名‘最’记录
-						updateRankest(first,newRank,oldRank);
+						updateRankest(first,intervalWeek,newRank,oldRank);
 						
 						//重置其它用户排名
 						Teamrank last=null;
@@ -309,12 +319,18 @@ public class TeamrankController {
 							}
 							//统计排名变化
 							if(next.getId()!=null){
+								//old record
+								intervalWeek = customDate.getWeek() - next.getWeek().intValue();
+								next.setWeek(customDate.getWeek());
 								//之前有排名
 								oldRank=next.getCurrentrank().intValue();
 								next.setRankingchange(oldRank-newRank);
 								next.setCurrentrank(newRank);
 								teamrankService.updateById(next);
 							}else{
+								//new record
+								intervalWeek = customDate.getWeek();
+								next.setWeek(customDate.getWeek());
 								//之前无排名
 								oldRank=0;
 								next.setRankingchange(0);
@@ -322,7 +338,7 @@ public class TeamrankController {
 								teamrankService.insertOne(next);
 							}
 							//更新排名‘最’记录
-							updateRankest(next,newRank,oldRank);
+							updateRankest(next,intervalWeek,newRank,oldRank);
 						}
 					}else{
 						//...
@@ -361,7 +377,7 @@ public class TeamrankController {
 	 * @Description: 更新组合排名‘最’记录
 	 *
 	 */
-	private void updateRankest(Teamrank teamrank,int newRank,int oldRank) throws Exception{
+	private void updateRankest(Teamrank teamrank,int intervalWeek,int newRank,int oldRank) throws Exception{
 		Integer teamid=teamrank.getTeamid();
 		Integer entry=teamrank.getEntry();
 		Teamrankest teamrankest=new Teamrankest();
@@ -381,6 +397,8 @@ public class TeamrankController {
 				//当前新的排名不是第一
 				if(oldRank==1){
 					//上周排名第一
+					teamrankest.setNo1weeks(teamrankest.getNo1weeks().intValue()+intervalWeek);
+					teamrankest.setNo1continiousweeks(teamrankest.getNo1continiousweeks().intValue()+intervalWeek);
 					if(teamrankest.getNo1continiousweeks().compareTo(teamrankest.getNo1longestcontiniousweeks())>0){
 						//连续第一周数大于最长连续第一周数
 						teamrankest.setNo1longestcontiniousweeks(teamrankest.getNo1continiousweeks());
@@ -393,13 +411,13 @@ public class TeamrankController {
 				}
 			}else{
 				//当前新的排名是第一
-				teamrankest.setNo1weeks(teamrankest.getNo1weeks().intValue()+1);
 				if(oldRank==1){
 					//上周排名第一
-					teamrankest.setNo1continiousweeks(teamrankest.getNo1continiousweeks().intValue()+1);
+					teamrankest.setNo1weeks(teamrankest.getNo1weeks().intValue()+intervalWeek);
+					teamrankest.setNo1continiousweeks(teamrankest.getNo1continiousweeks().intValue()+intervalWeek);
 				}else{
 					//上周排名不是第一
-					teamrankest.setNo1continiousweeks(1);
+					teamrankest.setNo1continiousweeks(0);
 				}
 			}
 			teamrankestService.updateById(teamrankest);
@@ -410,13 +428,8 @@ public class TeamrankController {
 			teamrankest.setEntry(entry);
 			teamrankest.setHighestranking(newRank);
 			teamrankest.setHrstartedat((new Date()));
-			if(newRank==1){
-				teamrankest.setNo1weeks(1);
-				teamrankest.setNo1continiousweeks(1);
-			}else{
-				teamrankest.setNo1weeks(0);
-				teamrankest.setNo1continiousweeks(0);
-			}
+			teamrankest.setNo1weeks(0);
+			teamrankest.setNo1continiousweeks(0);
 			teamrankest.setNo1longestcontiniousweeks(0);
 			teamrankestService.insertOne(teamrankest);
 		}

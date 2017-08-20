@@ -50,6 +50,10 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <!-- 用于更新组合排名信息 -->
+  <select id="findByTeamidEntryYear" parameterType="com.awsports.pojo.Teamrank" resultType="com.awsports.pojo.Teamrank">
+  	select * from aw_teamrank where teamId=#{teamid} and entry=#{entry} and year=#{year}
+  </select>
+  
   <select id="findByTeamidEntry" parameterType="com.awsports.pojo.Teamrank" resultType="com.awsports.pojo.Teamrank">
   	select * from aw_teamrank where teamId=#{teamid} and entry=#{entry}
   </select>

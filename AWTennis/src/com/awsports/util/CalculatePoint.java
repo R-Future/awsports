@@ -111,7 +111,7 @@ public class CalculatePoint{
 			individualpoint.setTournamentid(singlematch.getTournamentid());
 			for(int i=0;i<playerids.length;i++){
 				individualpoint.setUserid(playerids[i]);
-				Individualpoint playerpoint=individualpointService.findByUseridYearWeekEntry(individualpoint);
+				Individualpoint playerpoint=individualpointService.findByUseridYearWeekTournamentidEntry(individualpoint);
 				if(playerpoint==null){//there is no record in the database
 					individualpoint.setMatchs(1);
 					individualpoint.setWins(wins[i]);
@@ -168,7 +168,7 @@ public class CalculatePoint{
 						//双打女子个人
 						individualpoint.setEntry(EntryEnum.DOUBLEWOMANINDIVIDUAL.getValue());
 					}
-					Individualpoint playerpoint=individualpointService.findByUseridYearWeekEntry(individualpoint);
+					Individualpoint playerpoint=individualpointService.findByUseridYearWeekTournamentidEntry(individualpoint);
 					if(playerpoint==null){//there is no record in the database
 						individualpoint.setMatchs(1);
 						individualpoint.setWins(wins[i]);
@@ -219,7 +219,7 @@ public class CalculatePoint{
 			individualpoint.setTournamentid(singlematch.getTournamentid());
 			for(int i=0;i<playerids.length;i++){
 				individualpoint.setUserid(playerids[i]);
-				Individualpoint playerpoint=individualpointService.findByUseridYearWeekEntry(individualpoint);
+				Individualpoint playerpoint=individualpointService.findByUseridYearWeekTournamentidEntry(individualpoint);
 				if(playerpoint!=null){//there is no record in the database
 					int match=playerpoint.getMatchs().intValue()-1;
 					int marginBureau=playerpoint.getMarginbureau().intValue()-marginBureaus[i];
@@ -279,7 +279,7 @@ public class CalculatePoint{
 						//双打女子个人
 						individualpoint.setEntry(EntryEnum.DOUBLEWOMANINDIVIDUAL.getValue());
 					}
-					Individualpoint playerpoint=individualpointService.findByUseridYearWeekEntry(individualpoint);
+					Individualpoint playerpoint=individualpointService.findByUseridYearWeekTournamentidEntry(individualpoint);
 					if(playerpoint!=null){//there is no record in the database
 						int match=playerpoint.getMatchs().intValue()-1;
 						int marginBureau=playerpoint.getMarginbureau().intValue()-marginBureaus[i];

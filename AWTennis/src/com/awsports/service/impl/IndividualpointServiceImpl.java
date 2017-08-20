@@ -45,9 +45,9 @@ public class IndividualpointServiceImpl implements IndividualpointService {
 	}
 
 	@Override
-	public Individualpoint findByUseridYearWeekEntry(Individualpoint individualpoint) throws Exception {
+	public Individualpoint findByUseridYearWeekTournamentidEntry(Individualpoint individualpoint) throws Exception {
 		// TODO Auto-generated method stub
-		return individualpointMapper.findByUseridYearWeekEntry(individualpoint);
+		return individualpointMapper.findByUseridYearWeekTournamentidEntry(individualpoint);
 	}
 
 	@Override
@@ -57,9 +57,9 @@ public class IndividualpointServiceImpl implements IndividualpointService {
 	}
 
 	@Override
-	public List<Individualpoint> findByTournamentidYearWeek(Individualpoint individualpoint) throws Exception {
+	public List<Individualpoint> findByTournamentidYear(Individualpoint individualpoint) throws Exception {
 		// TODO Auto-generated method stub
-		return individualpointMapper.findByTournamentidYearWeek(individualpoint);
+		return individualpointMapper.findByTournamentidYear(individualpoint);
 	}
 
 }

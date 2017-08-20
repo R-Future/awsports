@@ -57,7 +57,7 @@
 						<span class="help-block" id="nullLowLevel"></span>
 					</div>
 					<div class="form-group col-md-3" style="padding-top:25px">
-						<a href="javascript:void(0)" id="routine" class="btn btn-danger">确定</a>
+						<a href="javascript:void(0)" id="routine" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
 					</div>
 				</fieldset>
 				
@@ -90,7 +90,7 @@
 						<span class="help-block" id="null_qh_lowLevel"></span>
 					</div>
 					<div class="form-group col-md-3" style="padding-top:25px">
-						<a href="javascript:void(0)" id="qh_down" class="btn btn-danger">确定</a>
+						<a href="javascript:void(0)" id="qh_down" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
 					</div>
 				</fieldset>
 				
@@ -123,7 +123,7 @@
 						<span class="help-block" id="null_qh_upto_Level"></span>
 					</div>
 					<div class="form-group col-md-3" style="padding-top:25px">
-						<a href="javascript:void(0)" id="qh_up" class="btn btn-danger">确定</a>
+						<a href="javascript:void(0)" id="qh_up" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
 					</div>
 				</fieldset>
 			</form>

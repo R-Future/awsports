@@ -50,8 +50,8 @@
 		<include refid="individualpointQuery_where"></include>
 	</where>
   </select>
-  <!-- 找出某个用户某年某周参加的某项赛事 -->
-  <select id="findByUseridYearWeekEntry" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
+  <!-- 找出某个用户某年某周参加某项比赛的积分 -->
+  <select id="findByUseridYearWeekTournamentidEntry" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
   	select * from aw_individualpoint
 	where userId=#{userid} and entry=#{entry} and tournamentId=#{tournamentid} and year=#{year} and week=#{week}
   </select>
@@ -61,8 +61,8 @@
 	where entry in (#{manSingleEntry},#{womanSingleEntry},#{entry}) and (year=#{year} or (year=#{lastYear} and (week between #{week} and 55)))
 	order by aw_individualpoint.userId ASC
   </select>
-  <!-- 根据赛事进行排名 -->
-  <select id="findByTournamentidYearWeek" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
+  <!-- 根据赛事计算金组资格赛排名 -->
+  <select id="findByTournamentidYear" parameterType="com.awsports.pojo.Individualpoint" resultType="com.awsports.pojo.Individualpoint">
   	select * from aw_individualpoint
 	where tounamentId=#{tournamentid} and year=#{year}
 	order by aw_individualpoint.userId ASC

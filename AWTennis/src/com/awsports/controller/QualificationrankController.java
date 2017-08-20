@@ -182,7 +182,7 @@ public class QualificationrankController {
 			//更新排名
 			for(Integer tournamentid:tournamentids){
 				individualpoint.setTournamentid(tournamentid);
-				individualpoints = individualpointService.findByTournamentidYearWeek(individualpoint);
+				individualpoints = individualpointService.findByTournamentidYear(individualpoint);
 				if(individualpoints==null||individualpoints.size()<=0){
 					continue;
 				}else{

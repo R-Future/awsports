@@ -107,8 +107,9 @@ public class UpdateRankUtil {
 								Punishment punishment=new Punishment();
 								punishment.setUserid(userid);
 								punishment.setEntry(entry);
+								punishment.setcDatetime(matchtime);
 								punishment.setInvalid(false);
-								Integer punishmentPoints=punishmentService.findSumByUseridEntry(punishment);
+								Integer punishmentPoints=punishmentService.findSumByUseridEntryMatchtime(punishment);
 								if(punishmentPoints!=null){
 									//存在退赛记录
 									totalPoints-=punishmentPoints.intValue();

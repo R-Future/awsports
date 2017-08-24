@@ -148,12 +148,14 @@ public class UpdateRankUtil {
 					}else{
 						//...
 					}
+					
 					//扣除个人退赛扣分
 					Punishment punishment=new Punishment();
 					punishment.setUserid(userid);
 					punishment.setEntry(entry);
+					punishment.setcDatetime(matchtime);
 					punishment.setInvalid(false);
-					Integer punishmentPoints=punishmentService.findSumByUseridEntry(punishment);
+					Integer punishmentPoints=punishmentService.findSumByUseridEntryMatchtime(punishment);
 					if(punishmentPoints!=null){
 						//存在退赛记录
 						totalPoints-=punishmentPoints.intValue();

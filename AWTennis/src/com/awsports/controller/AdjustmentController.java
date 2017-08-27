@@ -21,6 +21,7 @@ import com.awsports.service.LevelService;
 import com.awsports.service.QualificationrankService;
 import com.awsports.service.TournamentService;
 import com.awsports.service.UserService;
+import com.awsports.util.CustomDate;
 import com.awsports.util.CustomException;
 import com.awsports.util.EntryEnum;
 
@@ -95,9 +96,10 @@ public class AdjustmentController {
 		UserQuery userQuery=new UserQuery();
 		Level level=new Level();
 		User user = null;
-		
-		//查询混合单打的排名
+		CustomDate customDate = new CustomDate();
+		//查询现年混合单打的排名
 		individualrank.setEntry(EntryEnum.MIXEDSINGLE.getValue());
+		individualrank.setYear(customDate.getYear());
 		individualrankQuery.setIndividualrank(individualrank);
 		//获取高组别混合单打的排名
 		level.setId(highLevel);
@@ -151,9 +153,10 @@ public class AdjustmentController {
 		UserQuery userQuery=new UserQuery();
 		Level level=new Level();
 		User user = null;
-		
-		//查询混合单打的排名
+		CustomDate customDate = new CustomDate();
+		//查询现年混合单打的排名
 		individualrank.setEntry(EntryEnum.MIXEDSINGLE.getValue());
+		individualrank.setYear(customDate.getYear());
 		individualrankQuery.setIndividualrank(individualrank);
 		//获取高组别混合单打的排名
 		level.setId(qhHighLevel);
@@ -193,9 +196,10 @@ public class AdjustmentController {
 		QualificationrankQuery qualificationrankQuery = new QualificationrankQuery();
 		Qualificationrank qualificationrank = new Qualificationrank();
 		User user = null;
-		
+		CustomDate customDate = new CustomDate();
 		//获取该赛事资格赛的个人排名
 		qualificationrank.setTournamentid(qhTournament);
+		qualificationrank.setYear(customDate.getYear());
 		qualificationrankQuery.setQualificationrank(qualificationrank);
 		List<QualificationrankQuery> qualificationrankQuerys = qualificationrankService.findAll(qualificationrankQuery);
 		//低级别升入高级别

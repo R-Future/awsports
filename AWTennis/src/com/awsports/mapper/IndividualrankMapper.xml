@@ -45,8 +45,11 @@
   		<if test="individualrank.entry!=null and individualrank.entry.intValue()!=0">
   			and aw_individualrank.entry=#{individualrank.entry}
   		</if>
+  		<if test="individualrank.year!=null and individualrank.year.intValue()!=0">
+  			and aw_individualrank.year=#{individualrank.year}
+  		</if>
   	</if>
-
+	
   </sql>
   <select id="findAll" parameterType="com.awsports.pojo.IndividualrankQuery" resultMap="individualrankQueryMap">
     SELECT

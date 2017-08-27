@@ -28,7 +28,7 @@
 <%-- 			<form class="form" action="<%=request.getContextPath()%>/adjustment/adjust" method="post"> --%>
 			
 				<fieldset>
-					<legend style="color:#408080">常规调整</legend>
+					<legend style="color:#3c8dbc">常规调整</legend>
 					
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="number"><i class="fa fa-warning"></i>需调整的人数</label>
@@ -61,7 +61,7 @@
 					</div>
 				</fieldset>
 				
-				<fieldset><legend style="color:#408080">资格赛调整</legend></fieldset>
+				<fieldset><legend style="color:#3c8dbc">资格赛调整</legend></fieldset>
 				<fieldset>
 					<legend>降级</legend>
 					<div class="form-group has-warning col-md-3">
@@ -128,7 +128,7 @@
 				</fieldset>
 				
 				<fieldset>
-					<legend style="color:#408080">强制调整</legend>
+					<legend style="color:#3c8dbc">强制调整</legend>
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="force_member"><i class="fa fa-warning"></i>用户列表</label>
 						<select multiple id="force_member" name="force_member" class="form-control">
@@ -188,9 +188,9 @@
 				$(this).removeAttr("disabled");
 			}
 		}).click(function(){
-			var number = $("#number").val();
-			var highLevel = $("#highLevel option:selected").val();
-			var lowLevel = $("#lowLevel option:selected").val();
+			var number = Number($("#number").val());
+			var highLevel = Number($("#highLevel option:selected").val());
+			var lowLevel = Number($("#lowLevel option:selected").val());
 			var isConfirm = confirm("请确定提交吗?");
 			if(isConfirm){
 				$.ajax({
@@ -232,16 +232,16 @@
 				$(this).removeAttr("disabled");
 			}
 		}).click(function(){
-			var qh_down_number = $("#qh_down_number").val();
-			var qh_highlevel = $("#qh_highlevel option:selected").val();
-			var qh_lowLevel = $("#qh_lowLevel option:selected").val();
+			var qh_down_number = Number($("#qh_down_number").val());
+			var qh_highLevel = Number($("#qh_highLevel option:selected").val());
+			var qh_lowLevel = Number($("#qh_lowLevel option:selected").val());
 			var isConfirm = confirm("请确定提交吗?");
 			if(isConfirm){
 				$.ajax({
 					type: "post",
 					url: "qualificationDowngrade",
 					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-					data: {qhDownNumber:qh_down_number,qhHighLevel:qh_highlevel,qhLowLevel:qh_lowLevel},
+					data: {qhDownNumber:qh_down_number,qhHighLevel:qh_highLevel,qhLowLevel:qh_lowLevel},
 					dataType: "html",
 					success:function(data){
 						$("#hint").html(data);
@@ -275,9 +275,9 @@
 				$(this).removeAttr("disabled");
 			}
 		}).click(function(){
-			var qh_up_number = $("#qh_up_number").val();
-			var qh_tournament = $("#qh_tournament").val();
-			var qh_upto_level = $("#qh_upto_level").val();
+			var qh_up_number = Number($("#qh_up_number").val());
+			var qh_tournament = Number($("#qh_tournament option:selected").val());
+			var qh_upto_level = Number($("#qh_upto_level option:selected").val());
 			var isConfirm = confirm("请确定提交吗?");
 			if(isConfirm){
 				$.ajax({

@@ -198,6 +198,7 @@ public class DoublematchController {
 				}else{
 					if(getPointrule(tournamentid,round)){
 						for(DoublematchQuery doublematchQuery:doublematchQuerys){
+							String timeStamp = ""+System.currentTimeMillis();
 							Doublematch originMatch=doublematchQuery.getDoublematch();
 							List<Doublematchscore> originMatchscores=doublematchQuery.getDoublematchscores();
 							originMatch.setMatchtime(matchtime);//比赛时间
@@ -205,6 +206,7 @@ public class DoublematchController {
 							originMatch.setTournamentid(tournamentid);//赛事类型
 							originMatch.setRound(round);//比赛轮次
 							originMatch.setSets(sets);//比赛盘数
+							originMatch.setMirror(timeStamp);//to find mirror match
 							setOriginMatch(originMatch,originMatchscores);
 							//设置镜像比赛记录保存项
 							Doublematch mirrorMatch=new Doublematch();
@@ -635,6 +637,7 @@ public class DoublematchController {
 		mirrorMatch.setHcretired(originMatch.getApretired());
 		mirrorMatch.setApretired(originMatch.getHcretired());
 		mirrorMatch.setInvalid(originMatch.getInvalid());
+		mirrorMatch.setMirror(originMatch.getMirror());
 		mirrorMatch.setNote(originMatch.getNote());
 	}
 	
@@ -872,7 +875,6 @@ public class DoublematchController {
 			// get the number of columns
 			int cols = sheet.getColumns();
 			// search the sheet
-			// System.out.println(rows+"行 * "+cols+"列");
 			// save double matches
 			// update team rank
 			DoublematchQuery doublematchQuery = null;
@@ -881,6 +883,7 @@ public class DoublematchController {
 			Doublematchscore doublematchscore = null;
 			String matchtime = "";
 			String matchtimeFlag = "";
+			String timeStamp;
 			Team team1 = null;
 			Team team2 = null;
 			for (int i = 1; i < rows; i++) {
@@ -1030,6 +1033,9 @@ public class DoublematchController {
 					insertTeam(team2);
 					doublematch.setAwayplayer(team2.getId());
 				}
+				//set mirror flag to find mirror match
+				timeStamp = ""+System.currentTimeMillis();
+				doublematch.setMirror(timeStamp);
 				doublematchQuery.setDoublematch(doublematch);
 				doublematchQuery.setDoublematchscores(doublematchscores);
 				try {
@@ -1064,9 +1070,6 @@ public class DoublematchController {
 						matchtimeFlag = matchtime;
 					}
 					System.out.println("正在录入第" + i + "场比赛...");
-					//delay 1s
-					Thread.currentThread();
-					Thread.sleep(1000);
 					// 将比赛记录录入数据库
 					saveFromExcel(doublematchQuery, tournamentid, round);
 					System.out.println("第" + i + "场比赛录入完成");
@@ -1080,7 +1083,7 @@ public class DoublematchController {
 			UpdateRankUtil.updateRank(matchtime,teamEntrys,teamrankService,teamrankestService,teampointService);
 			System.out.println("组合排名更新完成");
 			System.out.println("正在更新个人排名...");
-			UpdateRankUtil.updateRank(matchtimeFlag,individualEntrys,individualrankService,individualrankestService,punishmentService,individualpointService);
+			UpdateRankUtil.updateRank(matchtime,individualEntrys,individualrankService,individualrankestService,punishmentService,individualpointService);
 			System.out.println("个人排名更新完成");
 			model.addAttribute("success", "导入成功");
 		}

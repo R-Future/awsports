@@ -22,6 +22,7 @@
   	<result column="createdAt" property="singlematch.createdat"/>
   	<result column="updatedAt" property="singlematch.updatedat"/>
   	<result column="invalid" property="singlematch.invalid"/>
+  	<result column="mirror" property="singlematch.mirror"/>
   	<result column="note" property="singlematch.note"/>
   	<association property="user1" javaType="com.awsports.pojo.User">
   		<id column="homeContestant" property="id"/>
@@ -127,8 +128,7 @@
   </select>
   
   <select id="findMirrorByOrigin" parameterType="com.awsports.pojo.Singlematch" resultType="com.awsports.pojo.Singlematch">
-  	select * from aw_singlematch 
-  	where homeContestant=#{awayplayer} and awayPlayer=#{homecontestant} and createdAt=#{createdat}
+  	select * from aw_singlematch where mirror=#{mirror}
   </select>
   
   <delete id="deleteById" parameterType="Integer">
@@ -195,6 +195,9 @@
       <if test="isapchallenger != null">
         isAPChallenger,
       </if>
+      <if test="mirror != null">
+      	mirror,
+      </if>
       <if test="note != null">
         note,
       </if>
@@ -256,6 +259,9 @@
       </if>
       <if test="isapchallenger != null">
         #{isapchallenger,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+      	#{mirror, jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         #{note,jdbcType=LONGVARCHAR},
@@ -326,6 +332,9 @@
       </if>
       <if test="isapchallenger != null">
         isAPChallenger = #{isapchallenger,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+      	mirror = #{mirror,jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         note = #{note,jdbcType=LONGVARCHAR},

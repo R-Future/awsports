@@ -21,6 +21,7 @@ import com.awsports.service.LevelService;
 import com.awsports.service.QualificationrankService;
 import com.awsports.service.TournamentService;
 import com.awsports.service.UserService;
+import com.awsports.util.CustomException;
 import com.awsports.util.EntryEnum;
 
 /**
@@ -67,6 +68,9 @@ public class AdjustmentController {
 		//获取俱乐部等级类型
 		List<Level> levels = levelService.findAll(null);
 		model.addAttribute("levels", levels);
+		//用户列表
+		List<UserQuery> userQuerys = userService.findAll(null);
+		model.addAttribute("userQuerys", userQuerys);
 		return "ajustment/adjust";
 	}
 	
@@ -200,6 +204,34 @@ public class AdjustmentController {
 				user = userService.findById(qualificationrankQuerys.get(i).getUserQuery().getUser().getId());
 				user.setGrade(qhUptoLevel);
 				userService.updateById(user);
+			}
+		}
+		return "success";
+	}
+	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年8月26日 上午9:59:28
+	 * @param userIds
+	 * @param level
+	 * @throws Exception
+	 * @Return: String
+	 * @Description: 强制调整人员组别
+	 *
+	 */
+	@RequestMapping("force")
+	public String force(@RequestParam(value="userIds") Integer[] userIds, Integer level) throws Exception{
+		if(userIds == null || userIds.length == 0 || level == null){
+			throw new CustomException("操作异常，请确保操作步骤正确");
+		}else{
+			User user = null;
+			for(Integer userId:userIds){
+				user = userService.findById(userId);
+				if(user != null){
+					user.setGrade(level);
+					userService.updateById(user);
+				}
 			}
 		}
 		return "success";

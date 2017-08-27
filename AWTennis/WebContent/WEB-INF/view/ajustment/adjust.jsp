@@ -25,10 +25,10 @@
 		<div class="container-fluid">
 			<div class="" id="hint" style="color:red"></div>
 			
-			<form class="form" action="<%=request.getContextPath()%>/adjustment/adjust" method="post">
+<%-- 			<form class="form" action="<%=request.getContextPath()%>/adjustment/adjust" method="post"> --%>
 			
 				<fieldset>
-					<legend>常规调整</legend>
+					<legend style="color:#408080">常规调整</legend>
 					
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="number"><i class="fa fa-warning"></i>需调整的人数</label>
@@ -61,7 +61,7 @@
 					</div>
 				</fieldset>
 				
-				<fieldset><legend>资格赛调整</legend></fieldset>
+				<fieldset><legend style="color:#408080">资格赛调整</legend></fieldset>
 				<fieldset>
 					<legend>降级</legend>
 					<div class="form-group has-warning col-md-3">
@@ -126,7 +126,36 @@
 						<a href="javascript:void(0)" id="qh_up" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
 					</div>
 				</fieldset>
-			</form>
+				
+				<fieldset>
+					<legend style="color:#408080">强制调整</legend>
+					<div class="form-group has-warning col-md-3">
+                 	 	<label class="control-label" for="force_member"><i class="fa fa-warning"></i>用户列表</label>
+						<select multiple id="force_member" name="force_member" class="form-control">
+							<c:forEach items="${ userQuerys }" var="userQuery">
+								<option value="${ userQuery.user.id }">${ userQuery.user.name }</option>
+							</c:forEach>
+						</select>
+						<span class="help-block" id="null_force_member"></span>
+					</div>
+					
+					<div class="form-group has-warning col-md-3">
+                 	 	<label class="control-label" for="force_Level"><i class="fa fa-warning"></i>调整后的组别</label>
+						<select id="force_Level" name="force_Level" class="form-control">
+							<option value="0">-请选择-</option>
+							<c:forEach items="${levels}" var="level">
+								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
+							</c:forEach>
+						</select>
+						<span class="help-block" id="null_force_Level"></span>
+					</div>
+					<div class="form-group col-md-3" style="padding-top:25px">
+						<a href="javascript:void(0)" id="force" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
+					</div>
+					<div class="form-group has-warning col-md-12" id="userSelected"></div>
+				</fieldset>
+				
+<!-- 			</form> -->
 		</div>
 	</section><!-- /.Main content -->
 </div>
@@ -157,6 +186,7 @@
 				$("span#nullLowLevel").html("");
 			}
 		});
+		//routine
 		$("a#routine").click(function(){
 			var number = $("input#number").val();
 			var highLevel = $("select#highLevel").val();
@@ -214,6 +244,70 @@
 					}
 				});
 			}
+		});
+		
+		//force
+		function clearSpan(){
+			$("div#userSelected").children("span").remove();
+		}
+		$("select#force_member").click(function(){
+			clearSpan();//clear all users selected at last time
+			var selectList = [];
+			$("select#force_member option:selected").each(function(){
+				selectList.push($(this).text());
+			});
+// 			console.log(selectList);
+			if(selectList != null){
+				var title = document.createElement("span");
+				$(title).html("已选用户:&nbsp;");
+				$("div#userSelected").append(title);
+				selectList.forEach(function(d){
+					var span = document.createElement("span");
+					$(span).addClass("bg-red color-palette").html(d+",");
+					$("div#userSelected").append(span);
+				})
+			}else{
+				clearSpan();
+			}
+		});
+		
+		$("a#force").mouseover(function(){
+			var selectList = $("select#force_member").val();
+			var level = Number($("select#force_Level").val());
+			//convert string to int
+			var userSelect = selectList.map(function(d){return +d;});
+// 			console.log(userSelect);
+			if(userSelect == null){
+				$("span#null_force_member").html("请选择用户");
+				$(this).attr("disabled","disabled");
+			}else{
+				$("span#null_force_member").html("");
+				$(this).removeAttr("disabled");
+			}
+			if(level === 0){
+				$("span#null_force_level").html("请选择调整后所属组别");
+				$(this).attr("disabled","disabled");
+			}else{
+				$("span#null_force_level").html("");
+				$(this).removeAttr("disabled");
+			}
+		}).click(function(){
+			var selectList = $("select#force_member").val();
+			var level = Number($("select#force_Level").val());
+			//convert string to int
+			var userSelect = selectList.map(function(d){return +d;});
+			console.log(selectList);
+			$.ajax({
+				type: "post",
+				url: "force",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				data: {userIds:userSelect,level:level},
+				traditional: true,
+				dataType: "html",
+				success:function(data){
+					$("div#hint").html(data);
+				}
+			});
 		});
 	});
 </script>

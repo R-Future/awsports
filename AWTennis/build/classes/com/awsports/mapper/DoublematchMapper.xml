@@ -22,6 +22,7 @@
   	<result column="createdAt" property="doublematch.createdat"/>
   	<result column="updatedAt" property="doublematch.updatedat"/>
   	<result column="invalid" property="doublematch.invalid"/>
+  	<result column="mirror" property="doublematch.mirror"/>
   	<result column="note" property="doublematch.note"/>
   	<association property="arena" javaType="com.awsports.pojo.Arena">
   		<id column="matchPlace" property="id"/>
@@ -174,8 +175,7 @@
   	select * from aw_doublematch where id=#{id}
   </select>
   <select id="findMirrorByOrigin" parameterType="com.awsports.pojo.Doublematch" resultType="com.awsports.pojo.Doublematch">
-  	select * from aw_doublematch
-  	where homeContestant=#{awayplayer} and awayPlayer=#{homecontestant} and createdAt=#{createdat} 
+  	select * from aw_doublematch where mirror=#{mirror} 
   </select> 
  
   <insert id="insertOne" parameterType="com.awsports.pojo.Doublematch" useGeneratedKeys="true" keyProperty="id">
@@ -238,6 +238,9 @@
       <if test="isapchallenger != null">
         isAPChallenger,
       </if>
+      <if test="mirror != null">
+      	mirror,
+      </if>
       <if test="note != null">
         note,
       </if>
@@ -299,6 +302,9 @@
       </if>
       <if test="isapchallenger != null">
         #{isapchallenger,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+      	#{mirror,jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         #{note,jdbcType=LONGVARCHAR},
@@ -369,6 +375,9 @@
       </if>
       <if test="isapchallenger != null">
         isAPChallenger = #{isapchallenger,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+      	mirror = #{mirror,jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         note = #{note,jdbcType=LONGVARCHAR},

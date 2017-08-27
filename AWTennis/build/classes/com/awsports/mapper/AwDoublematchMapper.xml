@@ -21,6 +21,7 @@
     <result column="APRetired" jdbcType="BIT" property="apretired" />
     <result column="isHCChallenger" jdbcType="BIT" property="ishcchallenger" />
     <result column="isAPChallenger" jdbcType="BIT" property="isapchallenger" />
+    <result column="mirror" jdbcType="VARCHAR" property="mirror" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwDoublematch">
     <result column="note" jdbcType="LONGVARCHAR" property="note" />
@@ -86,7 +87,7 @@
   <sql id="Base_Column_List">
     id, homeContestant, awayPlayer, matchTime, matchPlace, tournamentId, entry, round, 
     sets, outcome, HCPoint, APPoint, createdAt, updatedAt, invalid, HCRetired, APRetired, 
-    isHCChallenger, isAPChallenger
+    isHCChallenger, isAPChallenger, mirror
   </sql>
   <sql id="Blob_Column_List">
     note
@@ -134,14 +135,16 @@
       outcome, HCPoint, APPoint, 
       createdAt, updatedAt, invalid, 
       HCRetired, APRetired, isHCChallenger, 
-      isAPChallenger, note)
+      isAPChallenger, mirror, note
+      )
     values (#{id,jdbcType=INTEGER}, #{homecontestant,jdbcType=INTEGER}, #{awayplayer,jdbcType=INTEGER}, 
       #{matchtime,jdbcType=TIMESTAMP}, #{matchplace,jdbcType=INTEGER}, #{tournamentid,jdbcType=INTEGER}, 
       #{entry,jdbcType=INTEGER}, #{round,jdbcType=INTEGER}, #{sets,jdbcType=INTEGER}, 
       #{outcome,jdbcType=CHAR}, #{hcpoint,jdbcType=INTEGER}, #{appoint,jdbcType=INTEGER}, 
       #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, 
       #{hcretired,jdbcType=BIT}, #{apretired,jdbcType=BIT}, #{ishcchallenger,jdbcType=BIT}, 
-      #{isapchallenger,jdbcType=BIT}, #{note,jdbcType=LONGVARCHAR})
+      #{isapchallenger,jdbcType=BIT}, #{mirror,jdbcType=VARCHAR}, #{note,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwDoublematch">
     insert into aw_doublematch
@@ -202,6 +205,9 @@
       </if>
       <if test="isapchallenger != null">
         isAPChallenger,
+      </if>
+      <if test="mirror != null">
+        mirror,
       </if>
       <if test="note != null">
         note,
@@ -264,6 +270,9 @@
       </if>
       <if test="isapchallenger != null">
         #{isapchallenger,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+        #{mirror,jdbcType=VARCHAR},
       </if>
       <if test="note != null">
         #{note,jdbcType=LONGVARCHAR},
@@ -336,6 +345,9 @@
       <if test="record.isapchallenger != null">
         isAPChallenger = #{record.isapchallenger,jdbcType=BIT},
       </if>
+      <if test="record.mirror != null">
+        mirror = #{record.mirror,jdbcType=VARCHAR},
+      </if>
       <if test="record.note != null">
         note = #{record.note,jdbcType=LONGVARCHAR},
       </if>
@@ -365,6 +377,7 @@
       APRetired = #{record.apretired,jdbcType=BIT},
       isHCChallenger = #{record.ishcchallenger,jdbcType=BIT},
       isAPChallenger = #{record.isapchallenger,jdbcType=BIT},
+      mirror = #{record.mirror,jdbcType=VARCHAR},
       note = #{record.note,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -390,7 +403,8 @@
       HCRetired = #{record.hcretired,jdbcType=BIT},
       APRetired = #{record.apretired,jdbcType=BIT},
       isHCChallenger = #{record.ishcchallenger,jdbcType=BIT},
-      isAPChallenger = #{record.isapchallenger,jdbcType=BIT}
+      isAPChallenger = #{record.isapchallenger,jdbcType=BIT},
+      mirror = #{record.mirror,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

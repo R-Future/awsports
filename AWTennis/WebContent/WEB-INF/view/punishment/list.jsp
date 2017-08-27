@@ -70,7 +70,7 @@
 						<td><spring:eval expression="punishmentQuerys[${i}].punishment.matchtime" /></td>
 						<td>${ individualEntryTypes.get(punishmentQuerys[i].punishment.entry) }</td>
 						<td>${ punishmentQuerys[i].punishment.points }</td>
-						<td>${ punishmentQuerys[i].tournament.note }</td>
+						<td>${ punishmentQuerys[i].punishment.note }</td>
 						<td>
 							<a href="<%=request.getContextPath()%>/punishment/update?id=${punishmentQuerys[i].punishment.id}" title="修改"><i class="fa fa-edit"></i></a>
 							<a href="<%=request.getContextPath()%>/punishment/delete?id=${punishmentQuerys[i].punishment.id}" title="删除"><i class="fa fa-trash"></i></a>

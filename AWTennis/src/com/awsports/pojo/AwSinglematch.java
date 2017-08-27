@@ -55,6 +55,8 @@ public class AwSinglematch {
     private Boolean ishcchallenger;
 
     private Boolean isapchallenger;
+    
+    private String mirror;
 
     private String note;
 
@@ -210,6 +212,14 @@ public class AwSinglematch {
 		this.isapchallenger = isapchallenger;
 	}
 
+	public String getMirror() {
+        return mirror;
+    }
+
+    public void setMirror(String mirror) {
+        this.mirror = mirror == null ? null : mirror.trim();
+    }
+	
 	public String getNote() {
         return note;
     }

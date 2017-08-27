@@ -235,6 +235,7 @@ public class SinglematchController {
 				}else{
 					if(getPointrule(tournamentid,round)){
 						for(SinglematchQuery singlematchQuery:singlematchQuerys){
+							String timeStamp = ""+System.currentTimeMillis();
 							Singlematch originMatch=singlematchQuery.getSinglematch();
 							List<Singlematchscore> originMatchscores=singlematchQuery.getSinglematchscores();
 							originMatch.setMatchtime(matchtime);//比赛时间
@@ -242,6 +243,7 @@ public class SinglematchController {
 							originMatch.setTournamentid(tournamentid);//赛事类型
 							originMatch.setRound(round);//比赛轮次
 							originMatch.setSets(sets);//比赛盘数
+							originMatch.setMirror(timeStamp);//to find the mirror match
 							setOriginMatch(originMatch,originMatchscores);//设置比赛记录保存项
 							//save single match record
 							singlematchService.insertOne(originMatch);
@@ -637,6 +639,7 @@ public class SinglematchController {
 		mirrorMatch.setHcretired(originMatch.getApretired());
 		mirrorMatch.setApretired(originMatch.getHcretired());
 		mirrorMatch.setInvalid(originMatch.getInvalid());
+		mirrorMatch.setMirror(originMatch.getMirror());
 		mirrorMatch.setNote(originMatch.getNote());
 	}
 	
@@ -807,6 +810,7 @@ public class SinglematchController {
 
 			String matchtime = "";
 			String matchtimeFlag = "";
+			String timeStamp;
 
 			for (int i = 1; i < rows; i++) {
 
@@ -908,7 +912,6 @@ public class SinglematchController {
 						break;
 					case 11:
 						// match score
-						// matchscoreStr = cell.getContents();
 						singlematchscore = new Singlematchscore();
 						int[] results = ExcelUtil.getMatchScore(cell.getContents().toString(), 0, 0, 0, 0);
 						singlematchscore.setSetth(1);
@@ -917,14 +920,14 @@ public class SinglematchController {
 						singlematchscore.setApscore(results[2]);// hcScore
 						singlematchscore.setAptiescore(results[3]);// hcTieScore
 						singlematchscores.add(singlematchscore);
-						// System.out.print(hcScore+"-"+hcTieScore+":");
-						// System.out.print(apScore+"-"+apTieScore+" ");
 						break;
 					case 12:
 						// note
 						singlematch.setNote(cell.getContents().toString().trim());
 					}
 				}
+				timeStamp = ""+System.currentTimeMillis();
+				singlematch.setMirror(timeStamp);
 				singlematchQuery.setSinglematch(singlematch);
 				singlematchQuery.setSinglematchscores(singlematchscores);
 				try {
@@ -939,9 +942,6 @@ public class SinglematchController {
 						matchtimeFlag = matchtime;
 					}
 					System.out.println("正在录入第" + i + "场比赛...");
-					//delay 1s
-					Thread.currentThread();
-					Thread.sleep(1000);
 					// 将比赛记录录入数据库
 					saveFromExcel(singlematchQuery, tournamentid, round);
 					System.out.println("第" + i + "场比赛录入完成");

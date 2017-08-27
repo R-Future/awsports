@@ -1254,6 +1254,76 @@ public class AwSinglematchExample {
             addCriterion("isAPChallenger not between", value1, value2, "isapchallenger");
             return (Criteria) this;
         }
+
+        public Criteria andMirrorIsNull() {
+            addCriterion("mirror is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorIsNotNull() {
+            addCriterion("mirror is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorEqualTo(String value) {
+            addCriterion("mirror =", value, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorNotEqualTo(String value) {
+            addCriterion("mirror <>", value, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorGreaterThan(String value) {
+            addCriterion("mirror >", value, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorGreaterThanOrEqualTo(String value) {
+            addCriterion("mirror >=", value, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorLessThan(String value) {
+            addCriterion("mirror <", value, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorLessThanOrEqualTo(String value) {
+            addCriterion("mirror <=", value, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorLike(String value) {
+            addCriterion("mirror like", value, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorNotLike(String value) {
+            addCriterion("mirror not like", value, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorIn(List<String> values) {
+            addCriterion("mirror in", values, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorNotIn(List<String> values) {
+            addCriterion("mirror not in", values, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorBetween(String value1, String value2) {
+            addCriterion("mirror between", value1, value2, "mirror");
+            return (Criteria) this;
+        }
+
+        public Criteria andMirrorNotBetween(String value1, String value2) {
+            addCriterion("mirror not between", value1, value2, "mirror");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

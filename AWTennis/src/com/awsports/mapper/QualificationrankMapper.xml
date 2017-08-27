@@ -64,9 +64,9 @@
   <select id="findById" parameterType="java.lang.Integer" resultType="com.awsports.pojo.Qualificationrank">
   	select * from aw_qualificationrank where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="findByUseridTournamentid" parameterType="com.awsports.pojo.Qualificationrank" resultType="com.awsports.pojo.Qualificationrank">
+  <select id="findByUseridTournamentidYear" parameterType="com.awsports.pojo.Qualificationrank" resultType="com.awsports.pojo.Qualificationrank">
   	select * from aw_qualificationrank 
-  	where userId = #{userid} and tournamentId = #{tournamentid}
+  	where userId = #{userid} and tournamentId = #{tournamentid} and year = #{year}
   </select>
   
   <delete id="deleteById" parameterType="java.lang.Integer">

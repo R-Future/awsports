@@ -32,14 +32,14 @@
 					
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="number"><i class="fa fa-warning"></i>需调整的人数</label>
-						<input type="number" name="number" id="number" class="form-control"/>
+						<input type="number" name="number" id="number" min="1" class="form-control"/>
 						<span class="help-block" id="nullNumber"></span>
 					</div>
 					
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="highLevel"><i class="fa fa-warning"></i>降级组别</label>
 						<select id="highLevel" name="highLevel" class="form-control">
-							<option>-请选择-</option>
+							<option value="0">-请选择-</option>
 							<c:forEach items="${levels}" var="level">
 								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
 							</c:forEach>
@@ -49,7 +49,7 @@
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="lowLevel"><i class="fa fa-warning"></i>升级组别</label>
 						<select id="lowLevel" name="lowLevel" class="form-control">
-							<option>-请选择-</option>
+							<option value="0">-请选择-</option>
 							<c:forEach items="${levels}" var="level">
 								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
 							</c:forEach>
@@ -57,7 +57,7 @@
 						<span class="help-block" id="nullLowLevel"></span>
 					</div>
 					<div class="form-group col-md-3" style="padding-top:25px">
-						<a href="javascript:void(0)" id="routine" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
+						<a href="javascript:void(0)" id="routine" class="btn btn-danger">确定</a>
 					</div>
 				</fieldset>
 				
@@ -66,13 +66,13 @@
 					<legend>降级</legend>
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="qh_down_number"><i class="fa fa-warning"></i>降级人数</label>
-						<input type="number" name="qh_down_number" id="qh_down_number" class="form-control"/>
+						<input type="number" name="qh_down_number" id="qh_down_number" min="0" class="form-control"/>
 						<span class="help-block" id="null_qh_down_number"></span>
 					</div>
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="qh_highLevel"><i class="fa fa-warning"></i>降级前的组别</label>
 						<select id="qh_highLevel" name="qh_highLevel" class="form-control">
-							<option>-请选择-</option>
+							<option value="0">-请选择-</option>
 							<c:forEach items="${levels}" var="level">
 								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
 							</c:forEach>
@@ -82,7 +82,7 @@
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="qh_lowLevel"><i class="fa fa-warning"></i>降级后的组别</label>
 						<select id="qh_lowLevel" name="qh_lowLevel" class="form-control">
-							<option>-请选择-</option>
+							<option value="0">-请选择-</option>
 							<c:forEach items="${levels}" var="level">
 								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
 							</c:forEach>
@@ -90,7 +90,7 @@
 						<span class="help-block" id="null_qh_lowLevel"></span>
 					</div>
 					<div class="form-group col-md-3" style="padding-top:25px">
-						<a href="javascript:void(0)" id="qh_down" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
+						<a href="javascript:void(0)" id="qh_down" class="btn btn-danger">确定</a>
 					</div>
 				</fieldset>
 				
@@ -99,13 +99,13 @@
 					<legend>资格赛选手升级</legend>
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="qh_up_number"><i class="fa fa-warning"></i>升级人数</label>
-						<input type="number" name="qh_up_number" id="qh_up_number" class="form-control"/>
+						<input type="number" name="qh_up_number" id="qh_up_number" min="1" class="form-control"/>
 						<span class="help-block" id="null_qh_up_number"></span>
 					</div>
 					<div class="form-group has-warning col-md-3">
                  	 	<label class="control-label" for="qh_tournament"><i class="fa fa-warning"></i>赛事类型</label>
 						<select id="qh_tournament" name="qh_tournament" class="form-control">
-							<option>-请选择-</option>
+							<option value="0">-请选择-</option>
 							<c:forEach items="${tournamentQuerys}" var="tournamentQuery">
 								<option value="${tournamentQuery.tournament.id}">${tournamentQuery.tournament.name}</option>
 							</c:forEach>
@@ -113,17 +113,17 @@
 						<span class="help-block" id="null_qh_tournament"></span>
 					</div>
 					<div class="form-group has-warning col-md-3">
-                 	 	<label class="control-label" for="qh_upto_Level"><i class="fa fa-warning"></i>升级后的组别</label>
-						<select id="qh_upto_Level" name="qh_upto_Level" class="form-control">
-							<option>-请选择-</option>
+                 	 	<label class="control-label" for="qh_upto_level"><i class="fa fa-warning"></i>升级后的组别</label>
+						<select id="qh_upto_level" name="qh_upto_level" class="form-control">
+							<option value="0">-请选择-</option>
 							<c:forEach items="${levels}" var="level">
 								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
 							</c:forEach>
 						</select>
-						<span class="help-block" id="null_qh_upto_Level"></span>
+						<span class="help-block" id="null_qh_upto_level"></span>
 					</div>
 					<div class="form-group col-md-3" style="padding-top:25px">
-						<a href="javascript:void(0)" id="qh_up" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
+						<a href="javascript:void(0)" id="qh_up" class="btn btn-danger">确定</a>
 					</div>
 				</fieldset>
 				
@@ -140,17 +140,17 @@
 					</div>
 					
 					<div class="form-group has-warning col-md-3">
-                 	 	<label class="control-label" for="force_Level"><i class="fa fa-warning"></i>调整后的组别</label>
-						<select id="force_Level" name="force_Level" class="form-control">
+                 	 	<label class="control-label" for="force_level"><i class="fa fa-warning"></i>调整后的组别</label>
+						<select id="force_level" name="force_level" class="form-control">
 							<option value="0">-请选择-</option>
 							<c:forEach items="${levels}" var="level">
 								<option value="${level.id}">${level.chinese}<c:out value="${ level.english }" default=""/></option>
 							</c:forEach>
 						</select>
-						<span class="help-block" id="null_force_Level"></span>
+						<span class="help-block" id="null_force_level"></span>
 					</div>
 					<div class="form-group col-md-3" style="padding-top:25px">
-						<a href="javascript:void(0)" id="force" class="btn btn-danger" onclick="return confirm('您确定提交吗?')">确定</a>
+						<a href="javascript:void(0)" id="force" class="btn btn-danger">确定</a>
 					</div>
 					<div class="form-group has-warning col-md-12" id="userSelected"></div>
 				</fieldset>
@@ -161,39 +161,38 @@
 </div>
 <script>
 	$(function(){
-
-		$("input#number").blur(function(){
-			var number = $("input#number").val();
-			if(number == null || number == ''){
-				$("span#nullNumber").html("请输入要调整 的人数");
-			}else{
-				$("span#nullNumber").html("");
-			}
-		});
-		$("select#highLevel").blur(function(){	
-			var highLevel = $("select#highLevel").val();
-			if(highLevel == null || highLevel == ''){
-				$("span#nullHighLevel").html("请选择需降级的组别");
-			}else{
-				$("span#nullHighLevel").html("");
-			}
-		});
-		$("select#lowLevel").blur(function(){
-			var lowLevel = $("select#lowLevel").val();
-			if(lowLevel == null || lowLevel == ''){
-				$("span#nullLowLevel").html("请选择需升级的组别");
-			}else{
-				$("span#nullLowLevel").html("");
-			}
-		});
 		//routine
-		$("a#routine").click(function(){
-			var number = $("input#number").val();
-			var highLevel = $("select#highLevel").val();
-			var lowLevel = $("select#lowLevel").val();
-			if(number == null || highLevel == null || lowLevel == null){
-				alert("请输入调整信息");
+		$("#routine").mouseover(function(){
+			var number = Number($("#number").val());
+			var highLevel = Number($("#highLevel option:selected").val());
+			var lowLevel = Number($("#lowLevel option:selected").val());
+			if(number == null || number <= 0){
+				$("#nullNumber").html("请输入要调整 的人数(人数不得小于1)");
+				$(this).attr("disabled","disabled");
 			}else{
+				$("#nullNumber").html("");
+				$(this).removeAttr("disabled");
+			}
+			if(highLevel == null || highLevel == 0){
+				$("#nullHighLevel").html("请选择需降级的组别");
+				$(this).attr("disabled","disabled");
+			}else{
+				$("#nullHighLevel").html("");
+				$(this).removeAttr("disabled");
+			}
+			if(lowLevel == null || lowLevel == 0){
+				$("#nullLowLevel").html("请选择需升级的组别");
+				$(this).attr("disabled","disabled");
+			}else{
+				$("#nullLowLevel").html("");
+				$(this).removeAttr("disabled");
+			}
+		}).click(function(){
+			var number = $("#number").val();
+			var highLevel = $("#highLevel option:selected").val();
+			var lowLevel = $("#lowLevel option:selected").val();
+			var isConfirm = confirm("请确定提交吗?");
+			if(isConfirm){
 				$.ajax({
 					type: "post",
 					url: "routine",
@@ -201,19 +200,43 @@
 					data: {number:number,highLevel:highLevel,lowLevel:lowLevel},
 					dataType: "html",
 					success:function(data){
-						$("div#hint").html(data);
+						$("#hint").html(data);
 					}
 				});
 			}
 		});
-		/* 资格赛前金组降级的人员 */
-		$("a#qh_down").click(function(){
-			var qh_down_number = $("input#qh_down_number").val();
-			var qh_highlevel = $("select#qh_highlevel").val();
-			var qh_lowLevel = $("selelct#qh_lowLevel").val();
-			if(qh_down_number == null || qh_highlevel == null){
-				alert("请输入调整信息");
+		//qualification
+		$("#qh_down").mouseover(function(){
+			var qh_down_number = Number($("#qh_down_number").val());
+			var qh_highLevel = Number($("#qh_highLevel option:selected").val());
+			var qh_lowLevel = Number($("#qh_lowLevel option:selected").val());
+			if(qh_down_number == null || qh_down_number <= 0){
+				$("#null_qh_down_number").html("请输入 降级人数(人数不得小于1)");
+				$(this).attr("disabled","disabled");
 			}else{
+				$("#null_qh_down_number").html("");
+				$(this).removeAttr("disabled");
+			}
+			if(qh_highLevel == null || qh_highLevel <= 0){
+				$("#null_qh_highLevel").html("请输入用户降级前所属组别");
+				$(this).attr("disabled","disabled");
+			}else{
+				$("#null_qh_highLevel").html("");
+				$(this).removeAttr("disabled");
+			}
+			if(qh_lowLevel == null || qh_lowLevel <= 0){
+				$("#null_qh_lowLevel").html("请输入用户降级后所属组别");
+				$(this).attr("disabled","disabled");
+			}else{
+				$("#null_qh_lowLevel").html("");
+				$(this).removeAttr("disabled");
+			}
+		}).click(function(){
+			var qh_down_number = $("#qh_down_number").val();
+			var qh_highlevel = $("#qh_highlevel option:selected").val();
+			var qh_lowLevel = $("#qh_lowLevel option:selected").val();
+			var isConfirm = confirm("请确定提交吗?");
+			if(isConfirm){
 				$.ajax({
 					type: "post",
 					url: "qualificationDowngrade",
@@ -221,26 +244,50 @@
 					data: {qhDownNumber:qh_down_number,qhHighLevel:qh_highlevel,qhLowLevel:qh_lowLevel},
 					dataType: "html",
 					success:function(data){
-						$("div#hint").html(data);
+						$("#hint").html(data);
 					}
 				});
 			}
 		});
-		$("a#qh_up").click(function(){
-			var qh_up_number = $("input#qh_up_number").val();
-			var qh_tournament = $("select#qh_tournament").val();
-			var qh_upto_Level = $("select#qh_upto_Level").val();
-			if(qh_up_number == null || qh_tournament == null){
-				alert("请输入调整信息");
+		$("#qh_up").mouseover(function(){
+			var qh_up_number = Number($("#qh_up_number").val());
+			var qh_tournament = Number($("#qh_tournament option:selected").val());
+			var qh_upto_level = Number($("#qh_upto_level option:selected").val());
+			if(qh_up_number == null || qh_up_number <= 0){
+				$("#null_qh_up_number").html("请输入升级人数(人数不得小于1)");
+				$(this).attr("disabled","disabled");
 			}else{
+				$("#null_qh_up_number").html("");
+				$(this).removeAttr("disabled");
+			}
+			if(qh_tournament == null || qh_tournament <= 0){
+				$("#null_qh_tournament").html("请输入所参加的赛事类型");
+				$(this).attr("disabled","disabled");
+			}else{
+				$("#null_qh_tournament").html("");
+				$(this).removeAttr("disabled");
+			}
+			if(qh_upto_level == null || qh_upto_level <= 0){
+				$("#null_qh_upto_level").html("请输入用户升级后所属组别");
+				$(this).attr("disabled","disabled");
+			}else{
+				$("#null_qh_upto_level").html("");
+				$(this).removeAttr("disabled");
+			}
+		}).click(function(){
+			var qh_up_number = $("#qh_up_number").val();
+			var qh_tournament = $("#qh_tournament").val();
+			var qh_upto_level = $("#qh_upto_level").val();
+			var isConfirm = confirm("请确定提交吗?");
+			if(isConfirm){
 				$.ajax({
 					type: "post",
 					url: "qualificationUpgrade",
 					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-					data: {qhUpNumber:qh_up_number,qhTournament:qh_tournament,qhUptoLevel:qh_upto_Level},
+					data: {qhUpNumber:qh_up_number,qhTournament:qh_tournament,qhUptoLevel:qh_upto_level},
 					dataType: "html",
 					success:function(data){
-						$("div#hint").html(data);
+						$("#hint").html(data);
 					}
 				});
 			}
@@ -248,66 +295,69 @@
 		
 		//force
 		function clearSpan(){
-			$("div#userSelected").children("span").remove();
+			$("#userSelected").children("span").remove();
 		}
-		$("select#force_member").click(function(){
+		$("#force_member").click(function(){
 			clearSpan();//clear all users selected at last time
 			var selectList = [];
-			$("select#force_member option:selected").each(function(){
+			$("#force_member option:selected").each(function(){
 				selectList.push($(this).text());
 			});
 // 			console.log(selectList);
 			if(selectList != null){
 				var title = document.createElement("span");
 				$(title).html("已选用户:&nbsp;");
-				$("div#userSelected").append(title);
+				$("#userSelected").append(title);
 				selectList.forEach(function(d){
 					var span = document.createElement("span");
 					$(span).addClass("bg-red color-palette").html(d+",");
-					$("div#userSelected").append(span);
+					$("#userSelected").append(span);
 				})
 			}else{
 				clearSpan();
 			}
 		});
 		
-		$("a#force").mouseover(function(){
-			var selectList = $("select#force_member").val();
-			var level = Number($("select#force_Level").val());
+		$("#force").mouseover(function(){
+			var selectList = $("#force_member").val();
+			var level = Number($("#force_level option:selected").val());
 			//convert string to int
 			var userSelect = selectList.map(function(d){return +d;});
 // 			console.log(userSelect);
-			if(userSelect == null){
-				$("span#null_force_member").html("请选择用户");
+			if(userSelect == null || userSelect.length == 0){
+				$("#null_force_member").html("请选择用户");
 				$(this).attr("disabled","disabled");
 			}else{
-				$("span#null_force_member").html("");
+				$("#null_force_member").html("");
 				$(this).removeAttr("disabled");
 			}
 			if(level === 0){
-				$("span#null_force_level").html("请选择调整后所属组别");
+				$("#null_force_level").html("请选择调整后所属组别");
 				$(this).attr("disabled","disabled");
 			}else{
-				$("span#null_force_level").html("");
+				$("#null_force_level").html("");
 				$(this).removeAttr("disabled");
 			}
 		}).click(function(){
-			var selectList = $("select#force_member").val();
-			var level = Number($("select#force_Level").val());
+			var selectList = $("#force_member").val();
+			var level = Number($("#force_level option:selected").val());
 			//convert string to int
 			var userSelect = selectList.map(function(d){return +d;});
 			console.log(selectList);
-			$.ajax({
-				type: "post",
-				url: "force",
-				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-				data: {userIds:userSelect,level:level},
-				traditional: true,
-				dataType: "html",
-				success:function(data){
-					$("div#hint").html(data);
-				}
-			});
+			var isConfirm = confirm("请确定提交吗?");
+			if(isConfirm){
+				$.ajax({
+					type: "post",
+					url: "force",
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					data: {userIds:userSelect,level:level},
+					traditional: true,
+					dataType: "html",
+					success:function(data){
+						$("#hint").html(data);
+					}
+				});
+			}
 		});
 	});
 </script>

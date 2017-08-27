@@ -206,7 +206,8 @@ public class QualificationrankController {
 								Qualificationrank qualificationrank=new Qualificationrank();
 								qualificationrank.setUserid(userid);
 								qualificationrank.setTournamentid(tournamentid);
-								qualificationrank=qualificationrankService.findByUseridTournamentid(qualificationrank);
+								qualificationrank.setYear(customDate.getYear());
+								qualificationrank=qualificationrankService.findByUseridTournamentidYear(qualificationrank);
 								if(qualificationrank==null||qualificationrank.getInvalid().booleanValue()){//无记录
 									qualificationrank=new Qualificationrank();
 									qualificationrank.setUserid(userid);
@@ -250,7 +251,8 @@ public class QualificationrankController {
 					Qualificationrank finalUser=new Qualificationrank();
 					finalUser.setUserid(userid);
 					finalUser.setTournamentid(tournamentid);
-					finalUser=qualificationrankService.findByUseridTournamentid(finalUser);
+					finalUser.setYear(customDate.getYear());
+					finalUser=qualificationrankService.findByUseridTournamentidYear(finalUser);
 					if(finalUser==null||finalUser.getInvalid().booleanValue()){//无记录
 						finalUser=new Qualificationrank();
 						finalUser.setUserid(userid);

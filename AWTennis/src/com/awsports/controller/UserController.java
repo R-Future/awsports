@@ -146,9 +146,9 @@ public class UserController {
 				String originalFileName = userPic.getOriginalFilename();
 				if(originalFileName!=null&&originalFileName.length()>0){				
 					//图片存储的物理路径local
-					String path = "F:\\workspace\\java\\pictures\\";
+					//String path = "F:\\workspace\\java\\pictures\\";
 					//server
-					//String path = "/usr/upload/pic";
+					String path = "/usr/upload/pic";
 					//图片的新名称
 					String newFileName = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
 					//生成一个新的文件

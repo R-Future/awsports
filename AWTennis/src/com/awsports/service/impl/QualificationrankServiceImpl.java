@@ -44,9 +44,9 @@ public class QualificationrankServiceImpl implements QualificationrankService {
 	}
 
 	@Override
-	public Qualificationrank findByUseridTournamentid(Qualificationrank qualificationrank) throws Exception {
+	public Qualificationrank findByUseridTournamentidYear(Qualificationrank qualificationrank) throws Exception {
 		// TODO Auto-generated method stub
-		return qualificationrankMapper.findByUseridTournamentid(qualificationrank);
+		return qualificationrankMapper.findByUseridTournamentidYear(qualificationrank);
 	}
 
 }

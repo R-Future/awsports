@@ -41,38 +41,38 @@
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="text" name="validationCode" id="validationCode" class="form-control" style="width:216px;height:34px;display:inline;" placeholder="validation code">
+        <input type="text" name="validationCode" id="validationCode" class="form-control" style="width:67.5%;height:34px;display:inline;" placeholder="validation code">
         <img id="vcImage" style="margin-top:-3px" width="100" height="34" alt="点击更换" title="点击更换" src="getValidationPicture" onclick="changeValidationCode(this)"/>
       </div>
       <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox" name="rememberMe"> 记住我
-            </label>
-          </div>
-        </div>
+<!--         <div class="col-xs-8"> -->
+<!--           <div class="checkbox icheck"> -->
+<!--             <label> -->
+<!--               <input type="checkbox" name="rememberMe"> 记住我 -->
+<!--             </label> -->
+<!--           </div> -->
+<!--         </div> -->
         <!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-xs-12">
           <button type="submit" id="btnSubmit" class="btn btn-primary btn-block btn-flat">登陆</button>
         </div>
         <!-- /.col -->
       </div>
     </form>
 
-    <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-qq btn-flat bg-light-blue" title="QQ登陆">
-      	<i class="fa fa-qq"></i>
-      </a>
-      <a href="#" class="btn btn-weixin btn-flat bg-green" title="微信登陆">
-      	<i class="fa fa-weixin"></i>
-      </a>
-    </div>
-    <!-- /.social-auth-links -->
+<!--     <div class="social-auth-links text-center"> -->
+<!--       <p>- OR -</p> -->
+<!--       <a href="#" class="btn btn-qq btn-flat bg-light-blue" title="QQ登陆"> -->
+<!--       	<i class="fa fa-qq"></i> -->
+<!--       </a> -->
+<!--       <a href="#" class="btn btn-weixin btn-flat bg-green" title="微信登陆"> -->
+<!--       	<i class="fa fa-weixin"></i> -->
+<!--       </a> -->
+<!--     </div> -->
+<!--     /.social-auth-links -->
 
-    <a href="#">忘记密码?</a><br>
-    <a href="register.html" class="text-center">注册</a>
+<!--     <a href="#">忘记密码?</a><br> -->
+<!--     <a href="register.html" class="text-center">注册</a> -->
 
   </div>
   <!-- /.login-box-body -->

@@ -56,6 +56,10 @@
 					<td><spring:eval expression="tournamentQuery.tournament.cost"/></td>
 					</tr>
 					<tr>
+					<th>赛事模式(用于计算积分)</th>
+					<td>${ tournamentModes.get(tournamentQuery.tournament.mode) }</td>
+					</tr>
+					<tr>
 					<th>注释</th>
 					<td>${ tournamentQuery.tournament.note }</td>
 					</tr>

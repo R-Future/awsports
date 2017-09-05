@@ -39,6 +39,9 @@ public class AwTournament {
     private Date updatedat;
 
     private Boolean invalid;
+    
+    @NotNull(message="{tournament.mode.null}")
+    private Integer mode;
 
     private String note;
 
@@ -94,7 +97,7 @@ public class AwTournament {
         return prize;
     }
 
-    public void setPraize(Integer prize) {
+    public void setPrize(Integer prize) {
         this.prize = prize;
     }
 
@@ -130,7 +133,15 @@ public class AwTournament {
         this.invalid = invalid;
     }
 
-    public String getNote() {
+    public Integer getMode() {
+		return mode;
+	}
+
+	public void setMode(Integer mode) {
+		this.mode = mode;
+	}
+
+	public String getNote() {
         return note;
     }
 

@@ -61,6 +61,24 @@
 					</c:forEach>
 				</select>
 			</div>
+			
+			<div class="form-group">
+				<label for="mode">赛事模式(用于计算积分)</label>
+				<select name="mode" id="mode" class="form-control">
+					<option>-请选择-</option>
+					<c:forEach items="${ tournamentModes }" var="tournamentMode">
+						<c:choose>
+							<c:when test="${ tournamentMode.getKey().equals(tournament.mode) }">
+								<option value="${ tournamentMode.getKey() }" selected="selected">${ tournamentMode.getValue() }</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${ tournamentMode.getKey() }">${ tournamentMode.getValue() }</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+			</div>
+			
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-6">

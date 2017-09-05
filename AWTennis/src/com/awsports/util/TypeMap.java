@@ -20,6 +20,7 @@ public class TypeMap {
 	private static Map<Integer,String> teamEntryTypes;
 	private static Map<Integer,String> individualEntryTypes;
 	private static Map<Integer,String> roundTypes;
+	private static Map<Integer,String> TournamentModeTypes;
 	
 	/**
 	 * 
@@ -158,4 +159,19 @@ public class TypeMap {
 		return roundTypes;
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2017年9月5日 下午9:27:06
+	 * @Return: Map<Integer,String>
+	 * @Description: 积分计算模式
+	 *
+	 */
+	public static Map<Integer,String> TournamentModeType(){
+		TournamentModeTypes=new HashMap<Integer,String>();
+		TournamentModeTypes.put(1, "小组循环制");
+		TournamentModeTypes.put(2, "淘汰晋级制");
+		TournamentModeTypes.put(3, "小组循环+淘汰晋级制");
+		return TournamentModeTypes;
+	}
 }

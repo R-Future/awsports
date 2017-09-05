@@ -11,6 +11,7 @@
 		<result column="level" property="tournament.level"/>
 		<result column="prize" property="tournament.prize"/>
 		<result column="cost" property="tournament.cost"/>
+		<result column="mode" property="tournament.mode"/>
 		<result column="created_at" property="tournament.createdAt"/>
 		<result column="updated_at" property="tournament.updatedAt"/>
 		<result column="note" property="tournament.note"/>
@@ -83,6 +84,9 @@
 	      <if test="cost != null">
 	        cost = #{cost,jdbcType=DOUBLE},
 	      </if>
+	      <if test="mode != null">
+	      	mode = #{mode,jdbcType=INTEGER},
+	      </if>
 	      <if test="invalid != null">
 	        invalid = #{invalid,jdbcType=BIT},
 	      </if>
@@ -117,6 +121,9 @@
 	      <if test="cost != null">
 	        cost,
 	      </if>
+	      <if test="mode != null and mode.intValue() != 0">
+	      	mode,
+	      </if>
 	      <if test="note != null and note != ''">
 	        note,
 	      </if>
@@ -142,6 +149,9 @@
 	      </if>
 	      <if test="cost != null">
 	        #{cost,jdbcType=DOUBLE},
+	      </if>
+	      <if test="mode != null and mode.intValue() != 0">
+	      	#{mode,jdbcType=INTEGER},
 	      </if>
 	      <if test="note != null and note != ''">
 	        #{note,jdbcType=LONGVARCHAR},

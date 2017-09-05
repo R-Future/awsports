@@ -1,6 +1,7 @@
 package com.awsports.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,8 @@ public class TournamentController {
 	@Autowired
 	private PointruleService pointruleService;
 	
+	
+	private Map<Integer,String> tournamentModes = TypeMap.TournamentModeType();
 	/**
 	 * 
 	 * @Author: peRFect
@@ -70,10 +73,13 @@ public class TournamentController {
 	public String detail(Model model, Integer id) throws Exception{
 		//根据ID查找赛事信息
 		TournamentQuery tournamentQuery=tournamentService.findDetailById(id);
+		model.addAttribute("tournamentQuery", tournamentQuery);
 		//根据赛事ID查询相应的积分规则
 		List<Pointrule> pointrules=pointruleService.findByTournamentId(tournamentQuery.getTournament().getId());
-		model.addAttribute("tournamentQuery", tournamentQuery);
 		model.addAttribute("pointrules", pointrules);
+		//积分计算模式
+		model.addAttribute("tournamentModes", tournamentModes);
+		//轮次
 		model.addAttribute("roundTypes", TypeMap.roundType());
 		return "tournament/detail";
 	}
@@ -98,6 +104,8 @@ public class TournamentController {
 		}else{//新增数据
 			tournament=new Tournament();
 		}
+		//积分计算模式
+		model.addAttribute("tournamentModes", tournamentModes);
 		model.addAttribute("tournament", tournament);
 		model.addAttribute("arenas", arenas);
 		return "tournament/update";

@@ -4,7 +4,6 @@ import com.awsports.pojo.Doublematch;
 import com.awsports.pojo.Individualpoint;
 import com.awsports.pojo.Singlematch;
 import com.awsports.pojo.Teampoint;
-import com.awsports.pojo.Tournament;
 import com.awsports.service.IndividualpointService;
 import com.awsports.service.TeampointService;
 import com.awsports.service.TournamentService;
@@ -17,13 +16,9 @@ public class CalculatePoint{
 	private int[] points=new int[2];
 	private int[] marginBureaus=new int[2];
 	private int[] wins=new int[2];
-	private Integer tournamentid;
-	private Integer masterDoubleMatchId;
-	private final String FINALMATCH="年终总决赛";
-	private final String MASTERDOUBLEMATCH="双打精英赛";
-	private Tournament tournament;
+	private Integer tournamentMode;
 	
-	public CalculatePoint(Singlematch singlematch,int hcMarginBureau,TournamentService tournamentService){
+	public CalculatePoint(Singlematch singlematch,int hcMarginBureau,TournamentService tournamentService) throws Exception{
 		CustomDate customDate=new CustomDate(singlematch.getMatchtime());
 		year=customDate.getYear();
 		week=customDate.getWeek();
@@ -43,22 +38,15 @@ public class CalculatePoint{
 			wins[0]=0;
 			wins[1]=0;
 		}
-		try{
-			tournament=new Tournament();
-			//年终赛事的id
-			tournament.setName(FINALMATCH);
-			this.tournamentid=tournamentService.findByName(tournament).getId();
-			//双打精英赛的id
-			tournament.setName(MASTERDOUBLEMATCH);
-			this.masterDoubleMatchId=tournamentService.findByName(tournament).getId();
-		}catch(Exception e){
-			//未查询到年终赛事，设置赛事id为0
-			this.tournamentid=0;
-			this.masterDoubleMatchId=0;
+		//获取赛事模式
+		tournamentMode=tournamentService.findById(singlematch.getTournamentid()).getMode();
+		//未查询到赛事模式
+		if(tournamentMode==null||tournamentMode<=0){
+			throw new CustomException("未查询到赛事模式信息，无法计算积分，请确认赛事模式输入正确");
 		}
 	}
 	
-	public CalculatePoint(Doublematch doublematch,int hcMarginBureau,TournamentService tournamentService){
+	public CalculatePoint(Doublematch doublematch,int hcMarginBureau,TournamentService tournamentService) throws Exception{
 		CustomDate customDate=new CustomDate(doublematch.getMatchtime());
 		year=customDate.getYear();
 		week=customDate.getWeek();
@@ -78,18 +66,11 @@ public class CalculatePoint{
 			wins[0]=0;
 			wins[1]=0;
 		}
-		try{
-			tournament=new Tournament();
-			//年终赛事的id
-			tournament.setName(FINALMATCH);
-			this.tournamentid=tournamentService.findByName(tournament).getId();
-			//双打精英赛的id
-			tournament.setName(MASTERDOUBLEMATCH);
-			this.masterDoubleMatchId=tournamentService.findByName(tournament).getId();
-		}catch(Exception e){
-			//未查询到年终赛事，设置赛事id为0
-			this.tournamentid=0;
-			this.masterDoubleMatchId=0;
+		//获取赛事模式
+		tournamentMode=tournamentService.findById(doublematch.getTournamentid()).getMode();
+		//未查询到赛事模式
+		if(tournamentMode==null||tournamentMode<=0){
+			throw new CustomException("未查询到赛事模式信息，无法计算积分，请确认赛事模式输入正确");
 		}
 	}
 	
@@ -121,10 +102,10 @@ public class CalculatePoint{
 				}else{
 					int match=playerpoint.getMatchs().intValue()+1;
 					int marginBureau=playerpoint.getMarginbureau().intValue()+marginBureaus[i];
-					//这里需要对晋级淘汰赛进行特殊处理
+					//这里需要对小组循环+淘汰赛进行特殊处理
 					int point=0;
-					if(singlematch.getTournamentid().equals(tournamentid)){
-						//年终比赛,无论输赢，积分不累加，更新数据
+					if(TournamentModeEnum.GROUP_AND_KNOCKOUT.getValue().equals(tournamentMode)){
+						//无论输赢，积分不累加，更新数据
 						point=points[i];
 					}else{
 						point=playerpoint.getPoints().intValue()+points[i];
@@ -180,7 +161,7 @@ public class CalculatePoint{
 						int marginBureau=playerpoint.getMarginbureau().intValue()+marginBureaus[i];
 						//这里需要对晋级淘汰赛进行特殊处理
 						int point=0;
-						if(doublematch.getTournamentid().equals(tournamentid)||doublematch.getTournamentid().equals(masterDoubleMatchId)){
+						if(TournamentModeEnum.GROUP_AND_KNOCKOUT.getValue().equals(tournamentMode)){
 							//年终比赛,无论输赢，积分不累加，更新数据
 							point=points[i];
 						}else{
@@ -225,7 +206,7 @@ public class CalculatePoint{
 					int marginBureau=playerpoint.getMarginbureau().intValue()-marginBureaus[i];
 					//这里需要对晋级淘汰赛进行特殊处理
 					int point=0;
-					if(singlematch.getTournamentid().equals(tournamentid)){
+					if(TournamentModeEnum.GROUP_AND_KNOCKOUT.getValue().equals(tournamentMode)){
 						//年终比赛,无论输赢，积分不累加，更新数据
 						point=points[i];
 					}else{
@@ -285,7 +266,7 @@ public class CalculatePoint{
 						int marginBureau=playerpoint.getMarginbureau().intValue()-marginBureaus[i];
 						//这里需要对晋级淘汰赛进行特殊处理
 						int point=0;
-						if(doublematch.getTournamentid().equals(tournamentid)||doublematch.getTournamentid().equals(masterDoubleMatchId)){
+						if(TournamentModeEnum.GROUP_AND_KNOCKOUT.getValue().equals(tournamentMode)){
 							//年终比赛,无论输赢，积分不累加，更新数据
 							point=points[i];
 						}else{
@@ -345,7 +326,7 @@ public class CalculatePoint{
 					int marginBureau=old.getMarginbureau().intValue()+marginBureaus[i];
 					//这里需要对晋级淘汰赛进行特殊处理
 					int point=0;
-					if(doublematch.getTournamentid().equals(tournamentid)||doublematch.getTournamentid().equals(masterDoubleMatchId)){
+					if(TournamentModeEnum.GROUP_AND_KNOCKOUT.getValue().equals(tournamentMode)){
 						//年终比赛,无论输赢，积分不累加，更新数据
 						point=points[i];
 					}else{
@@ -389,7 +370,7 @@ public class CalculatePoint{
 					int marginBureau=old.getMarginbureau().intValue()-marginBureaus[i];
 					//这里需要对晋级淘汰赛进行特殊处理
 					int point=0;
-					if(doublematch.getTournamentid().equals(tournamentid)||doublematch.getTournamentid().equals(masterDoubleMatchId)){
+					if(TournamentModeEnum.GROUP_AND_KNOCKOUT.getValue().equals(tournamentMode)){
 						//年终比赛,无论输赢，积分不累加，更新数据
 						point=points[i];
 					}else{

@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.AwTournamentMapper">
+  <resultMap id="BaseResultMap" type="com.awsports.pojo.AwTournament">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="startedAt" jdbcType="TIMESTAMP" property="startedat" />
+    <result column="endedAt" jdbcType="TIMESTAMP" property="endedat" />
+    <result column="arenaId" jdbcType="INTEGER" property="arenaid" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="praize" jdbcType="INTEGER" property="praize" />
+    <result column="cost" jdbcType="DOUBLE" property="cost" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
+    <result column="invalid" jdbcType="BIT" property="invalid" />
+    <result column="mode" jdbcType="INTEGER" property="mode" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwTournament">
+    <result column="note" jdbcType="LONGVARCHAR" property="note" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, startedAt, endedAt, arenaId, level, praize, cost, createdAt, updatedAt, 
+    invalid, mode
+  </sql>
+  <sql id="Blob_Column_List">
+    note
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.awsports.pojo.AwTournamentExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from aw_tournament
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.awsports.pojo.AwTournamentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from aw_tournament
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from aw_tournament
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aw_tournament
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.awsports.pojo.AwTournamentExample">
+    delete from aw_tournament
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.awsports.pojo.AwTournament">
+    insert into aw_tournament (id, name, startedAt, 
+      endedAt, arenaId, level, 
+      praize, cost, createdAt, 
+      updatedAt, invalid, mode, 
+      note)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{startedat,jdbcType=TIMESTAMP}, 
+      #{endedat,jdbcType=TIMESTAMP}, #{arenaid,jdbcType=INTEGER}, #{level,jdbcType=VARCHAR}, 
+      #{praize,jdbcType=INTEGER}, #{cost,jdbcType=DOUBLE}, #{createdat,jdbcType=TIMESTAMP}, 
+      #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, #{mode,jdbcType=INTEGER}, 
+      #{note,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.awsports.pojo.AwTournament">
+    insert into aw_tournament
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="startedat != null">
+        startedAt,
+      </if>
+      <if test="endedat != null">
+        endedAt,
+      </if>
+      <if test="arenaid != null">
+        arenaId,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="praize != null">
+        praize,
+      </if>
+      <if test="cost != null">
+        cost,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="mode != null">
+        mode,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startedat != null">
+        #{startedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endedat != null">
+        #{endedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arenaid != null">
+        #{arenaid,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="praize != null">
+        #{praize,jdbcType=INTEGER},
+      </if>
+      <if test="cost != null">
+        #{cost,jdbcType=DOUBLE},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="mode != null">
+        #{mode,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.awsports.pojo.AwTournamentExample" resultType="java.lang.Long">
+    select count(*) from aw_tournament
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update aw_tournament
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startedat != null">
+        startedAt = #{record.startedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endedat != null">
+        endedAt = #{record.endedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.arenaid != null">
+        arenaId = #{record.arenaid,jdbcType=INTEGER},
+      </if>
+      <if test="record.level != null">
+        level = #{record.level,jdbcType=VARCHAR},
+      </if>
+      <if test="record.praize != null">
+        praize = #{record.praize,jdbcType=INTEGER},
+      </if>
+      <if test="record.cost != null">
+        cost = #{record.cost,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createdat != null">
+        createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedat != null">
+        updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.invalid != null">
+        invalid = #{record.invalid,jdbcType=BIT},
+      </if>
+      <if test="record.mode != null">
+        mode = #{record.mode,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update aw_tournament
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      startedAt = #{record.startedat,jdbcType=TIMESTAMP},
+      endedAt = #{record.endedat,jdbcType=TIMESTAMP},
+      arenaId = #{record.arenaid,jdbcType=INTEGER},
+      level = #{record.level,jdbcType=VARCHAR},
+      praize = #{record.praize,jdbcType=INTEGER},
+      cost = #{record.cost,jdbcType=DOUBLE},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      invalid = #{record.invalid,jdbcType=BIT},
+      mode = #{record.mode,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update aw_tournament
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      startedAt = #{record.startedat,jdbcType=TIMESTAMP},
+      endedAt = #{record.endedat,jdbcType=TIMESTAMP},
+      arenaId = #{record.arenaid,jdbcType=INTEGER},
+      level = #{record.level,jdbcType=VARCHAR},
+      praize = #{record.praize,jdbcType=INTEGER},
+      cost = #{record.cost,jdbcType=DOUBLE},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      invalid = #{record.invalid,jdbcType=BIT},
+      mode = #{record.mode,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.awsports.pojo.AwTournament">
+    update aw_tournament
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startedat != null">
+        startedAt = #{startedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endedat != null">
+        endedAt = #{endedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arenaid != null">
+        arenaId = #{arenaid,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="praize != null">
+        praize = #{praize,jdbcType=INTEGER},
+      </if>
+      <if test="cost != null">
+        cost = #{cost,jdbcType=DOUBLE},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="mode != null">
+        mode = #{mode,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.awsports.pojo.AwTournament">
+    update aw_tournament
+    set name = #{name,jdbcType=VARCHAR},
+      startedAt = #{startedat,jdbcType=TIMESTAMP},
+      endedAt = #{endedat,jdbcType=TIMESTAMP},
+      arenaId = #{arenaid,jdbcType=INTEGER},
+      level = #{level,jdbcType=VARCHAR},
+      praize = #{praize,jdbcType=INTEGER},
+      cost = #{cost,jdbcType=DOUBLE},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      invalid = #{invalid,jdbcType=BIT},
+      mode = #{mode,jdbcType=INTEGER},
+      note = #{note,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.awsports.pojo.AwTournament">
+    update aw_tournament
+    set name = #{name,jdbcType=VARCHAR},
+      startedAt = #{startedat,jdbcType=TIMESTAMP},
+      endedAt = #{endedat,jdbcType=TIMESTAMP},
+      arenaId = #{arenaid,jdbcType=INTEGER},
+      level = #{level,jdbcType=VARCHAR},
+      praize = #{praize,jdbcType=INTEGER},
+      cost = #{cost,jdbcType=DOUBLE},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      invalid = #{invalid,jdbcType=BIT},
+      mode = #{mode,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.AwSinglematchscoreMapper">
+  <resultMap id="BaseResultMap" type="com.awsports.pojo.AwSinglematchscore">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="matchId" jdbcType="INTEGER" property="matchid" />
+    <result column="setTH" jdbcType="INTEGER" property="setth" />
+    <result column="HCScore" jdbcType="INTEGER" property="hcscore" />
+    <result column="APScore" jdbcType="INTEGER" property="apscore" />
+    <result column="HCTieScore" jdbcType="INTEGER" property="hctiescore" />
+    <result column="APTieScore" jdbcType="INTEGER" property="aptiescore" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
+    <result column="invalid" jdbcType="BIT" property="invalid" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwSinglematchscore">
+    <result column="note" jdbcType="LONGVARCHAR" property="note" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, matchId, setTH, HCScore, APScore, HCTieScore, APTieScore, createdAt, updatedAt, 
+    invalid
+  </sql>
+  <sql id="Blob_Column_List">
+    note
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.awsports.pojo.AwSinglematchscoreExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from aw_singlematchscore
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.awsports.pojo.AwSinglematchscoreExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from aw_singlematchscore
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from aw_singlematchscore
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aw_singlematchscore
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.awsports.pojo.AwSinglematchscoreExample">
+    delete from aw_singlematchscore
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.awsports.pojo.AwSinglematchscore">
+    insert into aw_singlematchscore (id, matchId, setTH, 
+      HCScore, APScore, HCTieScore, 
+      APTieScore, createdAt, updatedAt, 
+      invalid, note)
+    values (#{id,jdbcType=INTEGER}, #{matchid,jdbcType=INTEGER}, #{setth,jdbcType=INTEGER}, 
+      #{hcscore,jdbcType=INTEGER}, #{apscore,jdbcType=INTEGER}, #{hctiescore,jdbcType=INTEGER}, 
+      #{aptiescore,jdbcType=INTEGER}, #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, 
+      #{invalid,jdbcType=BIT}, #{note,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.awsports.pojo.AwSinglematchscore">
+    insert into aw_singlematchscore
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="matchid != null">
+        matchId,
+      </if>
+      <if test="setth != null">
+        setTH,
+      </if>
+      <if test="hcscore != null">
+        HCScore,
+      </if>
+      <if test="apscore != null">
+        APScore,
+      </if>
+      <if test="hctiescore != null">
+        HCTieScore,
+      </if>
+      <if test="aptiescore != null">
+        APTieScore,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="matchid != null">
+        #{matchid,jdbcType=INTEGER},
+      </if>
+      <if test="setth != null">
+        #{setth,jdbcType=INTEGER},
+      </if>
+      <if test="hcscore != null">
+        #{hcscore,jdbcType=INTEGER},
+      </if>
+      <if test="apscore != null">
+        #{apscore,jdbcType=INTEGER},
+      </if>
+      <if test="hctiescore != null">
+        #{hctiescore,jdbcType=INTEGER},
+      </if>
+      <if test="aptiescore != null">
+        #{aptiescore,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.awsports.pojo.AwSinglematchscoreExample" resultType="java.lang.Long">
+    select count(*) from aw_singlematchscore
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update aw_singlematchscore
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.matchid != null">
+        matchId = #{record.matchid,jdbcType=INTEGER},
+      </if>
+      <if test="record.setth != null">
+        setTH = #{record.setth,jdbcType=INTEGER},
+      </if>
+      <if test="record.hcscore != null">
+        HCScore = #{record.hcscore,jdbcType=INTEGER},
+      </if>
+      <if test="record.apscore != null">
+        APScore = #{record.apscore,jdbcType=INTEGER},
+      </if>
+      <if test="record.hctiescore != null">
+        HCTieScore = #{record.hctiescore,jdbcType=INTEGER},
+      </if>
+      <if test="record.aptiescore != null">
+        APTieScore = #{record.aptiescore,jdbcType=INTEGER},
+      </if>
+      <if test="record.createdat != null">
+        createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedat != null">
+        updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.invalid != null">
+        invalid = #{record.invalid,jdbcType=BIT},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update aw_singlematchscore
+    set id = #{record.id,jdbcType=INTEGER},
+      matchId = #{record.matchid,jdbcType=INTEGER},
+      setTH = #{record.setth,jdbcType=INTEGER},
+      HCScore = #{record.hcscore,jdbcType=INTEGER},
+      APScore = #{record.apscore,jdbcType=INTEGER},
+      HCTieScore = #{record.hctiescore,jdbcType=INTEGER},
+      APTieScore = #{record.aptiescore,jdbcType=INTEGER},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      invalid = #{record.invalid,jdbcType=BIT},
+      note = #{record.note,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update aw_singlematchscore
+    set id = #{record.id,jdbcType=INTEGER},
+      matchId = #{record.matchid,jdbcType=INTEGER},
+      setTH = #{record.setth,jdbcType=INTEGER},
+      HCScore = #{record.hcscore,jdbcType=INTEGER},
+      APScore = #{record.apscore,jdbcType=INTEGER},
+      HCTieScore = #{record.hctiescore,jdbcType=INTEGER},
+      APTieScore = #{record.aptiescore,jdbcType=INTEGER},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      invalid = #{record.invalid,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.awsports.pojo.AwSinglematchscore">
+    update aw_singlematchscore
+    <set>
+      <if test="matchid != null">
+        matchId = #{matchid,jdbcType=INTEGER},
+      </if>
+      <if test="setth != null">
+        setTH = #{setth,jdbcType=INTEGER},
+      </if>
+      <if test="hcscore != null">
+        HCScore = #{hcscore,jdbcType=INTEGER},
+      </if>
+      <if test="apscore != null">
+        APScore = #{apscore,jdbcType=INTEGER},
+      </if>
+      <if test="hctiescore != null">
+        HCTieScore = #{hctiescore,jdbcType=INTEGER},
+      </if>
+      <if test="aptiescore != null">
+        APTieScore = #{aptiescore,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.awsports.pojo.AwSinglematchscore">
+    update aw_singlematchscore
+    set matchId = #{matchid,jdbcType=INTEGER},
+      setTH = #{setth,jdbcType=INTEGER},
+      HCScore = #{hcscore,jdbcType=INTEGER},
+      APScore = #{apscore,jdbcType=INTEGER},
+      HCTieScore = #{hctiescore,jdbcType=INTEGER},
+      APTieScore = #{aptiescore,jdbcType=INTEGER},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      invalid = #{invalid,jdbcType=BIT},
+      note = #{note,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.awsports.pojo.AwSinglematchscore">
+    update aw_singlematchscore
+    set matchId = #{matchid,jdbcType=INTEGER},
+      setTH = #{setth,jdbcType=INTEGER},
+      HCScore = #{hcscore,jdbcType=INTEGER},
+      APScore = #{apscore,jdbcType=INTEGER},
+      HCTieScore = #{hctiescore,jdbcType=INTEGER},
+      APTieScore = #{aptiescore,jdbcType=INTEGER},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      invalid = #{invalid,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

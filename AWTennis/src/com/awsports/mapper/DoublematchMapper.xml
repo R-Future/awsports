@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.DoublematchMapper">
+  
+  <resultMap type="com.awsports.pojo.DoublematchQuery" id="doublematchQueryMap">
+  	<id column="id" property="doublematch.id"/>
+  	<result column="homeContestant" property="doublematch.homecontestant"/>
+  	<result column="awayPlayer" property="doublematch.awayplayer"/>
+  	<result column="matchTime" property="doublematch.matchtime"/>
+  	<result column="matchPlace" property="doublematch.matchplace"/>
+  	<result column="tournamentId" property="doublematch.tournamentid"/>
+  	<result column="entry" property="doublematch.entry"/>
+  	<result column="round" property="doublematch.round"/>
+  	<result column="sets" property="doublematch.sets"/>
+  	<result column="outcome" property="doublematch.outcome"/>
+  	<result column="HCPoint" property="doublematch.hcpoint"/>
+  	<result column="APPoint" property="doublematch.appoint"/>
+  	<result column="HCRetired" property="doublematch.hcretired"/>
+  	<result column="APRetired" property="doublematch.apretired"/>
+  	<result column="isHCChallenger" property="doublematch.ishcchallenger" />
+    <result column="isAPChallenger" property="doublematch.isapchallenger" />
+  	<result column="createdAt" property="doublematch.createdat"/>
+  	<result column="updatedAt" property="doublematch.updatedat"/>
+  	<result column="invalid" property="doublematch.invalid"/>
+  	<result column="mirror" property="doublematch.mirror"/>
+  	<result column="note" property="doublematch.note"/>
+  	<association property="arena" javaType="com.awsports.pojo.Arena">
+  		<id column="matchPlace" property="id"/>
+  		<result column="arena_name" property="name"/> 
+  	</association>
+  	<association property="tournament" javaType="com.awsports.pojo.Tournament">
+  		<id column="tournamentId" property="id"/>
+  		<result column="tournament_name" property="name"/>
+  	</association>
+  	<association property="hcTeamQuery" javaType="com.awsports.pojo.TeamQuery">
+  		<id column="homeContestant" property="team.id"/>
+  		<result column="hcTeam_name" property="team.name"/>
+  		<result column="hcteam_user1id" property="team.user1id"/>
+  		<result column="hcteam_user2id" property="team.user2id"/>
+  		<association property="user1" javaType="com.awsports.pojo.User">
+  			<id column="hcteam_user1id" property="id"/>
+  			<result column="hcteam_user1_name" property="name"/>
+  		</association>
+  		<association property="user2" javaType="com.awsports.pojo.User">
+  			<id column="hcteam_user2id" property="id"/>
+  			<result column="hcteam_user2_name" property="name"/>
+  		</association>
+  	</association>
+  	<association property="apTeamQuery" javaType="com.awsports.pojo.TeamQuery">
+  		<id column="awayPlayer" property="team.id"/>
+  		<result column="apTeam_name" property="team.name"/>
+  		<result column="apteam_user1id" property="team.user1id"/>
+  		<result column="apteam_user2id" property="team.user2id"/>
+  		<association property="user1" javaType="com.awsports.pojo.User">
+  			<id column="apteam_user1id" property="id"/>
+  			<result column="apteam_user1_name" property="name"/>
+  		</association>
+  		<association property="user2" javaType="com.awsports.pojo.User">
+  			<id column="apteam_user2id" property="id"/>
+  			<result column="apteam_user2_name" property="name"/>
+  		</association>
+  	</association>
+  	<collection property="doublematchscores" ofType="com.awsports.pojo.Doublematchscore">
+  		<id column="id" property="matchid"/>
+  		<result column="setTH" property="setth"/>
+  		<result column="HCScore" property="hcscore"/>
+  		<result column="HCTieScore" property="hctiescore"/>
+  		<result column="APScore" property="apscore"/>
+  		<result column="APTieScore" property="aptiescore"/>
+  	</collection>
+  </resultMap>
+  
+  <sql id="doublematchQuery_where">
+  	<if test="arena!=null">
+  		<if test="arena.name!=null and arena.name!=''">
+  			and aw_arena.name like "%${arena.name}%"
+  		</if>
+  	</if>
+  	<if test="tournament!=null">
+  		<if test="tournament.name!=null and tournament.name!=''">
+  			and aw_tournament.name like "%${tournament.name}%"
+  		</if>
+  	</if>
+  	<if test="hcTeamQuery!=null">
+  		<if test="hcTeamQuery.team!=null">
+  			<if test="hcTeamQuery.team.name!=null and hcTeamQuery.team.name!=''">
+  				and hcteam.name like "%${hcTeamQuery.team.name}%"
+  			</if>
+  		</if>	
+  	</if>
+  	<if test="apTeamQuery!=null">
+  		<if test="apTeamQuery.team!=null">
+  			<if test="apTeamQuery.team.name!=null and apTeamQuery.team.name!=''">
+  				and apteam.name like "%${apTeamQuery.team.name}%"
+  			</if>
+  		</if>	
+  	</if>
+  	<if test="doublematch!=null">
+  		<if test="(doublematch.startedat!=null and doublematch.startedat!='') and (doublematch.endedat!=null and doublematch.endedat!='')">
+  			and (aw_doublematch.matchTime between #{doublematch.startedat} and #{doublematch.endedat})
+  		</if>
+  	</if>
+  </sql>
+ 
+  <select id="findAll" parameterType="com.awsports.pojo.DoublematchQuery" resultMap="doublematchQueryMap">
+    select 
+	aw_doublematch.*,
+	aw_doublematchscore.matchId,
+	aw_doublematchscore.setTH,
+	aw_doublematchscore.HCScore,
+	aw_doublematchscore.HCTieScore,
+	aw_doublematchscore.APScore,
+	aw_doublematchscore.APTieScore,
+	aw_arena.name as arena_name,
+	aw_tournament.name as tournament_name,
+	hcteam.name as hcteam_name,
+	apteam.name as apteam_name,
+	hcteam_user1.id as hcteam_user1id,
+	hcteam_user2.id as hcteam_user2id,
+	apteam_user1.id as apteam_user1id,
+	apteam_user2.id as apteam_user2id,
+	hcteam_user1.name as hcteam_user1_name,
+	hcteam_user2.name as hcteam_user2_name,
+	apteam_user1.name as apteam_user1_name,
+	apteam_user2.name as apteam_user2_name
+	from aw_doublematch
+	join aw_doublematchscore on aw_doublematch.id=aw_doublematchscore.matchId
+	join aw_arena on aw_doublematch.matchPlace=aw_arena.id
+	join aw_tournament on aw_doublematch.tournamentId=aw_tournament.id
+	join aw_team as hcteam on aw_doublematch.homeContestant=hcteam.id
+	join aw_team as apteam on aw_doublematch.awayPlayer=apteam.id
+	join aw_user as hcteam_user1 on hcteam.user1Id=hcteam_user1.id
+	join aw_user as hcteam_user2 on hcteam.user2Id=hcteam_user2.id
+	join aw_user as apteam_user1 on apteam.user1Id=apteam_user1.id
+	join aw_user as apteam_user2 on apteam.user2Id=apteam_user2.id
+	<where>
+		<include refid="doublematchQuery_where"/>
+	</where> 
+  </select>
+  <select id="findByUser" parameterType="com.awsports.pojo.User" resultMap="doublematchQueryMap">
+    select 
+	aw_doublematch.*,
+	aw_doublematchscore.matchId,
+	aw_doublematchscore.setTH,
+	aw_doublematchscore.HCScore,
+	aw_doublematchscore.HCTieScore,
+	aw_doublematchscore.APScore,
+	aw_doublematchscore.APTieScore,
+	aw_arena.name as arena_name,
+	aw_tournament.name as tournament_name,
+	hcteam.name as hcteam_name,
+	apteam.name as apteam_name,
+	hcteam_user1.id as hcteam_user1id,
+	hcteam_user2.id as hcteam_user2id,
+	apteam_user1.id as apteam_user1id,
+	apteam_user2.id as apteam_user2id,
+	hcteam_user1.name as hcteam_user1_name,
+	hcteam_user2.name as hcteam_user2_name,
+	apteam_user1.name as apteam_user1_name,
+	apteam_user2.name as apteam_user2_name
+	from aw_doublematch
+	join aw_doublematchscore on aw_doublematch.id=aw_doublematchscore.matchId
+	join aw_arena on aw_doublematch.matchPlace=aw_arena.id
+	join aw_tournament on aw_doublematch.tournamentId=aw_tournament.id
+	join aw_team as hcteam on aw_doublematch.homeContestant=hcteam.id
+	join aw_team as apteam on aw_doublematch.awayPlayer=apteam.id
+	join aw_user as hcteam_user1 on hcteam.user1Id=hcteam_user1.id
+	join aw_user as hcteam_user2 on hcteam.user2Id=hcteam_user2.id
+	join aw_user as apteam_user1 on apteam.user1Id=apteam_user1.id
+	join aw_user as apteam_user2 on apteam.user2Id=apteam_user2.id
+	where hcteam_user1.id=#{id} or apteam_user2.id=#{id}
+	order by aw_doublematch.matchTime DESC
+  </select>
+  <select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Doublematch">
+  	select * from aw_doublematch where id=#{id}
+  </select>
+  <select id="findMirrorByOrigin" parameterType="com.awsports.pojo.Doublematch" resultType="com.awsports.pojo.Doublematch">
+  	select * from aw_doublematch where mirror=#{mirror} 
+  </select> 
+ 
+  <insert id="insertOne" parameterType="com.awsports.pojo.Doublematch" useGeneratedKeys="true" keyProperty="id">
+    insert into aw_doublematch
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="homecontestant != null">
+        homeContestant,
+      </if>
+      <if test="awayplayer != null">
+        awayPlayer,
+      </if>
+      <if test="matchtime != null">
+        matchTime,
+      </if>
+      <if test="matchplace != null">
+        matchPlace,
+      </if>
+      <if test="tournamentid != null">
+        tournamentId,
+      </if>
+      <if test="entry != null">
+        entry,
+      </if>
+      <if test="round != null">
+        round,
+      </if>
+      <if test="sets != null">
+        sets,
+      </if>
+      <if test="outcome != null">
+        outcome,
+      </if>
+      <if test="hcpoint != null">
+        HCPoint,
+      </if>
+      <if test="appoint != null">
+        APPoint,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="hcretired != null">
+        HCRetired,
+      </if>
+      <if test="apretired != null">
+        APRetired,
+      </if>
+      <if test="ishcchallenger != null">
+        isHCChallenger,
+      </if>
+      <if test="isapchallenger != null">
+        isAPChallenger,
+      </if>
+      <if test="mirror != null">
+      	mirror,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="homecontestant != null">
+        #{homecontestant,jdbcType=INTEGER},
+      </if>
+      <if test="awayplayer != null">
+        #{awayplayer,jdbcType=INTEGER},
+      </if>
+      <if test="matchtime != null">
+        #{matchtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="matchplace != null">
+        #{matchplace,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
+      </if>
+      <if test="entry != null">
+        #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="round != null">
+        #{round,jdbcType=INTEGER},
+      </if>
+      <if test="sets != null">
+        #{sets,jdbcType=INTEGER},
+      </if>
+      <if test="outcome != null">
+        #{outcome,jdbcType=CHAR},
+      </if>
+      <if test="hcpoint != null">
+        #{hcpoint,jdbcType=DOUBLE},
+      </if>
+      <if test="appoint != null">
+        #{appoint,jdbcType=DOUBLE},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="hcretired != null">
+        #{hcretired,jdbcType=BIT},
+      </if>
+      <if test="apretired != null">
+        #{apretired,jdbcType=BIT},
+      </if>
+       <if test="ishcchallenger != null">
+        #{ishcchallenger,jdbcType=BIT},
+      </if>
+      <if test="isapchallenger != null">
+        #{isapchallenger,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+      	#{mirror,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+<!--   <select id="countByExample" parameterType="com.awsports.pojo.DoublematchExample" resultType="java.lang.Long"> -->
+<!--     select count(*) from aw_doublematch -->
+<!--     <if test="_parameter != null"> -->
+<!--       <include refid="Example_Where_Clause" /> -->
+<!--     </if> -->
+<!--   </select> -->
+  
+  <update id="updateById" parameterType="com.awsports.pojo.Doublematch">
+    update aw_doublematch
+    <set>
+      <if test="homecontestant != null">
+        homeContestant = #{homecontestant,jdbcType=INTEGER},
+      </if>
+      <if test="awayplayer != null">
+        awayPlayer = #{awayplayer,jdbcType=INTEGER},
+      </if>
+      <if test="matchtime != null">
+        matchTime = #{matchtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="matchplace != null">
+        matchPlace = #{matchplace,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        tournamentId = #{tournamentid,jdbcType=INTEGER},
+      </if>
+      <if test="entry != null">
+        entry = #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="round != null">
+        round = #{round,jdbcType=INTEGER},
+      </if>
+      <if test="sets != null">
+        sets = #{sets,jdbcType=INTEGER},
+      </if>
+      <if test="outcome != null">
+        outcome = #{outcome,jdbcType=CHAR},
+      </if>
+      <if test="hcpoint != null">
+        HCPoint = #{hcpoint,jdbcType=DOUBLE},
+      </if>
+      <if test="appoint != null">
+        APPoint = #{appoint,jdbcType=DOUBLE},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="hcretired != null">
+        HCRetired = #{hcretired,jdbcType=BIT},
+      </if>
+      <if test="apretired != null">
+        APRetired = #{apretired,jdbcType=BIT},
+      </if>
+      <if test="ishcchallenger != null">
+        isHCChallenger = #{ishcchallenger,jdbcType=BIT},
+      </if>
+      <if test="isapchallenger != null">
+        isAPChallenger = #{isapchallenger,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+      	mirror = #{mirror,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id=#{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteById" parameterType="Integer">
+  	delete from aw_doublematch where id=#{id}
+  </delete>
+</mapper>

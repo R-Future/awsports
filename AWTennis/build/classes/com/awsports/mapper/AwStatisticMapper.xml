@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.AwStatisticMapper">
+  <resultMap id="BaseResultMap" type="com.awsports.pojo.AwStatistic">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="matchId" jdbcType="VARCHAR" property="matchid" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="aces" jdbcType="INTEGER" property="aces" />
+    <result column="firstServices" jdbcType="INTEGER" property="firstservices" />
+    <result column="secondServices" jdbcType="INTEGER" property="secondservices" />
+    <result column="doubleFaults" jdbcType="INTEGER" property="doublefaults" />
+    <result column="firstGoals" jdbcType="INTEGER" property="firstgoals" />
+    <result column="secondGoals" jdbcType="INTEGER" property="secondgoals" />
+    <result column="saveBreakPoints" jdbcType="INTEGER" property="savebreakpoints" />
+    <result column="breakPoints" jdbcType="INTEGER" property="breakpoints" />
+    <result column="serviceBreakPoints" jdbcType="INTEGER" property="servicebreakpoints" />
+    <result column="receiveBreakPoints" jdbcType="INTEGER" property="receivebreakpoints" />
+    <result column="firstReturnGoals" jdbcType="INTEGER" property="firstreturngoals" />
+    <result column="secondReturnGoals" jdbcType="INTEGER" property="secondreturngoals" />
+    <result column="services" jdbcType="INTEGER" property="services" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="updatedat" />
+    <result column="invalid" jdbcType="BIT" property="invalid" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.awsports.pojo.AwStatistic">
+    <result column="note" jdbcType="LONGVARCHAR" property="note" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, matchId, userId, aces, firstServices, secondServices, doubleFaults, firstGoals, 
+    secondGoals, saveBreakPoints, breakPoints, serviceBreakPoints, receiveBreakPoints, 
+    firstReturnGoals, secondReturnGoals, services, createdAt, updatedAt, invalid
+  </sql>
+  <sql id="Blob_Column_List">
+    note
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.awsports.pojo.AwStatisticExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from aw_statistic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.awsports.pojo.AwStatisticExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from aw_statistic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from aw_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from aw_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.awsports.pojo.AwStatisticExample">
+    delete from aw_statistic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.awsports.pojo.AwStatistic">
+    insert into aw_statistic (id, matchId, userId, 
+      aces, firstServices, secondServices, 
+      doubleFaults, firstGoals, secondGoals, 
+      saveBreakPoints, breakPoints, serviceBreakPoints, 
+      receiveBreakPoints, firstReturnGoals, secondReturnGoals, 
+      services, createdAt, updatedAt, 
+      invalid, note)
+    values (#{id,jdbcType=INTEGER}, #{matchid,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+      #{aces,jdbcType=INTEGER}, #{firstservices,jdbcType=INTEGER}, #{secondservices,jdbcType=INTEGER}, 
+      #{doublefaults,jdbcType=INTEGER}, #{firstgoals,jdbcType=INTEGER}, #{secondgoals,jdbcType=INTEGER}, 
+      #{savebreakpoints,jdbcType=INTEGER}, #{breakpoints,jdbcType=INTEGER}, #{servicebreakpoints,jdbcType=INTEGER}, 
+      #{receivebreakpoints,jdbcType=INTEGER}, #{firstreturngoals,jdbcType=INTEGER}, #{secondreturngoals,jdbcType=INTEGER}, 
+      #{services,jdbcType=INTEGER}, #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, 
+      #{invalid,jdbcType=BIT}, #{note,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.awsports.pojo.AwStatistic">
+    insert into aw_statistic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="matchid != null">
+        matchId,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="aces != null">
+        aces,
+      </if>
+      <if test="firstservices != null">
+        firstServices,
+      </if>
+      <if test="secondservices != null">
+        secondServices,
+      </if>
+      <if test="doublefaults != null">
+        doubleFaults,
+      </if>
+      <if test="firstgoals != null">
+        firstGoals,
+      </if>
+      <if test="secondgoals != null">
+        secondGoals,
+      </if>
+      <if test="savebreakpoints != null">
+        saveBreakPoints,
+      </if>
+      <if test="breakpoints != null">
+        breakPoints,
+      </if>
+      <if test="servicebreakpoints != null">
+        serviceBreakPoints,
+      </if>
+      <if test="receivebreakpoints != null">
+        receiveBreakPoints,
+      </if>
+      <if test="firstreturngoals != null">
+        firstReturnGoals,
+      </if>
+      <if test="secondreturngoals != null">
+        secondReturnGoals,
+      </if>
+      <if test="services != null">
+        services,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="matchid != null">
+        #{matchid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="aces != null">
+        #{aces,jdbcType=INTEGER},
+      </if>
+      <if test="firstservices != null">
+        #{firstservices,jdbcType=INTEGER},
+      </if>
+      <if test="secondservices != null">
+        #{secondservices,jdbcType=INTEGER},
+      </if>
+      <if test="doublefaults != null">
+        #{doublefaults,jdbcType=INTEGER},
+      </if>
+      <if test="firstgoals != null">
+        #{firstgoals,jdbcType=INTEGER},
+      </if>
+      <if test="secondgoals != null">
+        #{secondgoals,jdbcType=INTEGER},
+      </if>
+      <if test="savebreakpoints != null">
+        #{savebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="breakpoints != null">
+        #{breakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="servicebreakpoints != null">
+        #{servicebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="receivebreakpoints != null">
+        #{receivebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="firstreturngoals != null">
+        #{firstreturngoals,jdbcType=INTEGER},
+      </if>
+      <if test="secondreturngoals != null">
+        #{secondreturngoals,jdbcType=INTEGER},
+      </if>
+      <if test="services != null">
+        #{services,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.awsports.pojo.AwStatisticExample" resultType="java.lang.Long">
+    select count(*) from aw_statistic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update aw_statistic
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.matchid != null">
+        matchId = #{record.matchid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null">
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.aces != null">
+        aces = #{record.aces,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstservices != null">
+        firstServices = #{record.firstservices,jdbcType=INTEGER},
+      </if>
+      <if test="record.secondservices != null">
+        secondServices = #{record.secondservices,jdbcType=INTEGER},
+      </if>
+      <if test="record.doublefaults != null">
+        doubleFaults = #{record.doublefaults,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstgoals != null">
+        firstGoals = #{record.firstgoals,jdbcType=INTEGER},
+      </if>
+      <if test="record.secondgoals != null">
+        secondGoals = #{record.secondgoals,jdbcType=INTEGER},
+      </if>
+      <if test="record.savebreakpoints != null">
+        saveBreakPoints = #{record.savebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="record.breakpoints != null">
+        breakPoints = #{record.breakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="record.servicebreakpoints != null">
+        serviceBreakPoints = #{record.servicebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="record.receivebreakpoints != null">
+        receiveBreakPoints = #{record.receivebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstreturngoals != null">
+        firstReturnGoals = #{record.firstreturngoals,jdbcType=INTEGER},
+      </if>
+      <if test="record.secondreturngoals != null">
+        secondReturnGoals = #{record.secondreturngoals,jdbcType=INTEGER},
+      </if>
+      <if test="record.services != null">
+        services = #{record.services,jdbcType=INTEGER},
+      </if>
+      <if test="record.createdat != null">
+        createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedat != null">
+        updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.invalid != null">
+        invalid = #{record.invalid,jdbcType=BIT},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update aw_statistic
+    set id = #{record.id,jdbcType=INTEGER},
+      matchId = #{record.matchid,jdbcType=VARCHAR},
+      userId = #{record.userid,jdbcType=INTEGER},
+      aces = #{record.aces,jdbcType=INTEGER},
+      firstServices = #{record.firstservices,jdbcType=INTEGER},
+      secondServices = #{record.secondservices,jdbcType=INTEGER},
+      doubleFaults = #{record.doublefaults,jdbcType=INTEGER},
+      firstGoals = #{record.firstgoals,jdbcType=INTEGER},
+      secondGoals = #{record.secondgoals,jdbcType=INTEGER},
+      saveBreakPoints = #{record.savebreakpoints,jdbcType=INTEGER},
+      breakPoints = #{record.breakpoints,jdbcType=INTEGER},
+      serviceBreakPoints = #{record.servicebreakpoints,jdbcType=INTEGER},
+      receiveBreakPoints = #{record.receivebreakpoints,jdbcType=INTEGER},
+      firstReturnGoals = #{record.firstreturngoals,jdbcType=INTEGER},
+      secondReturnGoals = #{record.secondreturngoals,jdbcType=INTEGER},
+      services = #{record.services,jdbcType=INTEGER},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      invalid = #{record.invalid,jdbcType=BIT},
+      note = #{record.note,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update aw_statistic
+    set id = #{record.id,jdbcType=INTEGER},
+      matchId = #{record.matchid,jdbcType=VARCHAR},
+      userId = #{record.userid,jdbcType=INTEGER},
+      aces = #{record.aces,jdbcType=INTEGER},
+      firstServices = #{record.firstservices,jdbcType=INTEGER},
+      secondServices = #{record.secondservices,jdbcType=INTEGER},
+      doubleFaults = #{record.doublefaults,jdbcType=INTEGER},
+      firstGoals = #{record.firstgoals,jdbcType=INTEGER},
+      secondGoals = #{record.secondgoals,jdbcType=INTEGER},
+      saveBreakPoints = #{record.savebreakpoints,jdbcType=INTEGER},
+      breakPoints = #{record.breakpoints,jdbcType=INTEGER},
+      serviceBreakPoints = #{record.servicebreakpoints,jdbcType=INTEGER},
+      receiveBreakPoints = #{record.receivebreakpoints,jdbcType=INTEGER},
+      firstReturnGoals = #{record.firstreturngoals,jdbcType=INTEGER},
+      secondReturnGoals = #{record.secondreturngoals,jdbcType=INTEGER},
+      services = #{record.services,jdbcType=INTEGER},
+      createdAt = #{record.createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{record.updatedat,jdbcType=TIMESTAMP},
+      invalid = #{record.invalid,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.awsports.pojo.AwStatistic">
+    update aw_statistic
+    <set>
+      <if test="matchid != null">
+        matchId = #{matchid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="aces != null">
+        aces = #{aces,jdbcType=INTEGER},
+      </if>
+      <if test="firstservices != null">
+        firstServices = #{firstservices,jdbcType=INTEGER},
+      </if>
+      <if test="secondservices != null">
+        secondServices = #{secondservices,jdbcType=INTEGER},
+      </if>
+      <if test="doublefaults != null">
+        doubleFaults = #{doublefaults,jdbcType=INTEGER},
+      </if>
+      <if test="firstgoals != null">
+        firstGoals = #{firstgoals,jdbcType=INTEGER},
+      </if>
+      <if test="secondgoals != null">
+        secondGoals = #{secondgoals,jdbcType=INTEGER},
+      </if>
+      <if test="savebreakpoints != null">
+        saveBreakPoints = #{savebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="breakpoints != null">
+        breakPoints = #{breakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="servicebreakpoints != null">
+        serviceBreakPoints = #{servicebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="receivebreakpoints != null">
+        receiveBreakPoints = #{receivebreakpoints,jdbcType=INTEGER},
+      </if>
+      <if test="firstreturngoals != null">
+        firstReturnGoals = #{firstreturngoals,jdbcType=INTEGER},
+      </if>
+      <if test="secondreturngoals != null">
+        secondReturnGoals = #{secondreturngoals,jdbcType=INTEGER},
+      </if>
+      <if test="services != null">
+        services = #{services,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.awsports.pojo.AwStatistic">
+    update aw_statistic
+    set matchId = #{matchid,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=INTEGER},
+      aces = #{aces,jdbcType=INTEGER},
+      firstServices = #{firstservices,jdbcType=INTEGER},
+      secondServices = #{secondservices,jdbcType=INTEGER},
+      doubleFaults = #{doublefaults,jdbcType=INTEGER},
+      firstGoals = #{firstgoals,jdbcType=INTEGER},
+      secondGoals = #{secondgoals,jdbcType=INTEGER},
+      saveBreakPoints = #{savebreakpoints,jdbcType=INTEGER},
+      breakPoints = #{breakpoints,jdbcType=INTEGER},
+      serviceBreakPoints = #{servicebreakpoints,jdbcType=INTEGER},
+      receiveBreakPoints = #{receivebreakpoints,jdbcType=INTEGER},
+      firstReturnGoals = #{firstreturngoals,jdbcType=INTEGER},
+      secondReturnGoals = #{secondreturngoals,jdbcType=INTEGER},
+      services = #{services,jdbcType=INTEGER},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      invalid = #{invalid,jdbcType=BIT},
+      note = #{note,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.awsports.pojo.AwStatistic">
+    update aw_statistic
+    set matchId = #{matchid,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=INTEGER},
+      aces = #{aces,jdbcType=INTEGER},
+      firstServices = #{firstservices,jdbcType=INTEGER},
+      secondServices = #{secondservices,jdbcType=INTEGER},
+      doubleFaults = #{doublefaults,jdbcType=INTEGER},
+      firstGoals = #{firstgoals,jdbcType=INTEGER},
+      secondGoals = #{secondgoals,jdbcType=INTEGER},
+      saveBreakPoints = #{savebreakpoints,jdbcType=INTEGER},
+      breakPoints = #{breakpoints,jdbcType=INTEGER},
+      serviceBreakPoints = #{servicebreakpoints,jdbcType=INTEGER},
+      receiveBreakPoints = #{receivebreakpoints,jdbcType=INTEGER},
+      firstReturnGoals = #{firstreturngoals,jdbcType=INTEGER},
+      secondReturnGoals = #{secondreturngoals,jdbcType=INTEGER},
+      services = #{services,jdbcType=INTEGER},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      invalid = #{invalid,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

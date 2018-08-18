@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.QualificationrankMapper">
+  <resultMap id="qualificationrankQueryMap" type="com.awsports.pojo.QualificationrankQuery">
+    <id column="id" jdbcType="INTEGER" property="qualificationrank.id" />
+    <result column="userId" jdbcType="INTEGER" property="qualificationrank.userid" />
+    <result column="tournamentId" jdbcType="INTEGER" property="qualificationrank.tournamentid" />
+    <result column="currentRank" jdbcType="INTEGER" property="qualificationrank.currentrank" />
+    <result column="rankingChange" jdbcType="INTEGER" property="qualificationrank.rankingchange" />
+    <result column="totalPoint" jdbcType="DOUBLE" property="qualificationrank.totalpoint" />
+    <result column="totalWins" jdbcType="INTEGER" property="qualificationrank.totalwins" />
+    <result column="totalMatchs" jdbcType="INTEGER" property="qualificationrank.totalmatchs" />
+    <result column="totalMarginBureau" jdbcType="INTEGER" property="qualificationrank.totalmarginbureau" />
+    <result column="year" jdbcType="INTEGER" property="qualificationrank.year" />
+    <result column="week" jdbcType="INTEGER" property="qualificationrank.week" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="qualificationrank.createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="qualificationrank.updatedat" />
+    <result column="invalid" jdbcType="BIT" property="qualificationrank.invalid" />
+    <association property="userQuery" javaType="com.awsports.pojo.UserQuery">
+    	<id column="userId" property="user.id"/>
+    	<result column="user_name" property="user.name"/>
+    	<result column="user_grade" property="user.grade"/>
+    	<result column="user_sex" property="user.sex"/>
+    	<association property="level" javaType="com.awsports.pojo.Level">
+    		<id column="user_grade" property="id"/>
+    		<result column="level_chinese" property="chinese"/>
+    	</association>
+    </association>
+    <association property="tournament" javaType="com.awsports.pojo.Tournament">
+    	<id column="tournamentId" property="id"/>
+    	<result column="tournament_name" property="name"/>
+    </association>
+  </resultMap>
+  <sql id="qualificationrankQuery_where">
+  	<if test="userQuery != null">
+	  	<if test="userQuery.user != null">
+	  		<if test="userQuery.user.name != null and userQuery.user.name != ''">
+	  			and aw_user.name like "%${userQuery.user.name}%"
+	  		</if>
+	  	</if>
+  	</if>
+  	<if test="tournament != null">
+  		<if test="tournament.id != null and tournament.id != ''">
+  			and aw_tournament.id = #{tournament.id}
+  		</if>
+  		<if test="tournament.name != null and tournament.name != ''">
+  			and aw_tournament.name like "%${tournament.name}%"
+  		</if>
+  	</if>
+  </sql>
+  <select id="findAll" parameterType="com.awsports.pojo.QualificationrankQuery" resultMap="qualificationrankQueryMap">
+    select
+	aw_qualificationrank.*,
+	aw_user.name as user_name,
+	aw_user.sex as user_sex,
+	aw_user.grade as user_grade,
+	aw_level.chinese as level_chinese,
+	aw_tournament.name as tournament_name
+	from aw_qualificationrank
+	join aw_user on aw_user.id = aw_qualificationrank.userId
+	join aw_tournament on aw_tournament.id = aw_qualificationrank.tournamentId
+	join aw_level on aw_level.id = aw_user.grade
+	<where>
+		<include refid="qualificationrankQuery_where"/>
+	</where>
+	order by aw_qualificationrank.tournamentId ASC, aw_qualificationrank.currentRank ASC;
+  </select>
+  <select id="findById" parameterType="java.lang.Integer" resultType="com.awsports.pojo.Qualificationrank">
+  	select * from aw_qualificationrank where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findByUseridTournamentidYear" parameterType="com.awsports.pojo.Qualificationrank" resultType="com.awsports.pojo.Qualificationrank">
+  	select * from aw_qualificationrank 
+  	where userId = #{userid} and tournamentId = #{tournamentid} and year = #{year}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from aw_qualificationrank where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertOne" parameterType="com.awsports.pojo.Qualificationrank">
+    insert into aw_qualificationrank
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="tournamentid != null">
+        tournamentId,
+      </if>
+      <if test="currentrank != null">
+        currentRank,
+      </if>
+      <if test="rankingchange != null">
+        rankingChange,
+      </if>
+      <if test="totalpoint != null">
+        totalPoint,
+      </if>
+      <if test="totalwins != null">
+        totalWins,
+      </if>
+      <if test="totalmatchs != null">
+        totalMatchs,
+      </if>
+      <if test="totalmarginbureau != null">
+        totalMarginBureau,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="week != null">
+        week,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
+      </if>
+      <if test="currentrank != null">
+        #{currentrank,jdbcType=INTEGER},
+      </if>
+      <if test="rankingchange != null">
+        #{rankingchange,jdbcType=INTEGER},
+      </if>
+      <if test="totalpoint != null">
+        #{totalpoint,jdbcType=DOUBLE},
+      </if>
+      <if test="totalwins != null">
+        #{totalwins,jdbcType=INTEGER},
+      </if>
+      <if test="totalmatchs != null">
+        #{totalmatchs,jdbcType=INTEGER},
+      </if>
+      <if test="totalmarginbureau != null">
+        #{totalmarginbureau,jdbcType=INTEGER},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="week != null">
+        #{week,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  <update id="updateById" parameterType="com.awsports.pojo.Qualificationrank">
+    update aw_qualificationrank
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        tournamentId = #{tournamentid,jdbcType=INTEGER},
+      </if>
+      <if test="currentrank != null">
+        currentRank = #{currentrank,jdbcType=INTEGER},
+      </if>
+      <if test="rankingchange != null">
+        rankingChange = #{rankingchange,jdbcType=INTEGER},
+      </if>
+      <if test="totalpoint != null">
+        totalPoint = #{totalpoint,jdbcType=DOUBLE},
+      </if>
+      <if test="totalwins != null">
+        totalWins = #{totalwins,jdbcType=INTEGER},
+      </if>
+      <if test="totalmatchs != null">
+        totalMatchs = #{totalmatchs,jdbcType=INTEGER},
+      </if>
+      <if test="totalmarginbureau != null">
+        totalMarginBureau = #{totalmarginbureau,jdbcType=INTEGER},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="week != null">
+        week = #{week,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

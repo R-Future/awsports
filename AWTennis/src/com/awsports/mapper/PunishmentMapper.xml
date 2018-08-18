@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.PunishmentMapper">
+  <resultMap id="punishmentQueryMap" type="com.awsports.pojo.PunishmentQuery">
+    <id column="id" jdbcType="INTEGER" property="punishment.id" />
+    <result column="userId" jdbcType="INTEGER" property="punishment.userid" />
+    <result column="tournamentId" jdbcType="INTEGER" property="punishment.tournamentid" />
+    <result column="matchtime" jdbcType="TIMESTAMP" property="punishment.matchtime" />
+    <result column="entry" jdbcType="INTEGER" property="punishment.entry" />
+    <result column="points" jdbcType="INTEGER" property="punishment.points" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="punishment.createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="punishment.updatedat" />
+    <result column="invalid" jdbcType="BIT" property="punishment.invalid" />
+    <association property="user" javaType="com.awsports.pojo.User">
+    	<id column="userId" property="id"/>
+    	<result column="user_name" property="name"/>
+    </association>
+    <association property="tournament" javaType="com.awsports.pojo.Tournament">
+    	<id column="tournamentId" property="id"/>
+    	<result column="tournament_name" property="name"/>
+    </association>
+  </resultMap>
+  
+  <sql id="punishmentQuery_where">
+  	<if test="user!=null">
+  		<if test="user.name!=null and user.name!=''">
+  			and aw_user.name like "%${user.name}%"
+  		</if>
+  	</if>
+  	<if test="punishment!=null">
+  		<if test="punishment.entry!=null and punishment.entry.intValue!=0">
+  			and aw_punishment.entry=#{punishment.entry}
+  		</if>
+  	</if>
+  </sql>
+  <select id="findAll" parameterType="com.awsports.pojo.PunishmentQuery" resultMap="punishmentQueryMap">
+	select 
+	aw_punishment.*,
+	aw_user.name as user_name,
+	aw_tournament.name as tournament_name
+	from aw_punishment
+	join aw_user on aw_punishment.userId=aw_user.id
+	join aw_tournament on aw_punishment.tournamentId=aw_tournament.id
+	<where>
+		<include refid="punishmentQuery_where"></include>
+	</where>
+  </select>
+ 
+  <select id="findById" parameterType="java.lang.Integer" resultType="com.awsports.pojo.Punishment">
+    select * from aw_punishment where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findSumByUseridEntry" parameterType="com.awsports.pojo.Punishment" resultType="java.lang.Integer">
+  	select SUM(aw_punishment.points) from aw_punishment where userId=#{userid} and entry=#{entry} and invalid=#{invalid}
+  </select>
+  
+  <select id="findSumByUseridEntryMatchtime" parameterType="com.awsports.pojo.Punishment" resultType="java.lang.Integer">
+  	select SUM(aw_punishment.points) 
+  	from aw_punishment 
+  	where userId=#{userid} and entry=#{entry} and matchtime &lt;= #{cDatetime} and invalid=#{invalid}
+  </select>
+  
+  <select id="findSumByUseridTournamentidYear" parameterType="com.awsports.pojo.Punishment" resultType="java.lang.Integer">
+  	select SUM(aw_punishment.points) from aw_punishment 
+  	where userId=#{userid} and tournamentId=#{tournamentid} and YEAR(matchtime)=#{currentYear} and invalid=#{invalid}
+  </select>
+
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from aw_punishment where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insertOne" parameterType="com.awsports.pojo.Punishment">
+    insert into aw_punishment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="tournamentid != null">
+        tournamentId,
+      </if>
+      <if test="matchtime != null">
+        matchtime,
+      </if>
+      <if test="entry != null">
+        entry,
+      </if>
+      <if test="points != null">
+        points,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        #{tournamentid,jdbcType=INTEGER},
+      </if>
+      <if test="matchtime != null">
+        #{matchtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entry != null">
+        #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="points != null">
+        #{points,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+<!--   <select id="countByExample" parameterType="com.awsports.pojo.AwPunishmentExample" resultType="java.lang.Long"> -->
+<!--     select count(*) from aw_punishment -->
+<!--     <if test="_parameter != null"> -->
+<!--       <include refid="Example_Where_Clause" /> -->
+<!--     </if> -->
+<!--   </select> -->
+  
+  <update id="updateById" parameterType="com.awsports.pojo.Punishment">
+    update aw_punishment
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="tournamentid != null">
+        tournamentId = #{tournamentid,jdbcType=INTEGER},
+      </if>
+      <if test="matchtime != null">
+        matchtime = #{matchtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entry != null">
+        entry = #{entry,jdbcType=INTEGER},
+      </if>
+      <if test="points != null">
+        points = #{points,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

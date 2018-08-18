@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.TournamentMapper">
+
+	<resultMap type="com.awsports.pojo.TournamentQuery" id="tournamentMap">
+		<id column="id" property="tournament.id"/>
+		<result column="name" property="tournament.name"/>
+		<result column="startedAt" property="tournament.startedat"/>
+		<result column="endedAt" property="tournament.endedat"/>
+		<result column="arenaId" property="tournament.arenaid"/>
+		<result column="level" property="tournament.level"/>
+		<result column="prize" property="tournament.prize"/>
+		<result column="cost" property="tournament.cost"/>
+		<result column="mode" property="tournament.mode"/>
+		<result column="created_at" property="tournament.createdAt"/>
+		<result column="updated_at" property="tournament.updatedAt"/>
+		<result column="note" property="tournament.note"/>
+		<association property="arena" javaType="com.awsports.pojo.Arena">
+			<id column="arenaId" property="id"/>
+			<result column="arena_name" property="name"/>
+		</association>
+	</resultMap>
+
+	<select id="findAll" parameterType="com.awsports.pojo.TournamentQuery" resultMap="tournamentMap">
+		select aw_tournament.*,aw_arena.name as 'arena_name' 
+		from aw_tournament 
+		join aw_arena on aw_tournament.arenaId=aw_arena.id
+		<where>
+			<!-- 首先要判断类型是否为空！！！！ -->
+			<if test="tournament!=null">
+				<if test=" tournament.name!=null and tournament.name!='' ">
+					and aw_tournament.name like "%${tournament.name}%"
+				</if>	
+				<if test="(tournament.startTime!=null and tournament.startTime!='') and (tournament.endTime!=null and tournament.endTime!='') ">
+				  	and (aw_tournament.startedAt between #{tournament.startTime} and #{tournament.endTime})
+				  	and (aw_tournament.endedAt between #{tournament.startTime} and #{tournament.endTime})
+				</if>
+			</if>
+			<if test="arena!=null">
+				<if test=" arena.name!=null and arena.name!='' ">
+					and aw_arena.name like "%${arena.name}%"
+				</if>
+			</if>
+		</where>
+	</select>
+	
+	<select id="findById" parameterType="Integer" resultType="com.awsports.pojo.Tournament">
+		select * from aw_tournament where id=#{id}
+	</select>
+	
+	<select id="findDetailById" parameterType="Integer" resultMap="tournamentMap">
+		select aw_tournament.*,aw_arena.name as 'arena_name' 
+		from aw_tournament 
+		join aw_arena on aw_tournament.arenaId=aw_arena.id
+		where aw_tournament.id=#{id}
+	</select>
+	
+	<select id="findByName" parameterType="com.awsports.pojo.Tournament" resultType="com.awsports.pojo.Tournament">
+		select * from aw_tournament where name like "%${name}%"
+	</select>
+	
+	
+	<update id="updateById" parameterType="com.awsports.pojo.Tournament">
+		update aw_tournament
+	    <set>
+	      <if test="name != null and name != ''">
+	        name = #{name,jdbcType=CHAR},
+	      </if>
+	      <if test="startedat != null and startedat != ''">
+	        startedAt = #{startedat,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endedat != null and endedat != ''">
+	        endedAt = #{endedat,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="arenaId != null">
+	        arenaId = #{arenaid,jdbcType=INTEGER},
+	      </if>
+	      <if test="level != null and level != ''">
+	        level = #{level,jdbcType=CHAR},
+	      </if>
+	      <if test="prize != null">
+	        prize = #{prize,jdbcType=INTEGER},
+	      </if>
+	      <if test="cost != null">
+	        cost = #{cost,jdbcType=DOUBLE},
+	      </if>
+	      <if test="mode != null">
+	      	mode = #{mode,jdbcType=INTEGER},
+	      </if>
+	      <if test="invalid != null">
+	        invalid = #{invalid,jdbcType=BIT},
+	      </if>
+	      <if test="note != null and note != ''">
+	        note = #{note,jdbcType=LONGVARCHAR},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<insert id="insertOne" parameterType="com.awsports.pojo.Tournament">
+		insert into aw_tournament
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="name != null and name != ''">
+	        name,
+	      </if>
+	      <if test="startedat != null">
+	        startedAt,
+	      </if>
+	      <if test="endedat != null">
+	        endedAt,
+	      </if>
+	      <if test="arenaid != null">
+	        arenaId,
+	      </if>
+	      <if test="level != null and level != ''">
+	        level,
+	      </if>
+	      <if test="prize != null">
+	        prize,
+	      </if>
+	      <if test="cost != null">
+	        cost,
+	      </if>
+	      <if test="mode != null and mode.intValue() != 0">
+	      	mode,
+	      </if>
+	      <if test="note != null and note != ''">
+	        note,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="name != null and name != ''">
+	        #{name,jdbcType=CHAR},
+	      </if>
+	      <if test="startedat != null">
+	        #{startedat,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endedat != null">
+	        #{endedat,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="arenaid != null">
+	        #{arenaid,jdbcType=INTEGER},
+	      </if>
+	      <if test="level != null and level != ''">
+	        #{level,jdbcType=CHAR},
+	      </if>
+	      <if test="prize != null">
+	        #{prize,jdbcType=DOUBLE},
+	      </if>
+	      <if test="cost != null">
+	        #{cost,jdbcType=DOUBLE},
+	      </if>
+	      <if test="mode != null and mode.intValue() != 0">
+	      	#{mode,jdbcType=INTEGER},
+	      </if>
+	      <if test="note != null and note != ''">
+	        #{note,jdbcType=LONGVARCHAR},
+	      </if>
+	    </trim>
+	</insert>
+	
+	<delete id="deleteById" parameterType="Integer">
+		delete from aw_tournament where id=#{id}
+	</delete>
+</mapper>

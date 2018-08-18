@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace为mapper.java借口的类名 -->
+<mapper namespace="com.awsports.mapper.UserMapper">
+	
+	<resultMap id="userQueryMap" type="com.awsports.pojo.UserQuery">
+	    <id column="id" jdbcType="INTEGER" property="user.id" />
+	    <result column="name" jdbcType="CHAR" property="user.name" />
+	    <result column="password" jdbcType="CHAR" property="user.password" />
+	    <result column="nickname" jdbcType="CHAR" property="user.nickname" />
+	    <result column="portrait" jdbcType="CHAR" property="user.portrait" />
+	    <result column="realName" jdbcType="CHAR" property="user.realname" />
+	    <result column="idcard" jdbcType="CHAR" property="user.idcard" />
+	    <result column="phone" jdbcType="CHAR" property="user.phone" />
+	    <result column="email" jdbcType="CHAR" property="user.email" />
+	    <result column="sex" jdbcType="BIT" property="user.sex" />
+	    <result column="height" jdbcType="DOUBLE" property="user.height" />
+	    <result column="weight" jdbcType="DOUBLE" property="user.weight" />
+	    <result column="level" jdbcType="DOUBLE" property="user.level" />
+	    <result column="playedYears" jdbcType="DOUBLE" property="user.playedyears" />
+	    <result column="forehand" jdbcType="INTEGER" property="user.forehand" />
+	    <result column="backhand" jdbcType="BIT" property="user.backhand" />
+	    <result column="address" jdbcType="CHAR" property="user.address" />
+	    <result column="singleTitles" jdbcType="INTEGER" property="user.singletitles" />
+	    <result column="doubleTitles" jdbcType="INTEGER" property="user.doubletitles" />
+	    <result column="createdAt" jdbcType="TIMESTAMP" property="user.createdat" />
+	    <result column="updatedAt" jdbcType="TIMESTAMP" property="user.updatedat" />
+	    <result column="invalid" jdbcType="BIT" property="user.invalid" />
+	    <result column="grade" jdbcType="INTEGER" property="user.grade" />
+	    <result column="privilege" jdbcType="INTEGER" property="user.privilege" />
+	    <result column="note" jdbcType="CHAR" property="user.note" />
+	    <result column="cardNum" jdbcType="VARCHAR" property="user.cardnum" />
+	    <association property="level" javaType="com.awsports.pojo.Level">
+	    	<id column="grade" property="id"/>
+	    	<result column="level_chinese" property="chinese"/>
+	    	<result column="level_english" property="english"/>
+	    </association>
+	</resultMap>
+	<!-- sql片段，用户信息查询条件 -->
+	<sql id="query_user_where">
+		<if test="user!=null">
+			<if test="user.name!=null and user.name!=''">
+				and aw_user.name like '%${user.name}%'
+			</if>
+			<if test="user.address!=null and user.address!=''">
+				and aw_user.address like '%${user.address}%'
+			</if>
+			<if test="user.level!=null and user.level!=''">
+				and aw_user.level=#{user.level}
+			</if>
+			<if test="user.phone!=null">
+				and aw_user.phone=#{user.phone}
+			</if>
+			<if test="user.cardNum!=null">
+				and aw_user.cardNum=#{user.cardnum}
+			</if>
+		</if>
+	</sql>
+	<sql id="orderAndPagination">
+		<if test="user!=null">
+			<if test="user.sortBy!=null and user.order!=null">
+				order by #{user.sortBy} #{user.order}
+			</if>
+			<if test="user.begin!=null and user.begin>0 and user.nRecord!=null and user.nRecord>-2">
+				limit #{user.begin}, #{user.nRecord}
+			</if>		
+		</if>
+	</sql>
+	<!-- id对应mapper.java接口中的方法名 -->
+	<select id="findAll" parameterType="com.awsports.pojo.UserQuery" resultMap="userQueryMap">
+		select 
+		aw_user.*,
+		aw_level.chinese as level_chinese,
+		aw_level.english as level_english 
+		from aw_user
+		join aw_level on aw_user.grade=aw_level.id
+		<where>
+			<include refid="query_user_where"></include>
+		</where>
+		<include refid="orderAndPagination"></include>
+	</select>	
+	<select id="findById" parameterType="Integer" resultType="com.awsports.pojo.User">
+		select * from aw_user where id=#{id}
+	</select>
+	<select id="findByName" parameterType="java.lang.String" resultType="com.awsports.pojo.User">
+		select * from aw_user where aw_user.name=#{name}
+	</select>
+	<select id="findByPhone" parameterType="java.lang.String" resultType="com.awsports.pojo.User">
+		select * from aw_user where aw_user.phone=#{phone}
+	</select>
+	
+	<!-- 更新用户信息 -->
+	<update id="updateById" parameterType="com.awsports.pojo.User">
+	    update aw_user
+	    <set>
+	      <if test="name != null">
+	        name = #{name,jdbcType=CHAR},
+	      </if>
+	      <if test="password != null">
+	        password = #{password,jdbcType=CHAR},
+	      </if>
+	      <if test="nickname != null">
+	        nickname = #{nickname,jdbcType=CHAR},
+	      </if>
+	      <if test="portrait != null">
+	        portrait = #{portrait,jdbcType=CHAR},
+	      </if>
+	      <if test="realname != null">
+	        realName = #{realname,jdbcType=CHAR},
+	      </if>
+	      <if test="idcard != null">
+	        idcard = #{idcard,jdbcType=CHAR},
+	      </if>
+	      <if test="phone != null">
+	        phone = #{phone,jdbcType=CHAR},
+	      </if>
+	      <if test="email != null">
+	        email = #{email,jdbcType=CHAR},
+	      </if>
+	      <if test="sex != null">
+	        sex = #{sex,jdbcType=BIT},
+	      </if>
+	      <if test="height != null">
+	        height = #{height,jdbcType=DOUBLE},
+	      </if>
+	      <if test="weight != null">
+	        weight = #{weight,jdbcType=DOUBLE},
+	      </if>
+	      <if test="level != null">
+	        level = #{level,jdbcType=DOUBLE},
+	      </if>
+	      <if test="playedyears != null">
+	        playedYears = #{playedyears,jdbcType=DOUBLE},
+	      </if>
+	      <if test="forehand != null">
+	        forehand = #{forehand,jdbcType=INTEGER},
+	      </if>
+	      <if test="backhand != null">
+	        backhand = #{backhand,jdbcType=BIT},
+	      </if>
+	      <if test="address != null">
+	        address = #{address,jdbcType=CHAR},
+	      </if>
+	      <if test="singletitles != null">
+	        singleTitles = #{singletitles,jdbcType=INTEGER},
+	      </if>
+	      <if test="doubletitles != null">
+	        doubleTitles = #{doubletitles,jdbcType=INTEGER},
+	      </if>
+	      <if test="createdat != null">
+	        createdAt = #{createdat,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updatedat != null">
+	        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="invalid != null">
+	        invalid = #{invalid,jdbcType=BIT},
+	      </if>
+	      <if test="grade != null">
+	        grade = #{grade,jdbcType=INTEGER},
+	      </if>
+	      <if test="privilege != null">
+	        privilege = #{privilege,jdbcType=INTEGER},
+	      </if>
+	      <if test="cardnum != null">
+	        cardNum = #{cardnum,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=INTEGER}
+  	</update>
+	
+	<!-- 添加用户 -->
+	<insert id="insertOne" parameterType="com.awsports.pojo.User" useGeneratedKeys="true" keyProperty="id">
+	    insert into aw_user
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="name != null">
+	        name,
+	      </if>
+	      <if test="password != null">
+	        password,
+	      </if>
+	      <if test="nickname != null">
+	        nickname,
+	      </if>
+	      <if test="portrait != null">
+	        portrait,
+	      </if>
+	      <if test="realname != null">
+	        realName,
+	      </if>
+	      <if test="idcard != null">
+	        idcard,
+	      </if>
+	      <if test="phone != null">
+	        phone,
+	      </if>
+	      <if test="email != null">
+	        email,
+	      </if>
+	      <if test="sex != null">
+	        sex,
+	      </if>
+	      <if test="height != null">
+	        height,
+	      </if>
+	      <if test="weight != null">
+	        weight,
+	      </if>
+	      <if test="level != null">
+	        level,
+	      </if>
+	      <if test="playedyears != null">
+	        playedYears,
+	      </if>
+	      <if test="forehand != null">
+	        forehand,
+	      </if>
+	      <if test="backhand != null">
+	        backhand,
+	      </if>
+	      <if test="address != null">
+	        address,
+	      </if>
+	      <if test="singletitles != null">
+	        singleTitles,
+	      </if>
+	      <if test="doubletitles != null">
+	        doubleTitles,
+	      </if>
+	      <if test="createdat != null">
+	        createdAt,
+	      </if>
+	      <if test="updatedat != null">
+	        updatedAt,
+	      </if>
+	      <if test="invalid != null">
+	        invalid,
+	      </if>
+	      <if test="grade != null">
+	        grade,
+	      </if>
+	      <if test="privilege != null">
+	        privilege,
+	      </if>
+	      <if test="cardnum != null">
+	        cardNum,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id,jdbcType=INTEGER},
+	      </if>
+	      <if test="name != null">
+	        #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="password != null">
+	        #{password,jdbcType=CHAR},
+	      </if>
+	      <if test="nickname != null">
+	        #{nickname,jdbcType=CHAR},
+	      </if>
+	      <if test="portrait != null">
+	        #{portrait,jdbcType=CHAR},
+	      </if>
+	      <if test="realname != null">
+	        #{realname,jdbcType=CHAR},
+	      </if>
+	      <if test="idcard != null">
+	        #{idcard,jdbcType=CHAR},
+	      </if>
+	      <if test="phone != null">
+	        #{phone,jdbcType=CHAR},
+	      </if>
+	      <if test="email != null">
+	        #{email,jdbcType=CHAR},
+	      </if>
+	      <if test="sex != null">
+	        #{sex,jdbcType=BIT},
+	      </if>
+	      <if test="height != null">
+	        #{height,jdbcType=DOUBLE},
+	      </if>
+	      <if test="weight != null">
+	        #{weight,jdbcType=DOUBLE},
+	      </if>
+	      <if test="level != null">
+	        #{level,jdbcType=DOUBLE},
+	      </if>
+	      <if test="playedyears != null">
+	        #{playedyears,jdbcType=DOUBLE},
+	      </if>
+	      <if test="forehand != null">
+	        #{forehand,jdbcType=INTEGER},
+	      </if>
+	      <if test="backhand != null">
+	        #{backhand,jdbcType=BIT},
+	      </if>
+	      <if test="address != null">
+	        #{address,jdbcType=CHAR},
+	      </if>
+	      <if test="singletitles != null">
+	        #{singletitles,jdbcType=INTEGER},
+	      </if>
+	      <if test="doubletitles != null">
+	        #{doubletitles,jdbcType=INTEGER},
+	      </if>
+	      <if test="createdat != null">
+	        #{createdat,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updatedat != null">
+	        #{updatedat,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="invalid != null">
+	        #{invalid,jdbcType=BIT},
+	      </if>
+	      <if test="grade != null">
+	        #{grade,jdbcType=INTEGER},
+	      </if>
+	      <if test="privilege != null">
+	        #{privilege,jdbcType=INTEGER},
+	      </if>
+	      <if test="cardnum != null">
+	        #{cardnum,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+	</insert>
+	
+	<!-- 根据id删除用户 -->
+	<delete id="deleteById" parameterType="Integer">
+		 delete from aw_user where id = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>

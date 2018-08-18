@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.awsports.mapper.DoublesMatchMapper">
+
+  <resultMap id="DoublesMatchMap" type="com.awsports.pojo.DoublesMatchQuery">
+    <id column="id" jdbcType="INTEGER" property="DoublesMatch.id" />
+    <result column="eventId" jdbcType="INTEGER" property="DoublesMatch.eventid" />
+    <result column="homeId" jdbcType="INTEGER" property="DoublesMatch.homeid" />
+    <result column="guestId" jdbcType="INTEGER" property="DoublesMatch.guestid" />
+    <result column="type" jdbcType="VARCHAR" property="DoublesMatch.type" />
+    <result column="score" jdbcType="VARCHAR" property="DoublesMatch.score" />
+    <result column="round" jdbcType="VARCHAR" property="DoublesMatch.round" />
+    <result column="isHomeRetired" jdbcType="BIT" property="DoublesMatch.ishomeretired" />
+    <result column="isGuestRetired" jdbcType="BIT" property="DoublesMatch.isguestretired" />
+    <result column="homePoint" jdbcType="INTEGER" property="DoublesMatch.homepoint" />
+    <result column="guestPoint" jdbcType="INTEGER" property="DoublesMatch.guestpoint" />
+    <result column="isHomeWin" jdbcType="BIT" property="DoublesMatch.ishomewin" />
+    <result column="createdAt" jdbcType="TIMESTAMP" property="DoublesMatch.createdat" />
+    <result column="updatedAt" jdbcType="TIMESTAMP" property="DoublesMatch.updatedat" />
+    <result column="invalid" jdbcType="BIT" property="DoublesMatch.invalid" />
+    <result column="mirror" jdbcType="VARCHAR" property="DoublesMatch.mirror" />
+    <result column="note" jdbcType="LONGVARCHAR" property="DoublesMatch.note" />
+    <association property="home" javaType="com.awsports.pojo.Team">
+    	<id column="homeId" property="id"/>
+    	<result column="homeName" property="name"/>
+    </association>
+  	<association property="guest" javaType="com.awsports.pojo.Team">
+    	<id column="guestId" property="id"/>
+    	<result column="guestName" property="name"/>
+    </association>
+  </resultMap>
+
+  <sql id="queryConditions">
+   	<if test="eventid != null">
+  		and aw_doubles_match.eventId = #{eventid, jdbcType=INTEGER}
+  	</if>
+  	<if test="homeid != null">
+  		and aw_doubles_match.homeId = #{homeid, jdbcType=INTEGER}
+  	</if>
+  	<if test="type != null and type != ''">
+  		and aw_doubles_match.type = #{type, jdbcType=VARCHAR}
+  	</if>
+  </sql>
+
+  <select id="findById" parameterType="java.lang.Integer" resultType="com.awsports.pojo.DoublesMatch">
+    select *
+    from aw_doubles_match
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findByConditions" parameterType="com.awsports.pojo.DoublesMatch" resultMap="DoublesMatchMap">
+  	select 
+  	aw_doubles_match.*,
+	home.name as homeName,
+	guest.name as guestName
+  	from aw_doubles_match
+  	join aw_team as home on home.id=aw_doubles_match.homeId
+  	join aw_team as guest on guest.id=aw_doubles_match.guestId
+  	<where>
+  		<include refid="queryConditions"/>
+  	</where>
+  	group by aw_doubles_match.mirror
+  </select>
+  
+  <select id="findByEventId" parameterType="java.lang.Integer" resultMap="DoublesMatchMap">
+  	select 
+  	aw_doubles_match.*,
+	home.name as homeName,
+	guest.name as guestName
+  	from aw_doubles_match
+  	join aw_team as home on home.id=aw_doubles_match.homeId
+  	join aw_team as guest on guest.id=aw_doubles_match.guestId
+  	where eventId = #{eventId, jdbcType=INTEGER}
+  	group by aw_doubles_match.mirror
+  </select>
+  
+  <select id="findMirrorMatchByOrigin" parameterType="com.awsports.pojo.DoublesMatch" resultType="com.awsports.pojo.DoublesMatch">
+  	select 
+  	aw_doubles_match.*,
+	home.name as homeName,
+	guest.name as guestName
+  	from aw_doubles_match
+  	join aw_team as home on home.id=aw_doubles_match.homeId
+  	join aw_team as guest on guest.id=aw_doubles_match.guestId
+  	<![CDATA[where aw_doubles_match.id != #{id} and aw_doubles_match.mirror = #{mirror}]]>  	
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from aw_doubles_match
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteByMirror" parameterType="java.lang.String">
+  	delete from aw_doubles_match
+  	where mirror = #{mirror, jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByEventId" parameterType="java.lang.Integer">
+  	delete from aw_doubles_match
+  	where eventId = #{eventId, jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertOne" parameterType="com.awsports.pojo.DoublesMatch" useGeneratedKeys="true" keyProperty="id">
+    insert into aw_doubles_match
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="eventid != null">
+        eventId,
+      </if>
+      <if test="homeid != null">
+        homeId,
+      </if>
+      <if test="homepartnerid != null">
+        homePartnerId,
+      </if>
+      <if test="guestid != null">
+        guestId,
+      </if>
+      <if test="guestpartnerid != null">
+        guestPartnerId,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="round != null">
+        round,
+      </if>
+      <if test="ishomeretired != null">
+        isHomeRetired,
+      </if>
+      <if test="isguestretired != null">
+        isGuestRetired,
+      </if>
+      <if test="homepoint != null">
+        homePoint,
+      </if>
+      <if test="guestpoint != null">
+        guestPoint,
+      </if>
+      <if test="ishomewin != null">
+        isHomeWin,
+      </if>
+      <if test="createdat != null">
+        createdAt,
+      </if>
+      <if test="updatedat != null">
+        updatedAt,
+      </if>
+      <if test="invalid != null">
+        invalid,
+      </if>
+      <if test="mirror != null">
+        mirror,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="eventid != null">
+        #{eventid,jdbcType=INTEGER},
+      </if>
+      <if test="homeid != null">
+        #{homeid,jdbcType=INTEGER},
+      </if>
+      <if test="guestid != null">
+        #{guestid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null">
+        #{round,jdbcType=VARCHAR},
+      </if>
+      <if test="ishomeretired != null">
+        #{ishomeretired,jdbcType=BIT},
+      </if>
+      <if test="isguestretired != null">
+        #{isguestretired,jdbcType=BIT},
+      </if>
+      <if test="homepoint != null">
+        #{homepoint,jdbcType=INTEGER},
+      </if>
+      <if test="guestpoint != null">
+        #{guestpoint,jdbcType=INTEGER},
+      </if>
+      <if test="ishomewin != null">
+        #{ishomewin,jdbcType=BIT},
+      </if>
+      <if test="createdat != null">
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        #{invalid,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+        #{mirror,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  <update id="updateById" parameterType="com.awsports.pojo.DoublesMatch">
+    update aw_doubles_match
+    <set>
+      <if test="eventid != null">
+        eventId = #{eventid,jdbcType=INTEGER},
+      </if>
+      <if test="homeid != null">
+        homeId = #{homeid,jdbcType=INTEGER},
+      </if>
+      <if test="guestid != null">
+        guestId = #{guestid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null">
+        round = #{round,jdbcType=VARCHAR},
+      </if>
+      <if test="ishomeretired != null">
+        isHomeRetired = #{ishomeretired,jdbcType=BIT},
+      </if>
+      <if test="isguestretired != null">
+        isGuestRetired = #{isguestretired,jdbcType=BIT},
+      </if>
+      <if test="homepoint != null">
+        homePoint = #{homepoint,jdbcType=INTEGER},
+      </if>
+      <if test="guestpoint != null">
+        guestPoint = #{guestpoint,jdbcType=INTEGER},
+      </if>
+      <if test="ishomewin != null">
+        isHomeWin = #{ishomewin,jdbcType=BIT},
+      </if>
+      <if test="createdat != null">
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invalid != null">
+        invalid = #{invalid,jdbcType=BIT},
+      </if>
+      <if test="mirror != null">
+        mirror = #{mirror,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

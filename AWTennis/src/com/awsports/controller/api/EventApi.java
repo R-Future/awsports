@@ -57,12 +57,9 @@ public class EventApi extends BaseApi {
 	@Autowired
 	private TeamService teamService;
 	
-	protected void setSelectedParam(HttpServletRequest request, HashMap<String, Object[]> params) {
-		super.setSelectedParam(request, params);
-	}
 	
-	protected boolean verifyParam(HttpServletRequest request, String sign) {
-		return super.verifyParam(request, sign);
+	protected boolean verifyParam(HttpServletRequest request, String sign, HashMap<String, Object[]> params) {
+		return super.verifyParam(request, sign, params);
 	}
 	
 	protected Object setCondition(String className, HttpServletRequest request, HashMap<String, Object[]> params) throws Exception {
@@ -106,11 +103,8 @@ public class EventApi extends BaseApi {
 		params.put("publisher", new Object[]{false, Pattern.compile(RegexPattern.INTEGER), "setPublisher", "Integer"});
 		params.put("year", new Object[]{false, Pattern.compile(RegexPattern.INTEGER), "setYear", "Integer"});
 		
-		//connect the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//validate parameters successfully
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				//通过反射机制获取condition
 				//有可能因为无参数而导致condition=null		
@@ -193,11 +187,8 @@ public class EventApi extends BaseApi {
 		params.put("schedule", new Object[]{false, null, "setSchedule", "String"});
 		params.put("note", new Object[]{false, null, "setNote", "String"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				Event event = (Event)this.setCondition(Event.class.getName(), request, params);
 				if(null!=event){
@@ -247,11 +238,8 @@ public class EventApi extends BaseApi {
 		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
 		params.put("id", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setId", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				Event event = (Event)this.setCondition(Event.class.getName(), request, params);
 				if(null!=event){
@@ -324,11 +312,8 @@ public class EventApi extends BaseApi {
 		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				EventPlayer condition = (EventPlayer)this.setCondition(EventPlayer.class.getName(), request, params);
 				if(null!=condition){
@@ -375,11 +360,8 @@ public class EventApi extends BaseApi {
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		params.put("userId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setUserid", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				EventPlayer condition = (EventPlayer)this.setCondition(EventPlayer.class.getName(), request, params);
 				if(null!=condition){
@@ -432,11 +414,8 @@ public class EventApi extends BaseApi {
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		params.put("id", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setId", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				EventPlayer condition = (EventPlayer)this.setCondition(EventPlayer.class.getName(), request, params);
 				if(null!=condition){
@@ -478,11 +457,8 @@ public class EventApi extends BaseApi {
 		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				EventWorker condition = (EventWorker)this.setCondition(EventWorker.class.getName(), request, params);
 				if(null!=condition){
@@ -529,11 +505,8 @@ public class EventApi extends BaseApi {
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		params.put("userId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setUserid", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				EventWorker condition = (EventWorker)this.setCondition(EventWorker.class.getName(), request, params);
 				if(null!=condition){
@@ -586,11 +559,8 @@ public class EventApi extends BaseApi {
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		params.put("id", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setId", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				EventWorker condition = (EventWorker)this.setCondition(EventWorker.class.getName(), request, params);
 				if(null!=condition){
@@ -632,11 +602,8 @@ public class EventApi extends BaseApi {
 		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setMatchid", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try {
 				HashMap<String, Object> matches = new HashMap<String, Object>();
 				//singles match
@@ -705,11 +672,8 @@ public class EventApi extends BaseApi {
 		params.put("isHomeWin", new Object[]{true, Pattern.compile(RegexPattern.BOOLEAN), "setIshomewin", "Boolean"});
 		params.put("note", new Object[]{false, null, "setNote", "String"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try{
 				if("singlesmatch".equals(type)){
 					SinglesMatch condition = (SinglesMatch)this.setCondition(SinglesMatch.class.getName(), request, params);
@@ -786,11 +750,8 @@ public class EventApi extends BaseApi {
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		params.put("id", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setId", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try{
 				if("singlesmatch".equals(type)){
 					SinglesMatch condition = (SinglesMatch)this.setCondition(SinglesMatch.class.getName(), request, params);
@@ -854,11 +815,8 @@ public class EventApi extends BaseApi {
 		params.put("matchId", new Object[]{true, Pattern.compile(RegexPattern.validateString(1, 50)), "setMatchid", "String"});
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try{
 				Statistic condition = (Statistic)this.setCondition(Statistic.class.getName(), request, params);
 				if(null!=condition){
@@ -920,11 +878,8 @@ public class EventApi extends BaseApi {
 		params.put("services", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setServices", "Integer"});
 		params.put("note", new Object[]{false, null, "setNote", "String"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try{
 				Statistic condition = (Statistic)this.setCondition(Statistic.class.getName(), request, params);
 				if(null!=condition){
@@ -976,11 +931,8 @@ public class EventApi extends BaseApi {
 		params.put("eventId", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEventid", "Integer"});
 		params.put("matchId", new Object[]{true, Pattern.compile(RegexPattern.validateString(1, 50)), "setMatchid", "String"});
 		
-		//get the selected parameters
-		this.setSelectedParam(request, params);
-		
 		//verify parameters
-		if(this.verifyParam(request, sign)){
+		if(this.verifyParam(request, sign, params)){
 			try{
 				Statistic condition = (Statistic)this.setCondition(Statistic.class.getName(), request, params);
 				if(null!=condition){

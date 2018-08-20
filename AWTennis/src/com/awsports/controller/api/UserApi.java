@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -32,14 +31,14 @@ import com.awsports.service.TeamService;
 import com.awsports.service.TeamrankService;
 import com.awsports.service.TeamrankestService;
 import com.awsports.service.UserService;
-import com.awsports.util.ResponseInfo;
 import com.awsports.util.GenerateCardNumber;
 import com.awsports.util.MD5;
 import com.awsports.util.RegexPattern;
+import com.awsports.util.ResponseInfo;
 import com.awsports.util.StatusEnum;
 
 @Controller
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class UserApi extends BaseApi{
 
 	@Autowired
@@ -68,7 +67,7 @@ public class UserApi extends BaseApi{
 	
 //	private SimpleDateFormat simpleDateFormat;
 	
-	public UserApi(){
+//	public UserApi(){
 		//构造函数不运行
 //		simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //		userInfo = new HashMap<String, Object>();
@@ -77,9 +76,9 @@ public class UserApi extends BaseApi{
 //		teamrankInfo = new HashMap<String, Object>();
 //		singlematchInfo = new ArrayList<HashMap<String, Object>>();
 //		doublematchInfo = new ArrayList<HashMap<String, Object>>();
-	}
+//	}
 	
-	public void initialize(){
+	protected void initialize(){
 		super.initialize();
 		userInfo = new HashMap<String, Object>();
 		profileInfo = new HashMap<String, Object>();
@@ -97,6 +96,14 @@ public class UserApi extends BaseApi{
 		teamrankInfo.clear();
 		singlematchInfo.clear();
 		doublematchInfo.clear();
+	}
+	
+	protected boolean verifyParam(HttpServletRequest request, String sign, HashMap<String, Object[]> params){
+		return super.verifyParam(request, sign, params);
+	}
+	
+	protected Object setCondition(String className, HttpServletRequest request, HashMap<String, Object[]> params) throws Exception{
+		return super.setCondition(className, request, params);
 	}
 	
 	/**
@@ -126,25 +133,20 @@ public class UserApi extends BaseApi{
 	 * @Description: 获取会员信息
 	 *
 	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public void getOne(@PathVariable("id") Integer id, String sign, HttpServletResponse response){
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public void getOne(String sign, HttpServletRequest request, HttpServletResponse response){
 		this.initialize();
 		
-		if (sign == null) {
-			status = StatusEnum.INVALID_REQUEST.getValue();
-			msg = "INVALID_REQUEST";
-			error = "sign is missing";
-		} else {
-			mySign = MD5.Encode("id="+id+"&token="+token).toUpperCase();
-			// 匹配签名
-			if (!mySign.equals(sign)) {
-				//验证失败
-				status = StatusEnum.INVALID_REQUEST.getValue();
-				msg = "INVALID_REQUEST";
-				error = "varification failed";
-			}else{
-				try{
-					User user = userService.findById(id);
+		//arguments need to be validated
+		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
+		params.put("id", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setId", "Integer"});
+		
+		
+		if(this.verifyParam(request, sign, params)){
+			try{
+				User condition = (User)this.setCondition(User.class.getName(), request, params);
+				if(null != condition){
+					User user = userService.findById(condition.getId());
 					if (user == null) {
 						status = StatusEnum.NOT_FOUND.getValue();
 						msg = "NOT_FOUND";
@@ -153,7 +155,7 @@ public class UserApi extends BaseApi{
 						//获取该用户其它相关信息
 						//当前排名
 						Individualrank irkCondition = new Individualrank();
-						irkCondition.setUserid(id);
+						irkCondition.setUserid(user.getId());
 						irkCondition.setYear(date.getYear());
 						List<Individualrank> individualranks = individualrankService.findUserRank(irkCondition);
 						//最高排名记录
@@ -169,16 +171,20 @@ public class UserApi extends BaseApi{
 						userInfo.put("singlematch", ResponseInfo.getSinglematchInfo(singlematchQuerys));
 						//获取双打比赛记录
 						List<DoublematchQuery> doublematchQuerys = doublematchService.findByUser(user);
-						userInfo.put("doublematch", ResponseInfo.getDoublematchInfo(doublematchQuerys, id));
+						userInfo.put("doublematch", ResponseInfo.getDoublematchInfo(doublematchQuerys, user.getId()));
 						
 						status = StatusEnum.GET_SUCCESS.getValue();
 						msg = "GET_SUCCESS";
 						data.add(userInfo);
 					}
-				}catch(Exception e){
-					//TODO: 数据库访问异常返回结果
-					e.printStackTrace();
+				}else{
+					status = StatusEnum.NOT_FOUND.getValue();
+					msg = "NOT_FOUND";
 				}
+			}catch(Exception e){
+				error = e.toString();
+				msg = INVALID_REQUEST;
+				status = StatusEnum.INVALID_REQUEST.getValue();
 			}
 		}
 
@@ -198,7 +204,7 @@ public class UserApi extends BaseApi{
 	 * @Description: 绑定会员
 	 *
 	 */
-	@RequestMapping(value = "/binding", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/binding", method = RequestMethod.GET)
 	public void bind(String phone, String cardNum, String sign, HttpServletRequest request, HttpServletResponse response){
 		logger.info("绑定会员");
 		this.initialize();
@@ -276,7 +282,7 @@ public class UserApi extends BaseApi{
 	 * @Description: 会员注册
 	 *
 	 */
-	@RequestMapping(value = "/registering", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/registering", method = RequestMethod.POST)
 	public void register(String sign, HttpServletRequest request, HttpServletResponse response){
 		this.initialize();
 		String tip = verify(request);

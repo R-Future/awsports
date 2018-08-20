@@ -3,14 +3,12 @@ package com.awsports.controller.api;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +53,7 @@ public class BaseApi {
 	
 	protected JSONObject jsonObject;
 	
-	private TreeMap<String, Object[]> selectedParams;
+//	private TreeMap<String, Object[]> selectedParams;
 
 	public BaseApi(){
 		//构造函数不运行？？？
@@ -137,37 +135,6 @@ public class BaseApi {
 	/**
 	 * 
 	 * @Author: peRFect
-	 * @Datetime: 2018年8月14日 下午10:43:43
-	 * @param request
-	 * @param params: {"publisher", new Object[]{false, Pattern.compile(RegexPattern.INTEGER), "setPublisher", int.class}}
-	 * @Return: TreeMap<String,Object[]>
-	 * @Description: 
-	 *
-	 */
-	protected void setSelectedParam(HttpServletRequest request, HashMap<String, Object[]> params) {
-		if(null!=request&&null!=params){
-			selectedParams = new TreeMap<String, Object[]>(new Comparator<String>(){
-				//sort by alpha 
-				public int compare(String key1, String key2){
-					return key1.compareTo(key2);
-				}
-			});
-			Set<Entry<String, Object[]>> set = params.entrySet();
-			Iterator<Entry<String, Object[]>> it = set.iterator();
-			while(it.hasNext()){
-				Map.Entry<String, Object[]> me = (Map.Entry<String, Object[]>)it.next();
-				if(null!=request.getParameter(me.getKey())){
-					selectedParams.put(me.getKey(), me.getValue());
-				}
-			}
-		}else{
-			selectedParams = null;
-		}
-	}
-	
-	/**
-	 * 
-	 * @Author: peRFect
 	 * @Datetime: 2018年8月14日 下午9:19:50
 	 * @param request: parameters from front-end through HTTP
 	 * @param sign: md5 for validating the parameters
@@ -175,39 +142,43 @@ public class BaseApi {
 	 * @Description: 
 	 *
 	 */
-	protected boolean verifyParam(HttpServletRequest request, String sign){
+	protected boolean verifyParam(HttpServletRequest request, String sign, HashMap<String, Object[]> params){
 		try {
-			if(null==selectedParams||null==sign){
+			if(null==sign){
+				error = "sign is missing";
 				msg = INVALID_REQUEST;
 				status = StatusEnum.INVALID_REQUEST.getValue();
 				return false;
 			}else{
-				Set<Entry<String, Object[]>> set = selectedParams.entrySet();
-				Iterator<Entry<String, Object[]>> it = set.iterator();
 				StringBuffer sb  = new StringBuffer();
-				while(it.hasNext()){
-					Map.Entry<String, Object[]> me = (Map.Entry<String, Object[]>)it.next();
-					String pValue = request.getParameter(me.getKey().toString());
-					if(null!=pValue){
-						//the parameter exists
-						Pattern pattern = (Pattern)me.getValue()[1];
-						if(null!=pattern&&!pattern.matcher(pValue).matches()){
-							//check fail
-							error = me.getKey().toString()+" is invalid!";
-							msg = INVALID_REQUEST;
-							status = StatusEnum.INVALID_REQUEST.getValue();
-							return false;
+				if(null!=params){
+					Set<Entry<String, Object[]>> set = params.entrySet();
+					Iterator<Entry<String, Object[]>> it = set.iterator();
+					while(it.hasNext()){
+						Map.Entry<String, Object[]> me = (Map.Entry<String, Object[]>)it.next();
+						String pValue = request.getParameter(me.getKey().toString());
+						if(null!=pValue){
+							//the parameter exists, it means it should be checked.
+							Pattern pattern = (Pattern)me.getValue()[1];
+							if(null!=pattern&&!pattern.matcher(pValue).matches()){
+								//check fail
+								error = me.getKey().toString()+" is invalid!";
+								msg = INVALID_REQUEST;
+								status = StatusEnum.INVALID_REQUEST.getValue();
+								return false;
+							}else{
+								//calculate mySign for validation
+								sb.append(me.getKey().toString()+"="+pValue+"&");
+							}
 						}else{
-							//calculate mySign for validation
-							sb.append(me.getKey().toString()+"="+pValue+"&");
-						}
-					}else{
-						if((boolean)me.getValue()[0]){
-							//the required parameter is missing
-							error = me.getKey().toString()+" is missing!";
-							msg = INVALID_REQUEST;
-							status = StatusEnum.INVALID_REQUEST.getValue();
-							return false;
+							//the parameter does not exist
+							if((boolean)me.getValue()[0]){
+								//the required parameter is missing
+								error = me.getKey().toString()+" is missing!";
+								msg = INVALID_REQUEST;
+								status = StatusEnum.INVALID_REQUEST.getValue();
+								return false;
+							}
 						}
 					}
 				}
@@ -247,8 +218,8 @@ public class BaseApi {
 		//set conditions and return the instance
 		Class<?> cla = Class.forName(className);
 		Object obj = cla.newInstance();
-		if(null!=selectedParams){
-			Set<Entry<String, Object[]>> set = selectedParams.entrySet();
+		if(null!=params){
+			Set<Entry<String, Object[]>> set = params.entrySet();
 			Iterator<Entry<String, Object[]>> it = set.iterator();
 			while(it.hasNext()){
 				Map.Entry<String, Object[]> me = (Map.Entry<String, Object[]>)it.next();

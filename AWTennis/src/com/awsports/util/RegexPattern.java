@@ -25,6 +25,6 @@ public class RegexPattern {
 	public static String INTEGER = "^\\d+$";
 	//validate string, length=[least, most], include Chinese, English, number and underline
 	public static String validateString(int least, int most) {
-		return "^[\u4E00-\u9FA5A-Za-z0-9_]\\w{"+least+","+most+"}$";
+		return "^[\u4E00-\u9FA5A-Za-z0-9_]{"+least+","+most+"}$";
 	}
 }

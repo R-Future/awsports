@@ -23,7 +23,7 @@ import com.awsports.util.StatusEnum;
 import com.awsports.util.TypeMap;
 
 @Controller
-@RequestMapping("/api/ranking")
+@RequestMapping("/api")
 public class RankingApi extends BaseApi {
 
 	@Autowired
@@ -51,10 +51,14 @@ public class RankingApi extends BaseApi {
 	 * @Description: 获取排名
 	 *
 	 */
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = "/rank", method = RequestMethod.GET)
 	public void getRank(Integer year, Integer entry, String sign, HttpServletRequest request, HttpServletResponse response){
 		
 		this.initialize();
+		
+//		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
+//		params.put("year", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setYear", "Integer"});
+//		params.put("entry", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setEntry", "Integer"});
 		
 		if(entry == null){
 			//entry是必选参数

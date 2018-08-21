@@ -1,11 +1,8 @@
 package com.awsports.controller.api;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +29,6 @@ import com.awsports.service.TeamrankService;
 import com.awsports.service.TeamrankestService;
 import com.awsports.service.UserService;
 import com.awsports.util.GenerateCardNumber;
-import com.awsports.util.MD5;
 import com.awsports.util.RegexPattern;
 import com.awsports.util.ResponseInfo;
 import com.awsports.util.StatusEnum;
@@ -141,7 +137,6 @@ public class UserApi extends BaseApi{
 		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
 		params.put("id", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setId", "Integer"});
 		
-		
 		if(this.verifyParam(request, sign, params)){
 			try{
 				User condition = (User)this.setCondition(User.class.getName(), request, params);
@@ -204,67 +199,46 @@ public class UserApi extends BaseApi{
 	 * @Description: 绑定会员
 	 *
 	 */
-	@RequestMapping(value = "/user/binding", method = RequestMethod.GET)
-	public void bind(String phone, String cardNum, String sign, HttpServletRequest request, HttpServletResponse response){
+	@RequestMapping(value = "/user/binding", method = RequestMethod.POST)
+	public void bind(String sign, HttpServletRequest request, HttpServletResponse response){
 		logger.info("绑定会员");
 		this.initialize();
-		//无参数
-		if(phone == null && cardNum == null){
-			status = StatusEnum.INVALID_REQUEST.getValue();
-			msg = INVALID_REQUEST;
-			error = "one or both of phone and cardNum should be needed";
-		}else{
-			if (sign == null) {
-				status = StatusEnum.INVALID_REQUEST.getValue();
-				msg = INVALID_REQUEST;
-				error = "sign is missing";
-			} else {
-				StringBuffer mySignTmp = new StringBuffer();
-				if(cardNum != null){
-					mySignTmp.append("cardNum="+cardNum);
-				}
-				if(phone != null){
-					if(cardNum != null) mySignTmp.append("&");
-					mySignTmp.append("phone="+phone);
-				}
-				mySignTmp.append("&token="+token);
-				mySign = MD5.Encode(mySignTmp.toString()).toUpperCase();
-				
-				if(!mySign.equals(sign)){
-					status = StatusEnum.INVALID_REQUEST.getValue();
-					msg = INVALID_REQUEST;
-					error = "varification failed";
-				}else{
-					//参数校验成功
-					try {
-						User user = new User();
-						user.setPhone(phone);
-						user.setCardnum(cardNum);
-						UserQuery userQuery = new UserQuery();
-						userQuery.setUser(user);
-						List<UserQuery> userQuerys = userService.findAll(userQuery);
-						if(userQuerys == null || userQuerys.isEmpty()){
-							//not found
-							status = StatusEnum.NOT_FOUND.getValue();
-							msg = NOT_FOUND;
-						}else{
-							status = StatusEnum.GET_SUCCESS.getValue();
-							msg = GET_SUCCESS;
-							//如果用户是通过手机绑定成功，但没有会员卡号，则生成一个会员卡号并更新到数据库
-							user = userQuerys.get(0).getUser();
-							if(user.getCardnum() == null || user.getCardnum().isEmpty()){
-								user.setCardnum(GenerateCardNumber.generate(user.getId()));
-								userService.updateById(user);
-							}
-							
-							data.add(ResponseInfo.getProfileInfo(user));
+		
+		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
+		params.put("phone", new Object[]{true, Pattern.compile(RegexPattern.PHONE), "setPhone", "String"});
+		params.put("cardNum", new Object[]{false, Pattern.compile(RegexPattern.validateString(15, 15)), "setCardnum", "String"});
+		
+		if(this.verifyParam(request, sign, params)){
+			try{
+				User condition = (User)this.setCondition(User.class.getName(), request, params);
+				if(null!=condition){
+					UserQuery userQuery = new UserQuery();
+					userQuery.setUser(condition);
+					List<UserQuery> userQuerys = userService.findAll(userQuery);
+					if(userQuerys == null || userQuerys.isEmpty()){
+						//not found
+						status = StatusEnum.NOT_FOUND.getValue();
+						msg = NOT_FOUND;
+					}else{
+						status = StatusEnum.GET_SUCCESS.getValue();
+						msg = GET_SUCCESS;
+						//如果用户是通过手机绑定成功，但没有会员卡号，则生成一个会员卡号并更新到数据库
+						User user = userQuerys.get(0).getUser();
+						if(user.getCardnum() == null || user.getCardnum().isEmpty()){
+							user.setCardnum(GenerateCardNumber.generate(user.getId()));
+							userService.updateById(user);
 						}
-					} catch (Exception e) {
-						// TODO 数据库异常返回信息
-						e.printStackTrace();
+						data.add(ResponseInfo.getProfileInfo(user));
 					}
-					
+				}else{
+					//not found
+					status = StatusEnum.NOT_FOUND.getValue();
+					msg = NOT_FOUND;
 				}
+			}catch(Exception e){
+				error = e.toString();
+				msg = INVALID_REQUEST;
+				status = StatusEnum.INVALID_REQUEST.getValue();
 			}
 		}
 		
@@ -284,239 +258,59 @@ public class UserApi extends BaseApi{
 	 */
 	@RequestMapping(value = "/user/registering", method = RequestMethod.POST)
 	public void register(String sign, HttpServletRequest request, HttpServletResponse response){
+		//initialize response body
 		this.initialize();
-		String tip = verify(request);
-		if(tip != null){
-			//参数验证失败
-			status = StatusEnum.INVALID_REQUEST.getValue();
-			msg = INVALID_REQUEST;
-			error = tip;
-		}else{
-			if(sign == null){
-				status = StatusEnum.INVALID_REQUEST.getValue();
-				msg = INVALID_REQUEST;
-				error = "sign is missing";
-			}else{
-				//验证参数
-				TreeMap<String, String> paramMap = new TreeMap<String, String>(new Comparator<String>(){
-					//字典顺序升序排列
-					public int compare(String s1, String s2){
-						return s1.compareTo(s2);
+		
+		//set parameters that need to be validated
+		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
+		params.put("id", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setId", "Integer"});
+		params.put("name", new Object[]{true, Pattern.compile(RegexPattern.NAME), "setName", "String"});
+		params.put("password", new Object[]{true, Pattern.compile(RegexPattern.validateString(32, 32)), "setPassword", "String"});
+		params.put("phone", new Object[]{true, Pattern.compile(RegexPattern.PHONE), "setPhone", "String"});
+		params.put("sex", new Object[]{true, Pattern.compile(RegexPattern.BOOLEAN), "setSex", "Boolean"});
+		params.put("email", new Object[]{false, Pattern.compile(RegexPattern.EMAIL), "setEmail", "String"});
+		params.put("nickname", new Object[]{false, Pattern.compile(RegexPattern.validateString(1, 15)), "setNickname", "String"});
+		params.put("realName", new Object[]{false, Pattern.compile(RegexPattern.validateString(1, 15)), "setRealname", "String"});
+		params.put("idCard", new Object[]{false, Pattern.compile(RegexPattern.IDCARD), "setIdcard", "String"});
+		params.put("address", new Object[]{false, Pattern.compile(RegexPattern.ADDRESS), "setAddress", "String"});
+		params.put("height", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setHeight", "Double"});
+		params.put("weight", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setWeight", "Double"});
+		params.put("level", new Object[]{false, Pattern.compile(RegexPattern.TENNIS_LEVEL), "setLevel", "Double"});
+		params.put("grade", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setGrade", "Integer"});
+		params.put("playedYears", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setPlayedyears", "Double"});
+		params.put("forehand", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setForehand", "Integer"});
+		params.put("backhand", new Object[]{true, Pattern.compile(RegexPattern.BOOLEAN), "setBackhand", "Boolean"});
+		
+		//check parameters
+		if(this.verifyParam(request, sign, params)){
+			try{
+				User user = (User)this.setCondition(User.class.getName(), request, params);
+				if(null!=user){
+					if(null==user.getId()){
+						//new user
+						userService.insertOne(user);
+						user.setCardnum(GenerateCardNumber.generate(user.getId()));
+						userService.updateById(user);
+					}else{
+						//old user
+						userService.updateById(user);
+						user = userService.findById(user.getId());
 					}
-				});
-				Enumeration<String> params = request.getParameterNames();
-				while(params.hasMoreElements()){
-					String param = params.nextElement();
-					paramMap.put(param, request.getParameter(param));
-				}
-				StringBuffer sb = new StringBuffer();
-				java.util.Iterator<String> iter = paramMap.keySet().iterator();
-				while(iter.hasNext()){
-					String paramName = iter.next();
-					sb.append(paramName+"="+request.getParameter(paramName)+"&");
-				}
-				sb.append("token="+token);
-				mySign = MD5.Encode(sb.toString()).toUpperCase();
-				if(!mySign.equals(sign)){
-					//验证失败
-					status = StatusEnum.INVALID_REQUEST.getValue();
-					msg = INVALID_REQUEST;
-					error = "verification failed";
+					status = StatusEnum.POST_SUCCESS.getValue();
+					msg = POST_SUCCESS;
+					data.add(ResponseInfo.getProfileInfo(user));
 				}else{
-					//验证通过
-					User user = new User();
-					user.setName(request.getParameter("name"));
-					//TODO 此处不应该加密，前端传回来的必须是MD5值
-					user.setPassword(request.getParameter("password"));
-					user.setPhone(request.getParameter("phone"));
-					user.setSex(Boolean.parseBoolean(request.getParameter("sex")));
-					user.setEmail(request.getParameter("email"));
-					user.setNickname(request.getParameter("nickname"));
-					user.setRealname(request.getParameter("realName"));
-					user.setIdcard(request.getParameter("idCard"));
-					user.setAddress(request.getParameter("address"));
-					user.setForehand(Integer.parseInt(request.getParameter("forehand")));
-					user.setBackhand(Boolean.parseBoolean(request.getParameter("backhand")));
-					user.setGrade(Integer.parseInt(request.getParameter("grade")));
-					if(request.getParameter("height") != null){
-						user.setHeight(Double.parseDouble(request.getParameter("height")));
-					}
-					if(request.getParameter("weight") != null){
-						user.setWeight(Double.parseDouble(request.getParameter("weight")));
-					}
-					if(request.getParameter("level") != null){
-						user.setLevel(Double.parseDouble(request.getParameter("level")));
-					}
-					if(request.getParameter("playedYears") != null){
-						user.setPlayedyears(Double.parseDouble(request.getParameter("playedYears")));
-					}
-					if(request.getParameter("id") != null){
-						user.setId(Integer.parseInt(request.getParameter("id")));
-					}
-					try{
-						if(user.getId() == null){
-							//注册新用户
-							userService.insertOne(user);
-							user.setCardnum(GenerateCardNumber.generate(user.getId()));
-							userService.updateById(user);
-						}else{
-							//更新老用户
-							userService.updateById(user);
-							user = userService.findById(user.getId());
-						}
-						status = StatusEnum.POST_SUCCESS.getValue();
-						msg = CREATED;
-						data.add(ResponseInfo.getProfileInfo(user));
-					}catch(Exception e){
-						//TODO 数据库异常处理
-						e.printStackTrace();
-					}finally{
-						//TODO 返回异常信息
-					}
-				}	
+					msg = INVALID_REQUEST;
+					status = StatusEnum.INVALID_REQUEST.getValue();
+				}
+			}catch(Exception e){
+				error = e.toString();
+				msg = INVALID_REQUEST;
+				status = StatusEnum.INVALID_REQUEST.getValue();
 			}
 		}
 		
 		this.respond(response);
 	}
 	
-	/**
-	 * 
-	 * @Author: peRFect
-	 * @Datetime: 2017年11月18日 下午3:39:39
-	 * @param request
-	 * @Return: String
-	 * @Description: 验证请求参数
-	 *
-	 */
-	private String verify(HttpServletRequest request){
-		String id = request.getParameter("id");
-		String name = request.getParameter("name");
-		String password = request.getParameter("password");
-		String phone = request.getParameter("phone");
-		String sex = request.getParameter("sex");
-		String email = request.getParameter("email");
-		String nickname = request.getParameter("nickname");
-		String realName = request.getParameter("realName");
-		String idCard = request.getParameter("idCard");
-		String address = request.getParameter("address");
-		String height = request.getParameter("height");
-		String weight = request.getParameter("weight");
-		String level = request.getParameter("level");
-		String grade = request.getParameter("grade");
-		String playedYears = request.getParameter("playedYears");
-		String forehand = request.getParameter("forehand");
-		String backhand = request.getParameter("backhand");
-		
-		Pattern integerPattern = Pattern.compile(RegexPattern.INTEGER);
-		Pattern numPattern = Pattern.compile(RegexPattern.NUMBERIC);
-		Pattern boolPattern = Pattern.compile(RegexPattern.BOOLEAN);
-		Pattern namePattern = Pattern.compile(RegexPattern.NAME);
-		
-		if(id != null && !integerPattern.matcher(id).matches()){
-			return "id should be an integer";
-		}
-		if(name == null){
-			return "name is missing";
-		}else{
-			if(!namePattern.matcher(name).matches()){
-				//匹配失败
-				return "name is a string of 2 to 15, containing Chinese characters, English letters, numberics and underscores";
-			}else{
-				try {
-					User user = userService.findByName(name);
-					if(user != null){
-						if(id == null || (id != null && !user.getId().toString().equals(id))){
-							return "this user name has already been registered";
-						}
-					}
-				} catch (Exception e) {
-					// TODO 数据库异常处理
-					e.printStackTrace();
-				}
-			}
-		}
-		if(password == null){
-			return "password is missing";
-		}else{
-			if(!Pattern.compile(RegexPattern.PASSWORD).matcher(password).matches()){
-				return "password is a string of 6 to 18 beginning with letter, containing English letters, numberics and underscores";
-			}
-		}
-		if(phone == null){
-			return "phone is missing";
-		}else{
-			if(!Pattern.compile(RegexPattern.PHONE).matcher(phone).matches()){
-				return "phone is a string of 11, just containing numberics";
-			}else{
-				try{
-					User user = userService.findByPhone(phone);
-					if(user != null){
-						if(id == null || (id != null && !user.getId().toString().equals(id))){
-							return "this phone number has already been registered";	
-						}
-					}
-				}catch(Exception e){
-					//TODO 数据库异常处理
-					e.printStackTrace();
-				}
-			}
-		}
-		if(sex == null){
-			return "sex is missing";
-		}else{
-			if(!boolPattern.matcher(sex).matches()){
-				return "sex is a boolean";
-			}
-		}
-		if(grade == null){
-			return "grade is missing";
-		}else{
-			if(!integerPattern.matcher(grade).matches()){
-				return "grade should be an integer";
-			}
-		}
-		if(email != null && !Pattern.compile(RegexPattern.EMAIL).matcher(email).matches()){
-			return "email is invalid";
-		}
-		if(nickname != null && !namePattern.matcher(nickname).matches()){
-			return "nickname is a string of 2 to 15, containing Chinese characters, English letters, numberics and underscores";
-		}
-		if(realName != null && !namePattern.matcher(realName).matches()){
-			return "realName is a string of 2 to 15, containing Chinese characters, English letters, numberics and underscores";
-		}
-		if(idCard != null && !Pattern.compile(RegexPattern.IDCARD).matcher(idCard).matches()){
-			return "idCard is a string of 15 or 18";
-		}
-		if(address != null && !Pattern.compile(RegexPattern.ADDRESS).matcher(address).matches()){
-			return "address is a string of 2 to 20, containing Chinese characters, Enlish letters, numberics";
-		}
-		if(height != null && !numPattern.matcher(height).matches()){
-			return "height should be a numberic";
-		}
-		if(weight != null && !numPattern.matcher(weight).matches()){
-			return "weight should be a numberic";
-		}
-		if(playedYears != null && !numPattern.matcher(playedYears).matches()){
-			return "playedYear should be a numberic";
-		}
-		if(level != null && !Pattern.compile(RegexPattern.TENNIS_LEVEL).matcher(level).matches()){
-			return "level is between 1.0 and 7.0";
-		}
-		if(forehand == null){
-			return "forehand is missing";
-		}else{
-			if(!Pattern.compile(RegexPattern.FOREHAND).matcher(forehand).matches()){
-				return "forehand is a numeric from 1 to 3";
-			}
-		}
-		if(backhand == null){
-			return "backhand is missing";
-		}else{
-			if(!boolPattern.matcher(backhand).matches()){
-				return "backhand is a boolean";
-			}
-		}
-		return null;
-	}
 }

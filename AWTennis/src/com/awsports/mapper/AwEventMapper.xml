@@ -4,7 +4,8 @@
   <resultMap id="BaseResultMap" type="com.awsports.pojo.AwEvent">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="publisher" jdbcType="INTEGER" property="publisher" />
-    <result column="contact" jdbcType="INTEGER" property="contact" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="contactInfo" jdbcType="VARCHAR" property="contactinfo" />
     <result column="cover" jdbcType="VARCHAR" property="cover" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="place" jdbcType="VARCHAR" property="place" />
@@ -85,9 +86,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, publisher, contact, cover, name, place, type, sponsor, numberOfPlayer, startTime, 
-    endTime, cost, enrollingTime, closingTime, draw, schedule, createdAt, updatedAt, 
-    invalid
+    id, publisher, contact, contactInfo, cover, name, place, type, sponsor, numberOfPlayer, 
+    startTime, endTime, cost, enrollingTime, closingTime, draw, schedule, createdAt, 
+    updatedAt, invalid
   </sql>
   <sql id="Blob_Column_List">
     detail, note
@@ -142,21 +143,21 @@
   </delete>
   <insert id="insert" parameterType="com.awsports.pojo.AwEventWithBLOBs">
     insert into aw_event (id, publisher, contact, 
-      cover, name, place, 
-      type, sponsor, numberOfPlayer, 
-      startTime, endTime, cost, 
-      enrollingTime, closingTime, draw, 
-      schedule, createdAt, updatedAt, 
-      invalid, detail, note
-      )
-    values (#{id,jdbcType=INTEGER}, #{publisher,jdbcType=INTEGER}, #{contact,jdbcType=INTEGER}, 
-      #{cover,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{place,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{sponsor,jdbcType=VARCHAR}, #{numberofplayer,jdbcType=INTEGER}, 
-      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{cost,jdbcType=DOUBLE}, 
-      #{enrollingtime,jdbcType=TIMESTAMP}, #{closingtime,jdbcType=TIMESTAMP}, #{draw,jdbcType=CHAR}, 
-      #{schedule,jdbcType=CHAR}, #{createdat,jdbcType=TIMESTAMP}, #{updatedat,jdbcType=TIMESTAMP}, 
-      #{invalid,jdbcType=BIT}, #{detail,jdbcType=LONGVARCHAR}, #{note,jdbcType=LONGVARCHAR}
-      )
+      contactInfo, cover, name, 
+      place, type, sponsor, 
+      numberOfPlayer, startTime, endTime, 
+      cost, enrollingTime, closingTime, 
+      draw, schedule, createdAt, 
+      updatedAt, invalid, detail, 
+      note)
+    values (#{id,jdbcType=INTEGER}, #{publisher,jdbcType=INTEGER}, #{contact,jdbcType=VARCHAR}, 
+      #{contactinfo,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{place,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{sponsor,jdbcType=VARCHAR}, 
+      #{numberofplayer,jdbcType=INTEGER}, #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, 
+      #{cost,jdbcType=DOUBLE}, #{enrollingtime,jdbcType=TIMESTAMP}, #{closingtime,jdbcType=TIMESTAMP}, 
+      #{draw,jdbcType=CHAR}, #{schedule,jdbcType=CHAR}, #{createdat,jdbcType=TIMESTAMP}, 
+      #{updatedat,jdbcType=TIMESTAMP}, #{invalid,jdbcType=BIT}, #{detail,jdbcType=LONGVARCHAR}, 
+      #{note,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.awsports.pojo.AwEventWithBLOBs">
     insert into aw_event
@@ -169,6 +170,9 @@
       </if>
       <if test="contact != null">
         contact,
+      </if>
+      <if test="contactinfo != null">
+        contactInfo,
       </if>
       <if test="cover != null">
         cover,
@@ -233,7 +237,10 @@
         #{publisher,jdbcType=INTEGER},
       </if>
       <if test="contact != null">
-        #{contact,jdbcType=INTEGER},
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="contactinfo != null">
+        #{contactinfo,jdbcType=VARCHAR},
       </if>
       <if test="cover != null">
         #{cover,jdbcType=VARCHAR},
@@ -307,7 +314,10 @@
         publisher = #{record.publisher,jdbcType=INTEGER},
       </if>
       <if test="record.contact != null">
-        contact = #{record.contact,jdbcType=INTEGER},
+        contact = #{record.contact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactinfo != null">
+        contactInfo = #{record.contactinfo,jdbcType=VARCHAR},
       </if>
       <if test="record.cover != null">
         cover = #{record.cover,jdbcType=VARCHAR},
@@ -372,7 +382,8 @@
     update aw_event
     set id = #{record.id,jdbcType=INTEGER},
       publisher = #{record.publisher,jdbcType=INTEGER},
-      contact = #{record.contact,jdbcType=INTEGER},
+      contact = #{record.contact,jdbcType=VARCHAR},
+      contactInfo = #{record.contactinfo,jdbcType=VARCHAR},
       cover = #{record.cover,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       place = #{record.place,jdbcType=VARCHAR},
@@ -399,7 +410,8 @@
     update aw_event
     set id = #{record.id,jdbcType=INTEGER},
       publisher = #{record.publisher,jdbcType=INTEGER},
-      contact = #{record.contact,jdbcType=INTEGER},
+      contact = #{record.contact,jdbcType=VARCHAR},
+      contactInfo = #{record.contactinfo,jdbcType=VARCHAR},
       cover = #{record.cover,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       place = #{record.place,jdbcType=VARCHAR},
@@ -427,7 +439,10 @@
         publisher = #{publisher,jdbcType=INTEGER},
       </if>
       <if test="contact != null">
-        contact = #{contact,jdbcType=INTEGER},
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="contactinfo != null">
+        contactInfo = #{contactinfo,jdbcType=VARCHAR},
       </if>
       <if test="cover != null">
         cover = #{cover,jdbcType=VARCHAR},
@@ -489,7 +504,8 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.awsports.pojo.AwEventWithBLOBs">
     update aw_event
     set publisher = #{publisher,jdbcType=INTEGER},
-      contact = #{contact,jdbcType=INTEGER},
+      contact = #{contact,jdbcType=VARCHAR},
+      contactInfo = #{contactinfo,jdbcType=VARCHAR},
       cover = #{cover,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       place = #{place,jdbcType=VARCHAR},
@@ -513,7 +529,8 @@
   <update id="updateByPrimaryKey" parameterType="com.awsports.pojo.AwEvent">
     update aw_event
     set publisher = #{publisher,jdbcType=INTEGER},
-      contact = #{contact,jdbcType=INTEGER},
+      contact = #{contact,jdbcType=VARCHAR},
+      contactInfo = #{contactinfo,jdbcType=VARCHAR},
       cover = #{cover,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       place = #{place,jdbcType=VARCHAR},

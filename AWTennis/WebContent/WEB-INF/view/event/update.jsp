@@ -52,19 +52,12 @@
 			
 			<div class="form-group">
 				<label for="contact">联系人</label>
-				<select id="contact" name="contact" class="form-control select-chosen">
-					<option value="default">-请选择-</option>
-					<c:forEach items="${ userQuerys }" var="userQuery">
-						<c:choose>
-							<c:when test="${ userQuery.user.id.equals(event.contact) }">
-								<option value="${ userQuery.user.id }" selected="selected">${ userQuery.user.name }</option>
-							</c:when>
-							<c:otherwise>
-								<option value="${ userQuery.user.id }">${ userQuery.user.name }</option>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</select>
+				<input type="text" name="contact" id="contact" value="${event.contact}" class="form-control"/>
+			</div>
+			
+			<div class="form-group">
+				<label for="contactinfo">联系方式</label>
+				<input type="text" name="contactinfo" id="contactinfo" value="${event.contactinfo}" class="form-control"/>
 			</div>
 			
 			<div class="form-group">

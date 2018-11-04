@@ -90,7 +90,7 @@
 						<td><spring:eval expression="eventQuerys[${i}].event.cost" /></td>
 						<td>${ eventQuerys[i].event.detail }</td>
 						<td>${ eventQuerys[i].userPublisher.name }</td>
-						<td>${ eventQuerys[i].userContact.name }</td>
+						<td>${ eventQuerys[i].event.contact }</td>
 						<td>
 							<a href="<%=request.getContextPath()%>/event/update?id=${eventQuerys[i].event.id}" title="修改" onclick="return updateConfirm();"><i class="fa fa-edit"></i></a>
 							<a href="<%=request.getContextPath()%>/event/delete?id=${eventQuerys[i].event.id}" title="删除" onclick="return deleteConfirm();"><i class="fa fa-trash"></i></a>

@@ -41,6 +41,7 @@ public class ResponseInfo {
 		profileInfo.put("id", user.getId());
 		profileInfo.put("name", user.getName());
 		profileInfo.put("nickname", user.getNickname());
+		profileInfo.put("avatar", user.getPortrait());
 		profileInfo.put("sex", TypeMap.sexType().get(user.getSex()));
 		profileInfo.put("realname", user.getRealname());
 		profileInfo.put("phone", user.getPhone());
@@ -267,7 +268,8 @@ public class ResponseInfo {
 			event = new HashMap<String, Object>();
 			event.put("id", eventQuery.getEvent().getId());
 			event.put("publisher", eventQuery.getUserPublisher());
-			event.put("contact", eventQuery.getUserContact());
+			event.put("contact", eventQuery.getEvent().getContact());
+			event.put("contactInfo", eventQuery.getEvent().getContactinfo());
 			event.put("cover", eventQuery.getEvent().getCover());
 			event.put("name", eventQuery.getEvent().getName());
 			event.put("place", eventQuery.getEvent().getPlace());

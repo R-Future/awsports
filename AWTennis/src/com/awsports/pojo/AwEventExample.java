@@ -235,53 +235,133 @@ public class AwEventExample {
             return (Criteria) this;
         }
 
-        public Criteria andContactEqualTo(Integer value) {
+        public Criteria andContactEqualTo(String value) {
             addCriterion("contact =", value, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactNotEqualTo(Integer value) {
+        public Criteria andContactNotEqualTo(String value) {
             addCriterion("contact <>", value, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactGreaterThan(Integer value) {
+        public Criteria andContactGreaterThan(String value) {
             addCriterion("contact >", value, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactGreaterThanOrEqualTo(Integer value) {
+        public Criteria andContactGreaterThanOrEqualTo(String value) {
             addCriterion("contact >=", value, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactLessThan(Integer value) {
+        public Criteria andContactLessThan(String value) {
             addCriterion("contact <", value, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactLessThanOrEqualTo(Integer value) {
+        public Criteria andContactLessThanOrEqualTo(String value) {
             addCriterion("contact <=", value, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactIn(List<Integer> values) {
+        public Criteria andContactLike(String value) {
+            addCriterion("contact like", value, "contact");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactNotLike(String value) {
+            addCriterion("contact not like", value, "contact");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactIn(List<String> values) {
             addCriterion("contact in", values, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactNotIn(List<Integer> values) {
+        public Criteria andContactNotIn(List<String> values) {
             addCriterion("contact not in", values, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactBetween(Integer value1, Integer value2) {
+        public Criteria andContactBetween(String value1, String value2) {
             addCriterion("contact between", value1, value2, "contact");
             return (Criteria) this;
         }
 
-        public Criteria andContactNotBetween(Integer value1, Integer value2) {
+        public Criteria andContactNotBetween(String value1, String value2) {
             addCriterion("contact not between", value1, value2, "contact");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoIsNull() {
+            addCriterion("contactInfo is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoIsNotNull() {
+            addCriterion("contactInfo is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoEqualTo(String value) {
+            addCriterion("contactInfo =", value, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoNotEqualTo(String value) {
+            addCriterion("contactInfo <>", value, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoGreaterThan(String value) {
+            addCriterion("contactInfo >", value, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoGreaterThanOrEqualTo(String value) {
+            addCriterion("contactInfo >=", value, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoLessThan(String value) {
+            addCriterion("contactInfo <", value, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoLessThanOrEqualTo(String value) {
+            addCriterion("contactInfo <=", value, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoLike(String value) {
+            addCriterion("contactInfo like", value, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoNotLike(String value) {
+            addCriterion("contactInfo not like", value, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoIn(List<String> values) {
+            addCriterion("contactInfo in", values, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoNotIn(List<String> values) {
+            addCriterion("contactInfo not in", values, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoBetween(String value1, String value2) {
+            addCriterion("contactInfo between", value1, value2, "contactinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andContactinfoNotBetween(String value1, String value2) {
+            addCriterion("contactInfo not between", value1, value2, "contactinfo");
             return (Criteria) this;
         }
 

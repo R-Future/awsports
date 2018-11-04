@@ -7,8 +7,48 @@ public class Event extends AwEvent {
     
     //query condition, select all events which are started from {year} to now.
     private Integer year;
+    
+    private String starttime;
 
-    public String getDetail() {
+    private String endtime;
+
+    private String enrollingtime;
+
+    private String closingtime;
+    
+	public String getStarttime() {
+		return starttime;
+	}	
+
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
+	}
+
+	public String getEndtime() {
+		return endtime;
+	}
+
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
+	}
+
+	public String getEnrollingtime() {
+		return enrollingtime;
+	}
+
+	public void setEnrollingtime(String enrollingtime) {
+		this.enrollingtime = enrollingtime;
+	}
+
+	public String getClosingtime() {
+		return closingtime;
+	}
+
+	public void setClosingtime(String closingtime) {
+		this.closingtime = closingtime;
+	}
+
+	public String getDetail() {
         return detail;
     }
 

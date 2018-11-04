@@ -14,7 +14,6 @@ public class EventQuery {
 	
 	private Event event;
 	private User userPublisher;
-	private User userContact;
 	
 	public Event getEvent() {
 		return event;
@@ -27,12 +26,6 @@ public class EventQuery {
 	}
 	public void setUserPublisher(User userPublisher) {
 		this.userPublisher = userPublisher;
-	}
-	public User getUserContact() {
-		return userContact;
-	}
-	public void setUserContact(User userContact) {
-		this.userContact = userContact;
 	}
 	
 }

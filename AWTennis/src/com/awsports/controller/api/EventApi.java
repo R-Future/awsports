@@ -165,9 +165,10 @@ public class EventApi extends BaseApi {
 		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
 		params.put("id", new Object[]{false, Pattern.compile(RegexPattern.INTEGER), "setId", "Integer"});
 		params.put("publisher", new Object[]{true, Pattern.compile(RegexPattern.INTEGER), "setPublisher", "Integer"});
-		params.put("contact", new Object[]{true, Pattern.compile(RegexPattern.INTEGER), "setContact", "Integer"});
+		params.put("contact", new Object[]{true, Pattern.compile(RegexPattern.validateString(1, 15)), "setContact", "String"});
+		params.put("contactInfo", new Object[]{false, Pattern.compile(RegexPattern.validateString(0, 255)), "setContactinfo", "String"});
 		//封面.jpg/png/gif
-		params.put("cover", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setCover", "String"});
+		params.put("cover", new Object[]{false, null, "setCover", "String"});
 		//赛事名称，字符长度和类型限制{60/字母，汉字，-}
 		params.put("name", new Object[]{true, Pattern.compile(RegexPattern.validateString(1, 60)), "setName", "String"});
 		//赛事地点，字符长度限制{300}
@@ -175,14 +176,14 @@ public class EventApi extends BaseApi {
 		//赛事类型
 		params.put("type", new Object[]{true, null, "setType", "String"});
 		//主办方，字符长度限制{255}
-		params.put("sponsor", new Object[]{false, Pattern.compile(RegexPattern.validateString(1, 255)), "setSponsor", "String"});
+		params.put("sponsor", new Object[]{false, Pattern.compile(RegexPattern.validateString(0, 255)), "setSponsor", "String"});
 		params.put("detail", new Object[]{true, null, "setDetail", "String"});
 		params.put("numberOfPlayer", new Object[]{true, Pattern.compile(RegexPattern.INTEGER), "setNumberofplayer", "Integer"});
 		params.put("startTime", new Object[]{true, null, "setStarttime", "String"});
 		params.put("endTime", new Object[]{true, null, "setEndtime", "String"});
-		params.put("cost", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setCost", "Integer"});
-		params.put("enrollingTime", new Object[]{false, null, "setEnrollingtime", "String"});
-		params.put("closingTime", new Object[]{false, null, "setClosingtime", "String"});
+		params.put("cost", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setCost", "Double"});
+		params.put("enrollingTime", new Object[]{true, null, "setEnrollingtime", "String"});
+		params.put("closingTime", new Object[]{true, null, "setClosingtime", "String"});
 		params.put("draw", new Object[]{false, null, "setDraw", "String"});
 		params.put("schedule", new Object[]{false, null, "setSchedule", "String"});
 		params.put("note", new Object[]{false, null, "setNote", "String"});

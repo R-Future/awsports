@@ -37,11 +37,11 @@
 					</tr>
 					<tr>
 					<th>联系人</th>
-					<td>${ userContact.name }</td>
+					<td>${ event.contact }</td>
 					</tr>
 					<tr>
 					<th>联系方式</th>
-					<td>${ userContact.phone } ${ userContact.email }</td>
+					<td>${ event.contactinfo }</td>
 					</tr>
 					<tr><th>主办方</th><td> ${ event.sponsor } </td></tr>
 					<tr>

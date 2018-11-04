@@ -5,7 +5,8 @@
 	 <resultMap id="eventMap" type="com.awsports.pojo.EventQuery">
 		<id column="id" jdbcType="INTEGER" property="event.id" />
 	    <result column="publisher" jdbcType="INTEGER" property="event.publisher" />
-	    <result column="contact" jdbcType="INTEGER" property="event.contact" />
+	    <result column="contact" jdbcType="VARCHAR" property="event.contact" />
+	    <result column="contactInfo" jdbcType="VARCHAR" property="event.contactinfo" />
 	    <result column="cover" jdbcType="VARCHAR" property="event.cover" />
 	    <result column="name" jdbcType="VARCHAR" property="event.name" />
 	    <result column="place" jdbcType="VARCHAR" property="event.place" />
@@ -29,14 +30,6 @@
 			<result column="publisher_username" property="name"/>
 			<result column="publisher_realname" property="realname"/>
 			<result column="publisher_avatar" property="portrait"/>
-	  	</association>
-	  	<association property="userContact" javaType="com.awsports.pojo.User">
-	  		<id column="contact" property="id"/>
-			<result column="contact_username" property="name"/>
-			<result column="contact_realname" property="realname"/> 
-			<result column="contact_avatar" property="portrait"/>
-			<result column="contact_phone" property="phone"/>
-			<result column="contact_email" property="email"/>
 	  	</association>
 	 </resultMap>
 	
@@ -73,11 +66,9 @@
 	 <select id="findAll" parameterType="com.awsports.pojo.EventQuery" resultMap="eventMap">
 	 	select 
 	 	aw_event.*, 
-	 	userPublisher.name as publisher_username, userPublisher.portrait as  publisher_avatar, userPublisher.realName as publisher_realname,
-	 	userContact.name as contact_username, userContact.portrait as contact_avatar, userContact.realName as contact_realname, userContact.email as contact_email
+	 	userPublisher.name as publisher_username, userPublisher.portrait as  publisher_avatar, userPublisher.realName as publisher_realname
 	 	from aw_event
 	 	join aw_user as userPublisher on userPublisher.id=aw_event.publisher
-	 	join aw_user as userContact on userContact.id=aw_event.contact
 	 	<where>
 	 		<include refid="query_where"/>
 	 	</where>
@@ -87,11 +78,9 @@
 	 <select id="findById" parameterType="java.lang.Integer" resultMap="eventMap">
 	 	select 	 	
 	 	aw_event.*, 
-	 	userPublisher.name as publisher_username, userPublisher.portrait as  publisher_avatar, userPublisher.realName as publisher_realname,
-	 	userContact.name as contact_username, userContact.portrait as contact_avatar, userContact.realName as contact_realname, userContact.email as contact_email
+	 	userPublisher.name as publisher_username, userPublisher.portrait as  publisher_avatar, userPublisher.realName as publisher_realname
 	 	from aw_event
 	 	join aw_user as userPublisher on userPublisher.id=aw_event.publisher
-	 	join aw_user as userContact on userContact.id=aw_event.contact 
 		where aw_event.id=#{id, jdbcType=INTEGER}
 	 </select> 
 
@@ -106,6 +95,9 @@
 	      </if>
 	      <if test="contact != null">
 	        contact,
+	      </if>
+	      <if test="contactinfo != null">
+	        contactInfo,
 	      </if>
 	      <if test="cover != null">
 	        cover,
@@ -170,7 +162,10 @@
 	        #{publisher,jdbcType=INTEGER},
 	      </if>
 	      <if test="contact != null">
-	        #{contact,jdbcType=INTEGER},
+	        #{contact,jdbcType=VARCHAR},
+	      </if>
+	      <if test="contactinfo != null">
+	        #{contactinfo,jdbcType=VARCHAR},
 	      </if>
 	      <if test="cover != null">
 	        #{cover,jdbcType=VARCHAR},
@@ -236,7 +231,10 @@
 	        publisher = #{publisher,jdbcType=INTEGER},
 	      </if>
 	      <if test="contact != null">
-	        contact = #{contact,jdbcType=INTEGER},
+	        contact = #{contact,jdbcType=VARCHAR},
+	      </if>
+	      <if test="contactinfo != null">
+	        contactInfo = #{contactinfo,jdbcType=VARCHAR},
 	      </if>
 	      <if test="cover != null">
 	        cover = #{cover,jdbcType=VARCHAR},

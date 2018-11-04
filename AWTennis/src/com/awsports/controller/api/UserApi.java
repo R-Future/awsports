@@ -29,6 +29,7 @@ import com.awsports.service.TeamrankService;
 import com.awsports.service.TeamrankestService;
 import com.awsports.service.UserService;
 import com.awsports.util.GenerateCardNumber;
+import com.awsports.util.MD5;
 import com.awsports.util.RegexPattern;
 import com.awsports.util.ResponseInfo;
 import com.awsports.util.StatusEnum;
@@ -199,7 +200,7 @@ public class UserApi extends BaseApi{
 	 * @Description: 绑定会员
 	 *
 	 */
-	@RequestMapping(value = "/user/binding", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/bind", method = RequestMethod.POST)
 	public void bind(String sign, HttpServletRequest request, HttpServletResponse response){
 		logger.info("绑定会员");
 		this.initialize();
@@ -256,7 +257,7 @@ public class UserApi extends BaseApi{
 	 * @Description: 会员注册
 	 *
 	 */
-	@RequestMapping(value = "/user/registering", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/register", method = RequestMethod.POST)
 	public void register(String sign, HttpServletRequest request, HttpServletResponse response){
 		//initialize response body
 		this.initialize();
@@ -278,8 +279,8 @@ public class UserApi extends BaseApi{
 		params.put("level", new Object[]{false, Pattern.compile(RegexPattern.TENNIS_LEVEL), "setLevel", "Double"});
 		params.put("grade", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setGrade", "Integer"});
 		params.put("playedYears", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setPlayedyears", "Double"});
-		params.put("forehand", new Object[]{true, Pattern.compile(RegexPattern.NUMBERIC), "setForehand", "Integer"});
-		params.put("backhand", new Object[]{true, Pattern.compile(RegexPattern.BOOLEAN), "setBackhand", "Boolean"});
+		params.put("forehand", new Object[]{false, Pattern.compile(RegexPattern.NUMBERIC), "setForehand", "Integer"});
+		params.put("backhand", new Object[]{false, Pattern.compile(RegexPattern.BOOLEAN), "setBackhand", "Boolean"});
 		
 		//check parameters
 		if(this.verifyParam(request, sign, params)){
@@ -313,4 +314,53 @@ public class UserApi extends BaseApi{
 		this.respond(response);
 	}
 	
+	/**
+	 * 
+	 * @Author: peRFect
+	 * @Datetime: 2018年9月23日 上午11:02:23
+	 * @param sign
+	 * @param request
+	 * @param response
+	 * @Return: void
+	 * @Description: login
+	 *
+	 */
+	@RequestMapping(value="/user/login", method=RequestMethod.POST)
+	public void login(String sign, HttpServletRequest request, HttpServletResponse response){
+		this.initialize();
+		
+		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
+		params.put("name", new Object[]{true, Pattern.compile(RegexPattern.NAME), "setName", "String"});
+		params.put("password", new Object[]{true, Pattern.compile(RegexPattern.validateString(32, 32)), "setPassword", "String"});
+		
+		if(this.verifyParam(request, sign, params)){
+			try{
+				User cond = (User)this.setCondition(User.class.getName(), request, params);
+				if(null!=cond){
+					User user = userService.findByName(cond.getName());
+					if(null!=user && user.getPassword().equals(cond.getPassword())){
+						//success
+						msg = GET_SUCCESS;
+						status = StatusEnum.GET_SUCCESS.getValue();
+						data.add(ResponseInfo.getProfileInfo(user));
+						//saved in front-end for login
+						data.get(0).put("token", MD5.Encode(user.getName().toString()+user.getPassword().toString()));
+					}else{
+						//failed
+						msg = NOT_FOUND;
+						status = StatusEnum.NOT_FOUND.getValue();
+					}
+				}else{
+					msg = INVALID_REQUEST;
+					status = StatusEnum.INVALID_REQUEST.getValue();
+				}
+			}catch(Exception e){
+				msg = INVALID_REQUEST;
+				status = StatusEnum.INVALID_REQUEST.getValue();
+				error = e.toString();
+			}
+		}
+		
+		this.respond(response);
+	}
 }

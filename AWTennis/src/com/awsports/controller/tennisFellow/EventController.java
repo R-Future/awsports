@@ -102,7 +102,6 @@ public class EventController {
 			logger.info(logPrefix+"worker info: "+eventWorkers.toString());
 			
 			User userPublisher = eventQuery.getUserPublisher();
-			User userContact = eventQuery.getUserContact();
 			
 			SinglesMatch conditions = new SinglesMatch();
 			//singles match
@@ -115,7 +114,6 @@ public class EventController {
 			
 			model.addAttribute("event", event);
 			model.addAttribute("userPublisher", userPublisher);
-			model.addAttribute("userContact", userContact);
 			model.addAttribute("eventPlayers", eventPlayers);
 			model.addAttribute("eventWorkers", eventWorkers);
 			model.addAttribute("singlesMatchs", singlesMatchs);

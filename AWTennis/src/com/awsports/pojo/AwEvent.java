@@ -7,7 +7,9 @@ public class AwEvent {
 
     private Integer publisher;
 
-    private Integer contact;
+    private String contact;
+
+    private String contactinfo;
 
     private String cover;
 
@@ -21,15 +23,15 @@ public class AwEvent {
 
     private Integer numberofplayer;
 
-    private Date starttime;
-
-    private Date endtime;
+//    private Date starttime;
+//
+//    private Date endtime;
 
     private Double cost;
 
-    private Date enrollingtime;
-
-    private Date closingtime;
+//    private Date enrollingtime;
+//
+//    private Date closingtime;
 
     private String draw;
 
@@ -57,12 +59,20 @@ public class AwEvent {
         this.publisher = publisher;
     }
 
-    public Integer getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(Integer contact) {
-        this.contact = contact;
+    public void setContact(String contact) {
+        this.contact = contact == null ? null : contact.trim();
+    }
+
+    public String getContactinfo() {
+        return contactinfo;
+    }
+
+    public void setContactinfo(String contactinfo) {
+        this.contactinfo = contactinfo == null ? null : contactinfo.trim();
     }
 
     public String getCover() {
@@ -113,21 +123,21 @@ public class AwEvent {
         this.numberofplayer = numberofplayer;
     }
 
-    public Date getStarttime() {
-        return starttime;
-    }
-
-    public void setStarttime(Date starttime) {
-        this.starttime = starttime;
-    }
-
-    public Date getEndtime() {
-        return endtime;
-    }
-
-    public void setEndtime(Date endtime) {
-        this.endtime = endtime;
-    }
+//    public Date getStarttime() {
+//        return starttime;
+//    }
+//
+//    public void setStarttime(Date starttime) {
+//        this.starttime = starttime;
+//    }
+//
+//    public Date getEndtime() {
+//        return endtime;
+//    }
+//
+//    public void setEndtime(Date endtime) {
+//        this.endtime = endtime;
+//    }
 
     public Double getCost() {
         return cost;
@@ -137,21 +147,21 @@ public class AwEvent {
         this.cost = cost;
     }
 
-    public Date getEnrollingtime() {
-        return enrollingtime;
-    }
-
-    public void setEnrollingtime(Date enrollingtime) {
-        this.enrollingtime = enrollingtime;
-    }
-
-    public Date getClosingtime() {
-        return closingtime;
-    }
-
-    public void setClosingtime(Date closingtime) {
-        this.closingtime = closingtime;
-    }
+//    public Date getEnrollingtime() {
+//        return enrollingtime;
+//    }
+//
+//    public void setEnrollingtime(Date enrollingtime) {
+//        this.enrollingtime = enrollingtime;
+//    }
+//
+//    public Date getClosingtime() {
+//        return closingtime;
+//    }
+//
+//    public void setClosingtime(Date closingtime) {
+//        this.closingtime = closingtime;
+//    }
 
     public String getDraw() {
         return draw;

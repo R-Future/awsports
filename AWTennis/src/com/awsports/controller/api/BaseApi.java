@@ -3,6 +3,8 @@ package com.awsports.controller.api;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -81,8 +83,6 @@ public class BaseApi {
 		error = "";
 		data = new ArrayList<HashMap<String, Object>>();
 		jsonObject = new JSONObject();
-		
-		
 		try {
 			token = apikeyService.findById(1);
 		} catch (Exception e) {
@@ -152,10 +152,18 @@ public class BaseApi {
 			}else{
 				StringBuffer sb  = new StringBuffer();
 				if(null!=params){
-					Set<Entry<String, Object[]>> set = params.entrySet();
-					Iterator<Entry<String, Object[]>> it = set.iterator();
-					while(it.hasNext()){
-						Map.Entry<String, Object[]> me = (Map.Entry<String, Object[]>)it.next();
+					//sort by name [a-z]
+					List<Map.Entry<String, Object[]>> paramList = new ArrayList<Map.Entry<String, Object[]>>(params.entrySet());
+					Collections.sort(paramList, new Comparator<Map.Entry<String, Object[]>>(){
+						public int compare(Map.Entry<String, Object[]> m1, Map.Entry<String, Object[]> m2){
+							return m1.getKey().toString().compareTo(m2.getKey().toString());
+						}
+					});
+					for(int i=0;i<paramList.size();i++){
+//					Set<Entry<String, Object[]>> set = params.entrySet();
+//					Iterator<Entry<String, Object[]>> it = set.iterator();
+//					while(it.hasNext()){
+						Map.Entry<String, Object[]> me = (Map.Entry<String, Object[]>)paramList.get(i);
 						String pValue = request.getParameter(me.getKey().toString());
 						if(null!=pValue){
 							//the parameter exists, it means it should be checked.
@@ -185,6 +193,7 @@ public class BaseApi {
 				sb.append("token="+token);
 				if(!MD5.Encode(sb.toString()).toUpperCase().equals(sign)){
 					//verify fail
+					error = "sign is invalid";
 					msg = INVALID_REQUEST;
 					status = StatusEnum.INVALID_REQUEST.getValue();
 					return false;
@@ -240,6 +249,9 @@ public class BaseApi {
 							setValue = cla.getMethod((String)me.getValue()[2], Boolean.class);
 							setValue.invoke(obj, Boolean.parseBoolean(pValue));
 							break;
+//						case "Date":
+//							setValue = cla.getMethod((String)me.getValue()[2], Date.class);
+//							setValue.invoke(obj, (new SimpleDateFormat("yyyy-MM-dd HH:mm")).parse(pValue));
 						default:
 							setValue = cla.getMethod((String)me.getValue()[2], String.class);
 							setValue.invoke(obj, pValue);
